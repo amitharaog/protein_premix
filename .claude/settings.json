@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(python3 scripts/*)",
+      "Bash(python scripts/*)",
+      "Bash(pip install *)",
+      "Read(./**)",
+      "Write(./data/**)",
+      "Write(./reports/**)",
+      "Edit(./data/**)",
+      "Edit(./reports/**)"
+    ],
+    "deny": [
+      "Bash(curl * -X POST*)",
+      "Bash(rm -rf *)"
+    ]
+  }
+}

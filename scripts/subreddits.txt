@@ -1,0 +1,16 @@
+# One subreddit per line. The script skips any that 404 or are private.
+# India-specific first; these carry more weight as evidence for this market.
+bangalore
+india
+IndianFitness
+IndianFood
+AskIndia
+indiasocial
+# Global, for complaint themes about protein baking (weaker evidence for India)
+proteinbaking
+fitmeals
+Fitness
+Baking
+Cooking
+EatCheapAndHealthy
+HealthyFood

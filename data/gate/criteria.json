@@ -1,0 +1,40 @@
+{
+  "_note": "Starting thresholds, chosen to be beatable in 2 to 3 weeks of part-time work. Edit before running /gate. Source column says which file the gate counts from.",
+  "metrics": {
+    "unprompted_problem_signals": {
+      "description": "Rows in signals.csv with intent_level >= 2 and grade E2 or E1",
+      "source": "data/signals/signals.csv",
+      "threshold": 25
+    },
+    "india_share_of_signals": {
+      "description": "Share of signals.csv rows from Indian communities, listings or creators",
+      "source": "data/signals/signals.csv",
+      "threshold": 0.4
+    },
+    "buy_intent_keywords": {
+      "description": "Distinct protein phrases in the 'buy' cluster that autocomplete on Amazon.in or Google India",
+      "source": "data/keywords/suggestions.csv",
+      "threshold": 8
+    },
+    "replies_total": {
+      "description": "Coded replies across all posts, friends and family excluded",
+      "source": "data/responses/coded.csv",
+      "threshold": 40
+    },
+    "behaviour_to_interest_ratio": {
+      "description": "(past_behaviour yes or grade E1) divided by stated_interest yes",
+      "source": "data/responses/coded.csv",
+      "threshold": 0.3
+    },
+    "e1_actions": {
+      "description": "Waitlist signups, where-to-buy asks, DMs asking for it, or preorders",
+      "source": "data/responses/coded.csv",
+      "threshold": 15
+    }
+  },
+  "decision_rule": {
+    "pass": "e1_actions met AND at least 4 of the other 5 met",
+    "insufficient": "any metric MISSING, or replies_total not met because reach was under 2,000 views",
+    "fail": "everything else"
+  }
+}
