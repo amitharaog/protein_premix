@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { done as doneCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui, type Personality } from "@/content/survey";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { joinWaitlist, submitSurvey } from "./actions";
-import { BrownieTray, Doodles, Drip, MugMascot, Wordmark, type Mood } from "./art";
+import { BrownieTray, Doodles, Drip, MugMascot, Starburst, TopDrip, Wordmark, type Mood } from "./art";
 
 type Props = { questions: SurveyQuestion[]; initial: Answers | null; startToken: string; siteUrl: string };
 
@@ -136,7 +136,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
 
       {step >= 0 && (
         <header className="flex items-center gap-3">
-          <Wordmark size={24} />
+          <Wordmark height={30} className="shrink-0" />
           <div className="min-w-0 flex-1" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
             <BrownieTray total={n} answered={questions.map((x) => !isEmpty(answers[x.id]))} current={step < n ? step : -1} />
           </div>
@@ -149,7 +149,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       {q && copy && (
         <section key={q.id} className="anim-pop mt-5 flex flex-1 flex-col" aria-labelledby={`h-${q.id}`}>
           <Host text={hostLine ?? copy.host} mood={mood} bump={bump} />
-          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-5 text-[25px] leading-tight font-semibold text-frost outline-none">
+          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-5 text-[25px] leading-tight font-semibold text-fg outline-none">
             {q.question}
           </h1>
           {q.hint && <p className="mt-1 text-sm text-muted">{q.hint}{q.required || /optional/i.test(q.hint) ? "" : " · optional"}</p>}
@@ -178,7 +178,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
               type="button"
               onClick={() => goNext()}
               disabled={pending}
-              className="h-12 min-w-28 rounded-full bg-accent px-6 font-semibold text-accent-fg shadow-[0_4px_0_#7f4a2b] transition active:translate-y-0.5 active:shadow-[0_1px_0_#7f4a2b] disabled:opacity-60"
+              className="h-12 min-w-28 rounded-full bg-accent px-6 font-semibold text-accent-fg shadow-[0_4px_0_var(--line)] transition active:translate-y-0.5 active:shadow-[0_1px_0_var(--line)] disabled:opacity-60"
             >
               {step === n - 1 ? (pending ? ui.submitting : ui.submit) : `${ui.next} →`}
             </button>
@@ -201,23 +201,27 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
 function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: boolean; onStart: () => void }) {
   return (
     <section className="anim-pop flex flex-1 flex-col">
-      <p className="mx-auto mt-2 rounded-full border border-milk/70 px-3 py-1 text-xs font-semibold tracking-wide text-accent">{intro.kicker(count)}</p>
-      <div className="mt-6 text-center"><Wordmark size={64} /></div>
-      <div className="relative mx-auto mt-2 aspect-[36/26] w-full">
+      <TopDrip className="-mx-4 -mt-4 h-11 w-[calc(100%+2rem)]" />
+      <p className="mx-auto -mt-1 rounded-full border-2 border-line bg-panel px-3 py-1 text-xs font-bold tracking-wide text-fg shadow-[2px_2px_0_var(--line)]">{intro.kicker(count)}</p>
+      <div className="mt-5 flex justify-center"><Wordmark height={86} /></div>
+      <p className="mt-1 text-center text-sm font-extrabold uppercase tracking-[0.35em] text-fg">{intro.tagline}</p>
+      <div className="relative mx-auto mt-1 aspect-[36/26] w-full">
         <Doodles className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-0 flex items-center justify-center">
           <MugMascot mood="happy" size={170} steam className="anim-bob" />
         </div>
+        <Starburst lines={intro.badges[0]} rotate={-10} className="absolute -left-1 bottom-0 w-[92px]" />
+        <Starburst lines={intro.badges[1]} rotate={8} className="absolute -right-1 top-1 w-[92px]" />
       </div>
-      <h1 className="mt-2 text-center font-brand text-[34px] leading-none text-accent">{intro.headline}</h1>
-      <p className="mt-2 text-center text-muted">{intro.sub}</p>
-      <p className="mt-5 rounded-[14px] border border-line bg-panel p-3 text-sm leading-snug text-frost/90">{intro.spec}</p>
-      {welcomeBack && <p className="mt-3 rounded-[14px] border border-milk bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
+      <h1 className="mt-3 text-center font-brand text-[34px] leading-none text-fg">{intro.headline}</h1>
+      <p className="mt-2 text-center font-medium text-muted">{intro.sub}</p>
+      <p className="mt-5 rounded-[14px] border-2 border-line bg-panel p-3 text-sm leading-snug text-fg shadow-[3px_3px_0_var(--line)]">{intro.spec}</p>
+      {welcomeBack && <p className="mt-3 rounded-[14px] border-2 border-line bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
       <div className="flex-1" />
       <button
         type="button"
         onClick={onStart}
-        className="mt-6 h-14 w-full rounded-full bg-accent text-lg font-semibold text-accent-fg shadow-[0_6px_0_#7f4a2b] transition active:translate-y-1 active:shadow-[0_2px_0_#7f4a2b]"
+        className="mt-6 h-14 w-full rounded-full bg-accent text-lg font-semibold text-accent-fg shadow-[0_5px_0_var(--line)] transition active:translate-y-1 active:shadow-[0_1px_0_var(--line)]"
       >
         {intro.cta} →
       </button>
@@ -232,7 +236,7 @@ function Host({ text, mood, bump }: { text: string; mood: Mood; bump: number }) 
       <span key={bump} className={`shrink-0 ${bump ? "anim-wobble" : ""}`}>
         <MugMascot mood={mood} size={58} />
       </span>
-      <p key={text} className="anim-pop relative mb-2 rounded-[16px] rounded-bl-sm border border-milk/60 bg-panel px-4 py-2.5 text-[15px] leading-snug text-frost">
+      <p key={text} className="anim-pop relative mb-2 rounded-[16px] rounded-bl-sm border-2 border-line bg-panel shadow-[3px_3px_0_var(--line)] px-4 py-2.5 text-[15px] leading-snug text-fg">
         {text}
       </p>
     </div>
@@ -254,7 +258,7 @@ function ChoiceList({ q, value, onPick }: { q: SurveyQuestion; value: string | s
               key={o}
               className={[
                 "relative flex min-h-14 cursor-pointer items-center gap-3 overflow-hidden rounded-[14px] border-2 px-4 py-3 transition duration-150 ease-out active:scale-[0.98]",
-                on ? "border-accent bg-accent-soft pt-5" : "border-line bg-panel hover:border-milk",
+                on ? "border-accent bg-accent-soft pt-5" : "border-line bg-panel hover:border-line",
                 full && !on ? "opacity-50" : "",
               ].join(" ")}
             >
@@ -262,7 +266,7 @@ function ChoiceList({ q, value, onPick }: { q: SurveyQuestion; value: string | s
               {on && <Drip />}
               <span
                 aria-hidden
-                className={`grid size-6 shrink-0 place-items-center border-2 text-xs font-bold transition ${multi ? "rounded-md" : "rounded-full"} ${on ? "border-accent bg-accent text-accent-fg" : "border-milk"}`}
+                className={`grid size-6 shrink-0 place-items-center border-2 text-xs font-bold transition ${multi ? "rounded-md" : "rounded-full"} ${on ? "border-accent bg-accent text-accent-fg" : "border-line"}`}
               >
                 {on ? "✓" : ""}
               </span>
@@ -287,7 +291,7 @@ function Scale({ q, value, onPick }: { q: SurveyQuestion; value: string | undefi
           return (
             <label
               key={o}
-              className={`relative flex cursor-pointer flex-col items-center gap-1 overflow-hidden rounded-[14px] border-2 pb-3 pt-4 transition duration-150 active:scale-95 ${on ? "border-accent bg-accent-soft" : "border-line bg-panel"}`}
+              className={`relative flex cursor-pointer flex-col items-center gap-1 overflow-hidden rounded-[14px] border-2 pb-3 pt-4 transition duration-150 active:scale-95 ${on ? "border-accent bg-accent-soft shadow-[3px_3px_0_var(--accent)]" : "border-line bg-panel shadow-[3px_3px_0_var(--line)]"}`}
             >
               <input type="radio" name={q.id} value={o} checked={on} onChange={() => onPick(o)} className="peer sr-only" />
               {on && <Drip />}
@@ -317,7 +321,7 @@ function FreeText({ q, value, onChange }: { q: SurveyQuestion; value: string; on
         onChange={(e) => onChange(e.target.value)}
         placeholder={ph}
         rows={6}
-        className="w-full rounded-[14px] border-2 border-line bg-panel p-4 text-[15px] leading-relaxed placeholder:text-muted/70 focus:border-accent focus:outline-none"
+        className="w-full rounded-[14px] border-2 border-line bg-panel p-4 text-[15px] shadow-[3px_3px_0_var(--line)] leading-relaxed placeholder:text-muted/70 focus:border-accent focus:outline-none"
       />
       <p className="tabular mt-1 text-right text-xs text-muted">{ui.charsLeft(max - value.length)}</p>
     </div>
@@ -329,13 +333,13 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
   const shareText = doneCopy.shareText(personality.title, shareUrl);
   return (
     <section className="anim-pop mt-6 flex flex-1 flex-col">
-      <div className="relative overflow-hidden rounded-[20px] border-2 border-milk bg-panel px-5 pb-5 pt-6">
+      <div className="relative overflow-hidden rounded-[20px] border-2 border-line bg-panel px-5 pb-5 pt-6 shadow-[4px_4px_0_var(--line)]">
         <Drip className="h-3" />
         <div className="flex items-center gap-4">
           <MugMascot mood={personality.mood} size={72} />
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">{doneCopy.personalityLead}</p>
-            <h1 className="mt-1 text-2xl leading-tight font-semibold text-frost">{personality.title}</h1>
+            <h1 className="mt-1 text-2xl leading-tight font-semibold text-fg">{personality.title}</h1>
           </div>
         </div>
         <p className="mt-3 text-muted">{personality.line}</p>
@@ -347,7 +351,7 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
           href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 items-center justify-center rounded-full border-2 border-milk bg-panel font-semibold"
+          className="flex h-12 items-center justify-center rounded-full border-2 border-line bg-panel font-semibold"
         >
           Share on WhatsApp
         </a>
@@ -361,7 +365,7 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
               setCopied(false);
             }
           }}
-          className="h-12 rounded-full border-2 border-milk bg-panel font-semibold"
+          className="h-12 rounded-full border-2 border-line bg-panel font-semibold"
         >
           {copied ? doneCopy.copied : doneCopy.copy}
         </button>
@@ -390,7 +394,7 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
 
   return (
     <form
-      className="relative mt-8 rounded-[14px] border-2 border-milk bg-panel p-4"
+      className="relative mt-8 rounded-[14px] border-2 border-line bg-panel p-4 shadow-[4px_4px_0_var(--line)]"
       onSubmit={(e) => {
         e.preventDefault();
         startTransition(async () => {
@@ -401,16 +405,16 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
       }}
       noValidate
     >
-      <h2 className="text-lg font-semibold text-frost">{doneCopy.waitlistTitle}</h2>
+      <h2 className="text-lg font-semibold text-fg">{doneCopy.waitlistTitle}</h2>
       <p className="mt-1 text-sm text-muted">{doneCopy.waitlistBody}</p>
       <input ref={trap} name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
       <label className="mt-3 block text-sm font-medium" htmlFor="wl-email">Email</label>
       <input id="wl-email" type="email" inputMode="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
-        className="mt-1 h-12 w-full rounded-xl border-2 border-line bg-bg px-3 focus:border-accent focus:outline-none" />
+        className="mt-1 h-12 w-full rounded-xl border-2 border-line bg-white px-3 focus:border-accent focus:outline-none" />
       {errors.email && <p className="mt-1 text-sm text-bad">{errors.email}</p>}
       <label className="mt-3 block text-sm font-medium" htmlFor="wl-phone">or WhatsApp number</label>
       <input id="wl-phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="98xxxxxxxx" value={phone} onChange={(e) => setPhone(e.target.value)}
-        className="mt-1 h-12 w-full rounded-xl border-2 border-line bg-bg px-3 focus:border-accent focus:outline-none" />
+        className="mt-1 h-12 w-full rounded-xl border-2 border-line bg-white px-3 focus:border-accent focus:outline-none" />
       {errors.phone && <p className="mt-1 text-sm text-bad">{errors.phone}</p>}
       <label className="mt-4 flex items-start gap-3 text-sm">
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-5 accent-[var(--accent)]" />

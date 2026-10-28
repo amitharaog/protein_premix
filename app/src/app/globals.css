@@ -20,6 +20,25 @@
   --pista: #a8d38f;        /* pistachio pop, used sparingly in doodles */
 }
 
+/* Public survey: playful lavender, cream stickers, chocolate. Admin keeps the dark tokens above. */
+.theme-lav {
+  color-scheme: light;
+  --bg: #b8b2f0;          /* lavender */
+  --panel: #fff6ea;       /* cream sticker */
+  --fg: #2b2170;          /* deep purple ink */
+  --muted: #4f4499;
+  --line: #2b2170;
+  --accent: #5b2d14;      /* chocolate */
+  --accent-fg: #fff6ea;
+  --accent-soft: #f6e2cc;
+  --bad: #a3221b;
+  --kesar: #e8892b;
+  --milk: #7a3d1c;
+  --frost: #fff6ea;
+  background: var(--bg);
+  color: var(--fg);
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-panel: var(--panel);

@@ -77,15 +77,43 @@ export function MugMascot({ mood = "neutral", size = 56, steam = false, classNam
   );
 }
 
-/** Chunky Modak wordmark with a milk-chocolate offset. */
-export function Wordmark({ size = 56, className = "" }: { size?: number; className?: string }) {
+/** Retro sticker wordmark: cream letters, chocolate outline, chunky 3D drop. Drawn as SVG text so the outline renders everywhere. */
+export function Wordmark({ height = 56, className = "" }: { height?: number; className?: string }) {
+  const text = { x: 200, y: 82, textAnchor: "middle" as const, fontSize: 92, style: { fontFamily: "var(--font-modak)" } };
   return (
-    <span
-      className={`font-brand leading-none text-frost ${className}`}
-      style={{ fontSize: size, textShadow: `0 ${Math.max(2, size / 14)}px 0 var(--milk)`, letterSpacing: "0.01em" }}
-    >
-      muggoozz
-    </span>
+    <svg viewBox="0 0 400 112" height={height} className={className} role="img" aria-label="muggoozz">
+      <text {...text} dx="3" dy="7" fill="#2b140a" stroke="#2b140a" strokeWidth="10" strokeLinejoin="round">muggoozz</text>
+      <text {...text} fill="#fff6ea" stroke="#3b1d0e" strokeWidth="9" strokeLinejoin="round" paintOrder="stroke">muggoozz</text>
+    </svg>
+  );
+}
+
+/** Chocolate poured over the top edge of the page. */
+export function TopDrip({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 400 46" preserveAspectRatio="none" className={className} aria-hidden>
+      <path d="M0,0 H400 V18 C390,18 392,40 380,40 C368,40 372,20 352,20 C338,20 342,32 330,32 C318,32 322,18 300,18 C286,18 290,44 274,44 C258,44 264,20 240,20 C226,20 230,30 218,30 C206,30 210,18 186,18 C172,18 176,38 160,38 C144,38 150,20 128,20 C114,20 118,28 106,28 C94,28 98,18 76,18 C62,18 66,42 50,42 C34,42 40,20 20,20 C10,20 8,26 0,26 Z" fill="#5b2d14" />
+      <path d="M14,8 h40 M120,9 h28 M250,8 h52 M340,9 h24" stroke="#8a4a26" strokeWidth="4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+/** Cream starburst badge with purple text, like a sticker on the pack. */
+export function Starburst({ lines, rotate = 0, className = "" }: { lines: string[]; rotate?: number; className?: string }) {
+  const pts = Array.from({ length: 28 }, (_, i) => {
+    const r = i % 2 ? 44 : 52;
+    const a = (i / 28) * Math.PI * 2;
+    return `${(55 + r * Math.cos(a)).toFixed(1)},${(55 + r * Math.sin(a)).toFixed(1)}`;
+  }).join(" ");
+  return (
+    <svg viewBox="0 0 110 110" className={className} style={{ transform: `rotate(${rotate}deg)` }} aria-hidden>
+      <polygon points={pts} fill="#fff6ea" stroke="#2b2170" strokeWidth="2.5" strokeLinejoin="round" />
+      {lines.map((l, i) => (
+        <text key={l} x="55" y={55 + (i - (lines.length - 1) / 2) * 15 + 5} textAnchor="middle" fontSize="13.5" fontWeight="700" fill="#2b2170" style={{ fontFamily: "var(--font-figtree)" }}>
+          {l}
+        </text>
+      ))}
+    </svg>
   );
 }
 
@@ -105,7 +133,7 @@ export function Doodles({ className = "" }: { className?: string }) {
   );
   return (
     <svg viewBox="0 0 360 260" className={className} aria-hidden>
-      <g fill="none" stroke={CREAM} strokeWidth="3" strokeLinecap="round" opacity="0.5">
+      <g fill="none" stroke="#5b2d14" strokeWidth="3.5" strokeLinecap="round" opacity="0.8">
         <path d="M30,70 c10,-14 26,-6 18,6 c-6,9 -18,2 -10,-6" />
         <path d="M318,190 c-10,14 -26,6 -18,-6 c6,-9 18,-2 10,6" />
         <path d="M300,48 q12,8 4,18" />
@@ -119,10 +147,10 @@ export function Doodles({ className = "" }: { className?: string }) {
       {chip(318, 150, 12)}
       {chip(84, 236, -15)}
       {chip(262, 232, 30)}
-      {sparkle(250, 26, 1, "var(--pista)")}
-      {sparkle(124, 222, 0.8, "var(--accent)")}
-      {sparkle(28, 30, 0.7, "var(--frost)")}
-      {sparkle(338, 236, 0.7, "var(--pista)")}
+      {sparkle(250, 26, 1, "#fff6ea")}
+      {sparkle(124, 222, 0.8, "#fff6ea")}
+      {sparkle(28, 30, 0.7, "#5b2d14")}
+      {sparkle(338, 236, 0.7, "#fff6ea")}
     </svg>
   );
 }

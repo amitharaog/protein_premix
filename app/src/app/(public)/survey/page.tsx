@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cookies, headers } from "next/headers";
 import { getAnswersFor, getSurveyQuestions } from "@/lib/queries/survey";
 import { RID_COOKIE, signStart } from "@/lib/survey/guard";
 import { SurveyClient } from "./survey-client";
 
 export const dynamic = "force-dynamic";
+
+export const viewport: Viewport = { themeColor: "#b8b2f0", colorScheme: "light" };
 
 export const metadata: Metadata = {
   title: "Take the survey",
