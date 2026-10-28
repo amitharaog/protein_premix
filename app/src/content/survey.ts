@@ -4,13 +4,13 @@
 
 export const intro = {
   kicker: (n: number) => `${n} quick questions · no login`,
-  poster: { small: "Give us your", big: "cravings", tail: "It only takes 1 minute" },
-  ask: "Do your dessert cravings deserve to be heard?",
-  spec: "We're making a bake-at-home brownie and cake mix. Target: 25–32 g protein per sachet (recipe in testing), made with gluten-free ingredients.",
-  host: "Hi, I'm a mug. I ask people about dessert. It's my whole personality.",
-  cta: "Start",
+  headline: "Give us your cravings",
+  sub: "It takes about a minute.",
+  spec: "We're making muggoozz: a bake-at-home protein mug cake mix. Target 25–32 g protein per sachet (recipe in testing), made with gluten-free ingredients.",
+  host: "Hi, I'm a mug cake. I ask people about dessert. It's my whole personality.",
+  cta: "Let's go",
   purpose:
-    "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: deciding which dessert to make. Nothing is sold or shared.",
+    "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: deciding what to make. Nothing is sold or shared.",
 };
 
 type QuestionCopy = {
@@ -164,11 +164,11 @@ export const ui = {
 };
 
 export const done = {
-  title: "Answers served!",
+  title: "All done",
   personalityLead: "Your dessert personality is",
   shareLead: "Make your friends take it too. It's only fair.",
   shareText: (personality: string, url: string) =>
-    `I just survived The Great Dessert Interrogation and apparently I'm "${personality}". Your turn: ${url}`,
+    `Took the muggoozz mug cake quiz and apparently I'm "${personality}". Your turn: ${url}`,
   copy: "Copy link",
   copied: "Copied!",
   waitlistTitle: "Want first dibs when it exists?",
@@ -176,18 +176,18 @@ export const done = {
   consent: "Yes, contact me about this dessert's launch. I can ask for my details to be deleted any time.",
   whatsappOptin: "Also okay to message me on WhatsApp",
   join: "Save my spot",
-  joined: "You're on the list. The mug is emotional.",
+  joined: "You're on the list. We'll message once, when there's something to taste.",
   edit: "Change my answers",
 };
 
-export type Personality = { id: string; title: string; line: string; emoji: string };
+export type Personality = { id: string; title: string; line: string; mood: "happy" | "wow" | "love" | "meh" | "wink" | "neutral" };
 
 export const personalities: Record<string, Personality> = {
-  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you.", emoji: "🫡" },
-  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug.", emoji: "🕵️" },
-  texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room.", emoji: "🧐" },
-  midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment.", emoji: "🌙" },
-  macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front.", emoji: "🥤" },
-  lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid.", emoji: "🛋️" },
-  curious: { id: "curious", title: "The Curious Crumb", line: "Open mind, open spoon.", emoji: "🥄" },
+  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you.", mood: "meh" },
+  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug.", mood: "wow" },
+  texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room.", mood: "wink" },
+  midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment.", mood: "love" },
+  macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front.", mood: "happy" },
+  lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid.", mood: "neutral" },
+  curious: { id: "curious", title: "The Curious Crumb", line: "Open mind, open spoon.", mood: "happy" },
 };

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("completes the survey on a phone, logged out, and joins the waitlist", async ({ page }) => {
   await page.goto("/survey?utm_source=e2e");
-  await page.getByRole("button", { name: /^Start/ }).click();
+  await page.getByRole("button", { name: /^Let.s go/ }).click();
 
   await page.getByText("Daily", { exact: true }).click(); // Q3, auto-advances
   await page.getByRole("button", { name: "Skip" }).click(); // Q2 optional

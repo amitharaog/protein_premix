@@ -17,6 +17,7 @@
   --kesar: #f0a75a;
   --milk: #9c5f39;        /* milk-chocolate frame, the poster's outer colour */
   --frost: #f3e6d3;
+  --pista: #a8d38f;        /* pistachio pop, used sparingly in doodles */
 }
 
 @theme inline {
@@ -34,8 +35,10 @@
   --color-kesar: var(--kesar);
   --color-milk: var(--milk);
   --color-frost: var(--frost);
+  --color-pista: var(--pista);
   --font-display: var(--font-anton);
   --font-head: var(--font-oswald);
+  --font-brand: var(--font-modak);
   --font-sans: var(--font-figtree);
   --radius-card: 14px;
 }
@@ -70,9 +73,9 @@ body {
   25% { transform: rotate(-4deg); }
   75% { transform: rotate(4deg); }
 }
-@keyframes sprinkle-fall {
-  from { transform: translateY(-10vh) rotate(0); opacity: 1; }
-  to { transform: translateY(105vh) rotate(540deg); opacity: 0.9; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 @keyframes drip-fall {
   0% { transform: translateY(-14px); opacity: 0; }
@@ -88,10 +91,9 @@ body {
 .anim-wobble { animation: wobble 400ms ease-out; }
 .anim-steam { animation: steam 2.4s ease-out infinite; }
 .anim-drip { animation: drip-fall 2.6s ease-in infinite; transform-box: fill-box; }
-.sprinkle { position: fixed; top: 0; pointer-events: none; animation: sprinkle-fall linear forwards; z-index: 50; }
+.anim-bob { animation: bob 3.2s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .sprinkle { animation: none !important; }
-  .sprinkle { display: none; }
+  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob { animation: none !important; }
   * { transition-duration: 0ms !important; }
 }

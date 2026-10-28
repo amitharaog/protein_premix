@@ -1,9 +1,8 @@
 // Every brand string lives here, so a rename is a one-line change (SPEC header).
-// Research rules (repo CLAUDE.md, "Disclosure rules") keep the brand name off public pages until the
-// founder approves the launch copy line by line, so `name` stays null and pages use the neutral strings.
+// Name chosen by the founder on 28 Oct 2026 and approved for the public survey. Not yet trademark-searched.
 export const brand = {
-  name: null as string | null, // e.g. "CRMBYTZ" once chosen and cleared for class 30
-  siteTitle: "The Great Dessert Interrogation",
-  description: "A 1-minute, slightly unserious survey about desserts, cravings and protein. No login.",
+  name: "muggoozz",
+  siteTitle: "muggoozz",
+  description: "A 1-minute, slightly unserious survey about mug cakes, cravings and protein. No login.",
   instagram: null as string | null,
 };

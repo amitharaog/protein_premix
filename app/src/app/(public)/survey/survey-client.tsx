@@ -1,21 +1,24 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { done as doneCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui, type Personality } from "@/content/survey";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { joinWaitlist, submitSurvey } from "./actions";
-import { BrownieTray, Drip, HourglassProgress, PosterArt } from "./art";
+import { BrownieTray, Doodles, Drip, MugMascot, Wordmark, type Mood } from "./art";
 
 type Props = { questions: SurveyQuestion[]; initial: Answers | null; startToken: string; siteUrl: string };
 
 const AUTO_ADVANCE_MS = 750;
+const SCALE: string[] = ["1", "2", "3", "4", "5"];
+const SCALE_MOODS: Record<string, Mood> = { "1": "sad", "2": "meh", "3": "wow", "4": "happy", "5": "love" };
 const isEmpty = (v: unknown) => v == null || v === "" || (Array.isArray(v) && v.length === 0);
 
 export function SurveyClient({ questions, initial, startToken, siteUrl }: Props) {
   const [step, setStep] = useState(-1); // -1 intro, 0..n-1 questions, n done
   const [answers, setAnswers] = useState<Answers>(initial ?? {});
   const [hostLine, setHostLine] = useState<string | null>(null);
-  const [bump, setBump] = useState(0); // re-triggers the mug wobble
+  const [bump, setBump] = useState(0); // re-triggers the mascot wobble
+  const [mood, setMood] = useState<Mood>("neutral");
   const [notice, setNotice] = useState<string | null>(null);
   const [result, setResult] = useState<{ personality: Personality; shareRef: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -37,12 +40,14 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   useEffect(() => {
     setHostLine(null);
     setNotice(null);
+    setMood("neutral");
     if (timer.current) clearTimeout(timer.current);
     headingRef.current?.focus();
   }, [step]);
 
-  const react = useCallback((line: string | undefined) => {
+  const react = useCallback((line: string | undefined, m: Mood = line ? "happy" : "neutral") => {
     if (line) setHostLine(line);
+    setMood(m);
     setBump((b) => b + 1);
   }, []);
 
@@ -70,6 +75,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     if (!q) return;
     if (q.required && isEmpty(current[q.id])) {
       setNotice(ui.required);
+      setMood("sad");
       setBump((b) => b + 1);
       return;
     }
@@ -89,6 +95,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       }
       if (cur.length >= max) {
         setNotice(ui.maxReached(max));
+        setMood("wow");
         setBump((b) => b + 1);
         return;
       }
@@ -98,7 +105,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     }
     const next = { ...answers, [q.id]: option };
     setAnswers(next);
-    react(copy.reactions?.[option]);
+    react(copy.reactions?.[option], q.type === "scale_1_5" ? SCALE_MOODS[option] : undefined);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => goNext(next), copy.reactions?.[option] ? AUTO_ADVANCE_MS + 500 : AUTO_ADVANCE_MS);
   }, [answers, copy, goNext, q, react]);
@@ -123,45 +130,33 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     return () => window.removeEventListener("keydown", onKey);
   }, [choose, goNext, q]);
 
-  const fraction = step >= n ? 1 : answeredCount / n;
-
   return (
-    <main className={`mx-auto flex min-h-dvh w-full max-w-md flex-col pb-8 ${step === -1 ? "" : "px-4 pt-4"}`}>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-8 pt-4">
       <input ref={honeypot} name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
 
       {step >= 0 && (
         <header className="flex items-center gap-3">
-          <div key={bump} className={bump ? "anim-wobble" : ""}>
-            <HourglassProgress fraction={fraction} />
+          <Wordmark size={24} />
+          <div className="min-w-0 flex-1" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
+            <BrownieTray total={n} answered={questions.map((x) => !isEmpty(answers[x.id]))} current={step < n ? step : -1} />
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="tabular font-head text-sm font-semibold uppercase tracking-widest text-accent">
-              {step < n ? ui.progress(step + 1, n) : doneCopy.title}
-            </p>
-            <div className="mt-1.5" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
-              <BrownieTray total={n} answered={questions.map((x) => !isEmpty(answers[x.id]))} current={step < n ? step : -1} />
-            </div>
-          </div>
+          <p className="tabular shrink-0 text-xs font-semibold text-muted">{step < n ? `${step + 1}/${n}` : `${n}/${n}`}</p>
         </header>
       )}
 
-      {step === -1 && (
-        <Intro count={n} welcomeBack={Boolean(initial)} onStart={() => setStep(0)} />
-      )}
+      {step === -1 && <Intro count={n} welcomeBack={Boolean(initial)} onStart={() => setStep(0)} />}
 
       {q && copy && (
         <section key={q.id} className="anim-pop mt-5 flex flex-1 flex-col" aria-labelledby={`h-${q.id}`}>
-          <HostBubble text={hostLine ?? copy.host} />
-          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-4 font-head text-[26px] leading-[1.1] font-semibold uppercase tracking-tight text-frost outline-none">
+          <Host text={hostLine ?? copy.host} mood={mood} bump={bump} />
+          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-5 text-[25px] leading-tight font-semibold text-frost outline-none">
             {q.question}
           </h1>
           {q.hint && <p className="mt-1 text-sm text-muted">{q.hint}{q.required || /optional/i.test(q.hint) ? "" : " · optional"}</p>}
 
           <div className="mt-4 flex-1">
-            {(q.type === "single" || q.type === "multi") && (
-              <ChoiceList q={q} value={answers[q.id]} emoji={copy.emoji} onPick={choose} />
-            )}
-            {q.type === "scale_1_5" && <Scale q={q} value={answers[q.id] as string | undefined} emoji={copy.emoji} onPick={choose} />}
+            {(q.type === "single" || q.type === "multi") && <ChoiceList q={q} value={answers[q.id]} onPick={choose} />}
+            {q.type === "scale_1_5" && <Scale q={q} value={answers[q.id] as string | undefined} onPick={choose} />}
             {q.type === "free_text" && (
               <FreeText q={q} value={(answers[q.id] as string | undefined) ?? ""} onChange={(v) => setAnswers({ ...answers, [q.id]: v })} />
             )}
@@ -183,7 +178,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
               type="button"
               onClick={() => goNext()}
               disabled={pending}
-              className="h-12 min-w-28 rounded-full bg-accent px-6 font-head text-lg font-semibold uppercase tracking-wide text-accent-fg shadow-[0_4px_0_#7f4a2b] transition active:translate-y-0.5 active:shadow-[0_1px_0_#7f4a2b] disabled:opacity-60"
+              className="h-12 min-w-28 rounded-full bg-accent px-6 font-semibold text-accent-fg shadow-[0_4px_0_#7f4a2b] transition active:translate-y-0.5 active:shadow-[0_1px_0_#7f4a2b] disabled:opacity-60"
             >
               {step === n - 1 ? (pending ? ui.submitting : ui.submit) : `${ui.next} →`}
             </button>
@@ -206,82 +201,73 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
 function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: boolean; onStart: () => void }) {
   return (
     <section className="anim-pop flex flex-1 flex-col">
-      <div className="relative aspect-[2/3] max-h-[78dvh] w-full overflow-hidden">
-        <PosterArt />
-        <p className="absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-bg/90 px-3 py-1 font-head text-[11px] font-semibold uppercase tracking-[0.25em] text-accent">{intro.kicker(count)}</p>
-        <h1 className="absolute inset-x-0 bottom-[7%] flex flex-col items-center font-display uppercase leading-[0.86]">
-          <span className="flex items-end gap-2">
-            <span className="text-[34px] text-[#c98a5e]">{intro.poster.small.split(" ").slice(0, 2).join(" ")}</span>
-            <span className="text-[52px] text-accent">{intro.poster.small.split(" ").slice(2).join(" ")}</span>
-          </span>
-          <span className="text-[76px] tracking-tight text-accent">{intro.poster.big}</span>
-          <span className="mt-1 text-[24px] tracking-wide text-frost">{intro.poster.tail}</span>
-        </h1>
-      </div>
-      <div className="px-4">
-        <div className="mt-5 grid grid-cols-2 gap-4 text-[13px] leading-snug">
-          <p className="font-semibold text-accent">{intro.ask}</p>
-          <p className="text-frost/90">{intro.spec}</p>
+      <p className="mx-auto mt-2 rounded-full border border-milk/70 px-3 py-1 text-xs font-semibold tracking-wide text-accent">{intro.kicker(count)}</p>
+      <div className="mt-6 text-center"><Wordmark size={64} /></div>
+      <div className="relative mx-auto mt-2 aspect-[36/26] w-full">
+        <Doodles className="absolute inset-0 h-full w-full" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <MugMascot mood="happy" size={170} steam className="anim-bob" />
         </div>
-        {welcomeBack && <p className="mt-4 rounded-[14px] border border-milk bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
-        <button
-          type="button"
-          onClick={onStart}
-          className="mt-6 h-14 w-full rounded-full bg-accent font-display text-2xl uppercase tracking-wider text-accent-fg shadow-[0_6px_0_#7f4a2b] transition active:translate-y-1 active:shadow-[0_2px_0_#7f4a2b]"
-        >
-          {intro.cta} →
-        </button>
-        <p className="mt-4 text-[11px] leading-relaxed text-muted">{intro.purpose}</p>
       </div>
+      <h1 className="mt-2 text-center font-brand text-[34px] leading-none text-accent">{intro.headline}</h1>
+      <p className="mt-2 text-center text-muted">{intro.sub}</p>
+      <p className="mt-5 rounded-[14px] border border-line bg-panel p-3 text-sm leading-snug text-frost/90">{intro.spec}</p>
+      {welcomeBack && <p className="mt-3 rounded-[14px] border border-milk bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
+      <div className="flex-1" />
+      <button
+        type="button"
+        onClick={onStart}
+        className="mt-6 h-14 w-full rounded-full bg-accent text-lg font-semibold text-accent-fg shadow-[0_6px_0_#7f4a2b] transition active:translate-y-1 active:shadow-[0_2px_0_#7f4a2b]"
+      >
+        {intro.cta} →
+      </button>
+      <p className="mt-4 text-[11px] leading-relaxed text-muted">{intro.purpose}</p>
     </section>
   );
 }
 
-function HostBubble({ text }: { text: string }) {
+function Host({ text, mood, bump }: { text: string; mood: Mood; bump: number }) {
   return (
-    <div className="flex items-start gap-2" aria-live="polite">
-      <span aria-hidden className="mt-1 text-2xl">☕</span>
-      <p key={text} className="anim-pop relative rounded-[14px] rounded-tl-sm border border-milk/60 bg-panel px-4 py-3 text-[15px] leading-snug text-frost">
+    <div className="flex items-end gap-2" aria-live="polite">
+      <span key={bump} className={`shrink-0 ${bump ? "anim-wobble" : ""}`}>
+        <MugMascot mood={mood} size={58} />
+      </span>
+      <p key={text} className="anim-pop relative mb-2 rounded-[16px] rounded-bl-sm border border-milk/60 bg-panel px-4 py-2.5 text-[15px] leading-snug text-frost">
         {text}
       </p>
     </div>
   );
 }
 
-function ChoiceList({ q, value, emoji, onPick }: { q: SurveyQuestion; value: string | string[] | undefined; emoji: Record<string, string>; onPick: (o: string) => void }) {
+function ChoiceList({ q, value, onPick }: { q: SurveyQuestion; value: string | string[] | undefined; onPick: (o: string) => void }) {
   const multi = q.type === "multi";
   const selected = new Set(Array.isArray(value) ? value : value ? [value] : []);
   const full = multi && q.maxSelect != null && selected.size >= q.maxSelect;
-  const grid = q.options.length > 6;
   return (
     <fieldset>
       <legend className="sr-only">{q.question}</legend>
-      <div className={grid ? "grid grid-cols-2 gap-2" : "flex flex-col gap-2"}>
+      <div className="flex flex-col gap-2">
         {q.options.map((o, i) => {
           const on = selected.has(o);
           return (
             <label
               key={o}
               className={[
-                "group relative flex min-h-14 cursor-pointer items-center gap-3 rounded-[14px] border-2 px-4 py-3 transition duration-150 ease-out active:scale-[0.98]",
+                "relative flex min-h-14 cursor-pointer items-center gap-3 overflow-hidden rounded-[14px] border-2 px-4 py-3 transition duration-150 ease-out active:scale-[0.98]",
                 on ? "border-accent bg-accent-soft pt-5" : "border-line bg-panel hover:border-milk",
                 full && !on ? "opacity-50" : "",
-                grid ? "flex-col justify-center text-center" : "",
               ].join(" ")}
             >
-              <input
-                type={multi ? "checkbox" : "radio"}
-                name={q.id}
-                value={o}
-                checked={on}
-                onChange={() => onPick(o)}
-                className="peer sr-only"
-              />
-              {on && <Drip className="rounded-t-[12px]" />}
-              <span aria-hidden className={`text-2xl transition-transform duration-150 ${on ? "scale-125" : ""}`}>{emoji[o] ?? "•"}</span>
-              <span className={`text-[15px] font-medium leading-tight ${grid ? "" : "flex-1"}`}>{o}</span>
-              {!grid && <kbd className="hidden text-xs text-muted sm:inline">{i + 1}</kbd>}
-              {on && <span aria-hidden className="absolute right-2 bottom-1.5 text-xs text-accent">✓</span>}
+              <input type={multi ? "checkbox" : "radio"} name={q.id} value={o} checked={on} onChange={() => onPick(o)} className="peer sr-only" />
+              {on && <Drip />}
+              <span
+                aria-hidden
+                className={`grid size-6 shrink-0 place-items-center border-2 text-xs font-bold transition ${multi ? "rounded-md" : "rounded-full"} ${on ? "border-accent bg-accent text-accent-fg" : "border-milk"}`}
+              >
+                {on ? "✓" : ""}
+              </span>
+              <span className="flex-1 text-[15px] font-medium leading-tight">{o}</span>
+              <kbd className="hidden text-xs text-muted sm:inline">{i + 1}</kbd>
               <span className="pointer-events-none absolute inset-0 rounded-[14px] peer-focus-visible:outline-3 peer-focus-visible:outline-kesar" />
             </label>
           );
@@ -291,12 +277,12 @@ function ChoiceList({ q, value, emoji, onPick }: { q: SurveyQuestion; value: str
   );
 }
 
-function Scale({ q, value, emoji, onPick }: { q: SurveyQuestion; value: string | undefined; emoji: Record<string, string>; onPick: (o: string) => void }) {
+function Scale({ q, value, onPick }: { q: SurveyQuestion; value: string | undefined; onPick: (o: string) => void }) {
   return (
     <fieldset>
       <legend className="sr-only">{q.question}</legend>
       <div className="grid grid-cols-5 gap-2">
-        {["1", "2", "3", "4", "5"].map((o) => {
+        {SCALE.map((o) => {
           const on = value === o;
           return (
             <label
@@ -305,7 +291,7 @@ function Scale({ q, value, emoji, onPick }: { q: SurveyQuestion; value: string |
             >
               <input type="radio" name={q.id} value={o} checked={on} onChange={() => onPick(o)} className="peer sr-only" />
               {on && <Drip />}
-              <span aria-hidden className={`text-3xl transition-transform duration-150 ${on ? "scale-125" : "grayscale-[40%]"}`}>{emoji[o]}</span>
+              <MugMascot mood={SCALE_MOODS[o]} size={44} className={on ? "" : "opacity-70"} />
               <span className="tabular text-sm font-semibold">{o}</span>
               <span className="text-center text-[11px] leading-tight text-muted">{scaleLabels[o]}</span>
               <span className="pointer-events-none absolute inset-0 rounded-[14px] peer-focus-visible:outline-3 peer-focus-visible:outline-kesar" />
@@ -343,24 +329,27 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
   const shareText = doneCopy.shareText(personality.title, shareUrl);
   return (
     <section className="anim-pop mt-6 flex flex-1 flex-col">
-      <Sprinkles />
-      <div className="relative mt-2 overflow-hidden rounded-[20px] border-4 border-milk bg-panel px-6 pb-6 pt-8 text-center">
-        <Drip className="h-4" />
-        <p className="font-head text-sm font-semibold uppercase tracking-widest text-accent">{doneCopy.personalityLead}</p>
-        <p aria-hidden className="mt-3 text-6xl">{personality.emoji}</p>
-        <h1 className="mt-3 font-display text-[44px] uppercase leading-[0.9] text-frost">{personality.title}</h1>
+      <div className="relative overflow-hidden rounded-[20px] border-2 border-milk bg-panel px-5 pb-5 pt-6">
+        <Drip className="h-3" />
+        <div className="flex items-center gap-4">
+          <MugMascot mood={personality.mood} size={72} />
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">{doneCopy.personalityLead}</p>
+            <h1 className="mt-1 text-2xl leading-tight font-semibold text-frost">{personality.title}</h1>
+          </div>
+        </div>
         <p className="mt-3 text-muted">{personality.line}</p>
       </div>
 
-      <p className="mt-6 text-center text-sm">{doneCopy.shareLead}</p>
-      <div className="mt-3 grid grid-cols-2 gap-2">
+      <p className="mt-6 text-sm text-muted">{doneCopy.shareLead}</p>
+      <div className="mt-2 grid grid-cols-2 gap-2">
         <a
           href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 items-center justify-center rounded-full bg-[#25D366] font-semibold text-[#0b2e17]"
+          className="flex h-12 items-center justify-center rounded-full border-2 border-milk bg-panel font-semibold"
         >
-          WhatsApp
+          Share on WhatsApp
         </a>
         <button
           type="button"
@@ -412,7 +401,7 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
       }}
       noValidate
     >
-      <h2 className="font-head text-xl font-semibold uppercase text-accent">{doneCopy.waitlistTitle}</h2>
+      <h2 className="text-lg font-semibold text-frost">{doneCopy.waitlistTitle}</h2>
       <p className="mt-1 text-sm text-muted">{doneCopy.waitlistBody}</p>
       <input ref={trap} name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
       <label className="mt-3 block text-sm font-medium" htmlFor="wl-email">Email</label>
@@ -435,26 +424,9 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
         </label>
       )}
       {errors._ && <p className="mt-2 text-sm text-bad">{errors._}</p>}
-      <button type="submit" disabled={pending} className="mt-4 h-12 w-full rounded-full bg-accent font-head text-lg font-semibold uppercase tracking-wide text-accent-fg disabled:opacity-60">
+      <button type="submit" disabled={pending} className="mt-4 h-12 w-full rounded-full bg-accent font-semibold text-accent-fg disabled:opacity-60">
         {doneCopy.join}
       </button>
     </form>
   );
-}
-
-function Sprinkles() {
-  const [bits, setBits] = useState<{ left: number; delay: number; dur: number; char: string; size: number }[]>([]);
-  useEffect(() => {
-    const chars = ["🍫", "✨", "🧁", "💛", "🥄", "☕"];
-    setBits(Array.from({ length: 34 }, () => ({
-      left: Math.random() * 100, delay: Math.random() * 0.6, dur: 2.2 + Math.random() * 1.8,
-      char: chars[Math.floor(Math.random() * chars.length)], size: 14 + Math.random() * 14,
-    })));
-  }, []);
-  const nodes = useMemo(() => bits.map((b, i) => (
-    <span key={i} aria-hidden className="sprinkle" style={{ left: `${b.left}vw`, animationDelay: `${b.delay}s`, animationDuration: `${b.dur}s`, fontSize: b.size }}>
-      {b.char}
-    </span>
-  )), [bits]);
-  return <>{nodes}</>;
 }
