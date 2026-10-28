@@ -206,9 +206,11 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
         </div>
         <Starburst lines={intro.badges[0]} rotate={-10} className="absolute -left-1 bottom-0 w-[92px]" />
         <Starburst lines={intro.badges[1]} rotate={8} className="absolute -right-1 top-1 w-[92px]" />
+        <Starburst lines={intro.badges[2]} rotate={-6} className="absolute -right-2 bottom-0 w-[86px]" />
       </div>
       <h1 className="mt-3 text-center font-brand text-[34px] leading-none text-fg">{intro.headline}</h1>
       <p className="mt-2 text-center font-medium text-muted">{intro.sub}</p>
+      <Steps />
       <p className="mt-5 rounded-[14px] border-2 border-line bg-panel p-3 text-sm leading-snug text-fg shadow-[3px_3px_0_var(--line)]">{intro.spec}</p>
       {welcomeBack && <p className="mt-3 rounded-[14px] border-2 border-line bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
       <div className="flex-1" />
@@ -220,6 +222,22 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
         {intro.cta} →
       </button>
       <p className="mt-4 text-[11px] leading-relaxed text-muted">{intro.purpose}</p>
+    </section>
+  );
+}
+
+function Steps() {
+  return (
+    <section aria-label={intro.stepsTitle} className="mt-5">
+      <h2 className="text-center text-xs font-extrabold uppercase tracking-[0.3em] text-fg">{intro.stepsTitle}</h2>
+      <ol className="mt-2 grid grid-cols-3 gap-2">
+        {intro.steps.map((s, i) => (
+          <li key={s} className="flex flex-col items-center gap-1.5 rounded-[14px] border-2 border-line bg-panel px-2 py-3 text-center shadow-[3px_3px_0_var(--line)]">
+            <span className="grid size-7 place-items-center rounded-full bg-accent text-sm font-bold text-accent-fg">{i + 1}</span>
+            <span className="text-[12.5px] font-semibold leading-tight text-fg">{s}</span>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

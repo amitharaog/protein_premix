@@ -5,10 +5,12 @@
 export const intro = {
   kicker: (n: number) => `${n} quick questions · no login`,
   tagline: "Mug cake quiz",
-  badges: [["Protein-", "based"], ["Gluten-free", "ingredients"]] as [string[], string[]],
+  badges: [["Protein-", "based"], ["Gluten-free", "ingredients"], ["Ready in", "minutes"]] as [string[], string[], string[]],
+  stepsTitle: "3-step premix",
+  steps: ["Tip the mix into a mug", "Add milk or water, stir", "Bake. Ready in minutes"],
   headline: "Give us your cravings",
-  sub: "It takes about a minute.",
-  spec: "We're making muggoozz: a protein-based mug cake mix you bake at home, made with gluten-free ingredients.",
+  sub: "The quiz takes about a minute.",
+  spec: "We're making muggoozz: a protein-based mug cake premix you bake at home in 3 steps, ready in minutes. Made with gluten-free ingredients.",
   host: "Hi, I'm a mug cake. I ask people about dessert. It's my whole personality.",
   cta: "Let's go",
   purpose:
