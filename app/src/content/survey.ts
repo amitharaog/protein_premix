@@ -182,14 +182,14 @@ export const done = {
   edit: "Change my answers",
 };
 
-export type Personality = { id: string; title: string; line: string; mood: "happy" | "wow" | "love" | "meh" | "wink" | "neutral" };
+export type Personality = { id: string; title: string; line: string };
 
 export const personalities: Record<string, Personality> = {
-  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you.", mood: "meh" },
-  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug.", mood: "wow" },
-  texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room.", mood: "wink" },
-  midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment.", mood: "love" },
-  macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front.", mood: "happy" },
-  lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid.", mood: "neutral" },
-  curious: { id: "curious", title: "The Curious Crumb", line: "Open mind, open spoon.", mood: "happy" },
+  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you." },
+  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug." },
+  texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room." },
+  midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment." },
+  macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front." },
+  lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid." },
+  curious: { id: "curious", title: "The Curious Crumb", line: "Open mind, open spoon." },
 };

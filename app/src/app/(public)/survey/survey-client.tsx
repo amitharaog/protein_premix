@@ -4,13 +4,12 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { done as doneCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui, type Personality } from "@/content/survey";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { joinWaitlist, submitSurvey } from "./actions";
-import { BrownieTray, Doodles, Drip, MugMascot, Starburst, TopDrip, Wordmark, type Mood } from "./art";
+import { BrownieTray, Doodles, Drip, MugCake, MugLevel, Starburst, TopDrip, Wordmark } from "./art";
 
 type Props = { questions: SurveyQuestion[]; initial: Answers | null; startToken: string; siteUrl: string };
 
 const AUTO_ADVANCE_MS = 750;
 const SCALE: string[] = ["1", "2", "3", "4", "5"];
-const SCALE_MOODS: Record<string, Mood> = { "1": "sad", "2": "meh", "3": "wow", "4": "happy", "5": "love" };
 const isEmpty = (v: unknown) => v == null || v === "" || (Array.isArray(v) && v.length === 0);
 
 export function SurveyClient({ questions, initial, startToken, siteUrl }: Props) {
@@ -18,7 +17,6 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   const [answers, setAnswers] = useState<Answers>(initial ?? {});
   const [hostLine, setHostLine] = useState<string | null>(null);
   const [bump, setBump] = useState(0); // re-triggers the mascot wobble
-  const [mood, setMood] = useState<Mood>("neutral");
   const [notice, setNotice] = useState<string | null>(null);
   const [result, setResult] = useState<{ personality: Personality; shareRef: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -40,14 +38,12 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   useEffect(() => {
     setHostLine(null);
     setNotice(null);
-    setMood("neutral");
     if (timer.current) clearTimeout(timer.current);
     headingRef.current?.focus();
   }, [step]);
 
-  const react = useCallback((line: string | undefined, m: Mood = line ? "happy" : "neutral") => {
+  const react = useCallback((line: string | undefined) => {
     if (line) setHostLine(line);
-    setMood(m);
     setBump((b) => b + 1);
   }, []);
 
@@ -75,7 +71,6 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     if (!q) return;
     if (q.required && isEmpty(current[q.id])) {
       setNotice(ui.required);
-      setMood("sad");
       setBump((b) => b + 1);
       return;
     }
@@ -95,7 +90,6 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       }
       if (cur.length >= max) {
         setNotice(ui.maxReached(max));
-        setMood("wow");
         setBump((b) => b + 1);
         return;
       }
@@ -105,7 +99,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     }
     const next = { ...answers, [q.id]: option };
     setAnswers(next);
-    react(copy.reactions?.[option], q.type === "scale_1_5" ? SCALE_MOODS[option] : undefined);
+    react(copy.reactions?.[option]);
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => goNext(next), copy.reactions?.[option] ? AUTO_ADVANCE_MS + 500 : AUTO_ADVANCE_MS);
   }, [answers, copy, goNext, q, react]);
@@ -148,7 +142,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
 
       {q && copy && (
         <section key={q.id} className="anim-pop mt-5 flex flex-1 flex-col" aria-labelledby={`h-${q.id}`}>
-          <Host text={hostLine ?? copy.host} mood={mood} bump={bump} />
+          <Host text={hostLine ?? copy.host} bump={bump} />
           <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-5 text-[25px] leading-tight font-semibold text-fg outline-none">
             {q.question}
           </h1>
@@ -208,7 +202,7 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
       <div className="relative mx-auto mt-1 aspect-[36/26] w-full">
         <Doodles className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <MugMascot mood="happy" size={170} steam className="anim-bob" />
+          <MugCake size={176} steam className="anim-bob" />
         </div>
         <Starburst lines={intro.badges[0]} rotate={-10} className="absolute -left-1 bottom-0 w-[92px]" />
         <Starburst lines={intro.badges[1]} rotate={8} className="absolute -right-1 top-1 w-[92px]" />
@@ -230,11 +224,11 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
   );
 }
 
-function Host({ text, mood, bump }: { text: string; mood: Mood; bump: number }) {
+function Host({ text, bump }: { text: string; bump: number }) {
   return (
     <div className="flex items-end gap-2" aria-live="polite">
       <span key={bump} className={`shrink-0 ${bump ? "anim-wobble" : ""}`}>
-        <MugMascot mood={mood} size={58} />
+        <MugCake size={58} />
       </span>
       <p key={text} className="anim-pop relative mb-2 rounded-[16px] rounded-bl-sm border-2 border-line bg-panel shadow-[3px_3px_0_var(--line)] px-4 py-2.5 text-[15px] leading-snug text-fg">
         {text}
@@ -295,7 +289,7 @@ function Scale({ q, value, onPick }: { q: SurveyQuestion; value: string | undefi
             >
               <input type="radio" name={q.id} value={o} checked={on} onChange={() => onPick(o)} className="peer sr-only" />
               {on && <Drip />}
-              <MugMascot mood={SCALE_MOODS[o]} size={44} className={on ? "" : "opacity-70"} />
+              <MugLevel level={Number(o)} size={44} />
               <span className="tabular text-sm font-semibold">{o}</span>
               <span className="text-center text-[11px] leading-tight text-muted">{scaleLabels[o]}</span>
               <span className="pointer-events-none absolute inset-0 rounded-[14px] peer-focus-visible:outline-3 peer-focus-visible:outline-kesar" />
@@ -336,7 +330,7 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
       <div className="relative overflow-hidden rounded-[20px] border-2 border-line bg-panel px-5 pb-5 pt-6 shadow-[4px_4px_0_var(--line)]">
         <Drip className="h-3" />
         <div className="flex items-center gap-4">
-          <MugMascot mood={personality.mood} size={72} />
+          <MugCake size={72} />
           <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-wider text-muted">{doneCopy.personalityLead}</p>
             <h1 className="mt-1 text-2xl leading-tight font-semibold text-fg">{personality.title}</h1>

@@ -1,87 +1,104 @@
-// Original illustrations for muggoozz: a mug-cake mascot whose face reacts, a chunky wordmark,
-// chocolate doodles, a brownie-tray progress bar and the "goo" drip used on selected answers.
-// Inspired by playful doodle packaging in general; deliberately not any other brand's colours or marks.
+// Original illustrations for muggoozz: a line-art molten mug cake, a chunky wordmark, chocolate doodles,
+// a brownie-tray progress bar and the "goo" drip used on selected answers. Style follows playful
+// doodle packaging; the name, lettering and drawings are our own.
 
-export type Mood = "neutral" | "happy" | "wow" | "love" | "meh" | "sad" | "wink";
+const INK = "#2a1a3f";       // line art: purple-black, sits well on lavender
+const CREAM = "#fff6ea";
+const MUG_SHADE = "#ece2f6";
+const CAKE = "#6b3418";
+const CAKE_DARK = "#43200e";
+const CAKE_HI = "#94532c";
+const CHIP = "#d9a066";
+const GOLD = "#e0b24f";
 
-const INK = "#1f0f07";
-const CREAM = "#f6ead9";
-const CAKE = "#5b2d14";
-const CAKE_TOP = "#7a3d1c";
-const CHIP = "#e8a15c";
+// Mug outline shared by the hero and the scale icons (viewBox 0 0 160 160).
+const MUG_BODY = "M28,66 H124 L119,134 Q117,146 104,146 H48 Q35,146 33,134 Z";
+const MUG_INSIDE = "M30,66 H122 L118,128 Q116,138 104,138 H48 Q36,138 34,128 Z";
 
-function Face({ mood }: { mood: Mood }) {
-  const eye = (cx: number) => {
-    switch (mood) {
-      case "happy":
-      case "love":
-        return <path d={`M${cx - 5},62 q5,-6 10,0`} fill="none" stroke={INK} strokeWidth="3.2" strokeLinecap="round" />;
-      case "wink":
-        return cx < 60 ? <path d={`M${cx - 5},61 h10`} stroke={INK} strokeWidth="3.2" strokeLinecap="round" /> : <circle cx={cx} cy="60" r="3.6" fill={INK} />;
-      case "wow":
-        return <><circle cx={cx} cy="60" r="5.5" fill={INK} /><circle cx={cx + 1.8} cy="58" r="1.6" fill={CREAM} /></>;
-      case "meh":
-        return <><circle cx={cx} cy="61" r="3.4" fill={INK} /><path d={`M${cx - 6},56 h12`} stroke={INK} strokeWidth="2.6" strokeLinecap="round" /></>;
-      case "sad":
-        return <><circle cx={cx} cy="61" r="3.4" fill={INK} /><path d={`M${cx - 5},${cx < 60 ? 54 : 56} l10,${cx < 60 ? 2 : -2}`} stroke={INK} strokeWidth="2.6" strokeLinecap="round" /></>;
-      default:
-        return <><circle cx={cx} cy="60" r="3.8" fill={INK} /><circle cx={cx + 1.3} cy="58.7" r="1.2" fill={CREAM} /></>;
-    }
-  };
-  const mouth = {
-    neutral: <path d="M53,71 q7,6 14,0" fill="none" stroke={INK} strokeWidth="3.2" strokeLinecap="round" />,
-    happy: <path d="M50,69 q10,13 20,0 z" fill={INK} />,
-    wow: <ellipse cx="60" cy="73" rx="5" ry="6" fill={INK} />,
-    love: <><path d="M50,69 q10,13 20,0 z" fill={INK} /><path d="M58,74 q4,8 8,0" fill="#e46f6f" /></>,
-    meh: <path d="M53,73 h14" stroke={INK} strokeWidth="3.2" strokeLinecap="round" />,
-    sad: <path d="M53,75 q7,-6 14,0" fill="none" stroke={INK} strokeWidth="3.2" strokeLinecap="round" />,
-    wink: <path d="M52,70 q8,9 16,0" fill="none" stroke={INK} strokeWidth="3.2" strokeLinecap="round" />,
-  }[mood];
+function Handle() {
   return (
-    <g>
-      {eye(48)}
-      {eye(72)}
-      {mouth}
-      {mood !== "sad" && mood !== "meh" && (
-        <>
-          <ellipse cx="40" cy="70" rx="5" ry="3" fill="#e9967a" opacity="0.45" />
-          <ellipse cx="80" cy="70" rx="5" ry="3" fill="#e9967a" opacity="0.45" />
-        </>
-      )}
-    </g>
+    <>
+      <path d="M121,80 h8 a18,18 0 0 1 0,36 h-11" fill="none" stroke={INK} strokeWidth="14" strokeLinecap="round" />
+      <path d="M121,80 h8 a18,18 0 0 1 0,36 h-11" fill="none" stroke={CREAM} strokeWidth="6" strokeLinecap="round" />
+    </>
   );
 }
 
-/** The host: a mug with a domed chocolate cake oozing over the rim. */
-export function MugMascot({ mood = "neutral", size = 56, steam = false, className = "" }: { mood?: Mood; size?: number; steam?: boolean; className?: string }) {
+function MugShell({ children }: { children?: React.ReactNode }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 120 120" className={className} role="img" aria-label={`Mug cake looking ${mood}`}>
+    <>
+      <Handle />
+      <path d={MUG_BODY} fill={CREAM} stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+      <path d="M104,72 L100,134 Q99,140 92,140 H104 Q114,140 115,132 L119,72 Z" fill={MUG_SHADE} />
+      {/* a simple hand-drawn band, so it reads as a real mug */}
+      <path d="M38,108 q9,-7 18,0 t18,0 t18,0 t18,0 t12,0" fill="none" stroke={INK} strokeWidth="3" strokeLinecap="round" opacity="0.85" />
+      {children}
+      <path d={MUG_BODY} fill="none" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+    </>
+  );
+}
+
+/** The hero: a molten chocolate mug cake with chunks, a spoon and curly steam. Original line art. */
+export function MugCake({ size = 160, steam = false, className = "" }: { size?: number; steam?: boolean; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 160 160" className={className} role="img" aria-label="A chocolate mug cake">
       {steam && (
-        <g stroke={CREAM} strokeWidth="3" strokeLinecap="round" fill="none" opacity="0.55">
-          <path className="anim-steam" d="M48,14 q-4,-5 0,-10" />
-          <path className="anim-steam" style={{ animationDelay: "1.1s" }} d="M66,14 q-4,-5 0,-10" />
+        <g fill="none" stroke={INK} strokeWidth="3.5" strokeLinecap="round">
+          <path className="anim-steam" d="M58,20 c-6,-6 6,-10 0,-16" />
+          <path className="anim-steam" style={{ animationDelay: "0.9s" }} d="M80,16 c-6,-6 6,-10 0,-16" />
+          <path className="anim-steam" style={{ animationDelay: "1.8s" }} d="M102,20 c-6,-6 6,-10 0,-16" />
         </g>
       )}
-      {/* cake dome */}
-      <path d="M22,40 C22,18 98,18 98,40 Z" fill={CAKE_TOP} stroke={INK} strokeWidth="3.5" strokeLinejoin="round" />
-      <path d="M38,27 l5,-3 l3,5 z M62,22 l5,-2 l2,5 z M76,30 l5,-1 l0,5 z" fill={CHIP} stroke={INK} strokeWidth="1.5" strokeLinejoin="round" />
-      {/* handle */}
-      <path d="M99,52 h6 a12,12 0 0 1 0,26 h-8" fill="none" stroke={INK} strokeWidth="11" strokeLinecap="round" />
-      <path d="M99,52 h6 a12,12 0 0 1 0,26 h-8" fill="none" stroke={CREAM} strokeWidth="4.5" strokeLinecap="round" />
-      {/* mug body */}
-      <path d="M20,40 H100 L95,100 Q94,108 86,108 H34 Q26,108 25,100 Z" fill={CREAM} stroke={INK} strokeWidth="4" strokeLinejoin="round" />
-      {/* the goo: chocolate oozing over the rim */}
-      <path d="M20,38 H100 V44 C96,44 96,54 92,54 C88,54 88,44 82,44 C76,44 77,49 73,49 C69,49 70,44 58,44 C52,44 53,57 48,57 C43,57 44,44 36,44 C31,44 31,50 27,50 C23,50 23,44 20,44 Z" fill={CAKE} stroke={INK} strokeWidth="3" strokeLinejoin="round" />
-      <Face mood={mood} />
+      {/* spoon, behind the cake */}
+      <path d="M104,52 L138,14" stroke={INK} strokeWidth="11" strokeLinecap="round" />
+      <path d="M104,52 L138,14" stroke={GOLD} strokeWidth="5" strokeLinecap="round" />
+      <MugShell>
+        {/* lava pouring down the front */}
+        <path d="M34,66 H118 V74 C114,74 114,96 108,96 C102,96 103,74 96,74 C90,74 90,84 85,84 C80,84 81,74 70,74 C64,74 65,104 58,104 C51,104 53,74 46,74 C41,74 41,86 37,86 C33,86 33,74 30,74 Z" fill={CAKE_DARK} />
+        <path d="M58,80 v16 M108,80 v8" stroke={CAKE_HI} strokeWidth="2.5" strokeLinecap="round" />
+      </MugShell>
+      {/* domed cake rising out of the mug */}
+      <path d="M26,68 C24,40 54,28 80,28 C106,28 136,40 134,68 Z" fill={CAKE} stroke={INK} strokeWidth="5" strokeLinejoin="round" />
+      <path d="M44,46 C56,36 72,34 86,35" fill="none" stroke={CAKE_HI} strokeWidth="4" strokeLinecap="round" />
+      {/* crumb texture */}
+      <g fill={CAKE_DARK}>
+        <circle cx="52" cy="58" r="2" /><circle cx="66" cy="52" r="1.6" /><circle cx="98" cy="56" r="2" /><circle cx="114" cy="60" r="1.6" /><circle cx="80" cy="60" r="1.8" />
+      </g>
+      {/* chunks and chips */}
+      <g stroke={INK} strokeWidth="3" strokeLinejoin="round">
+        <path d="M60,30 l14,-6 l6,12 l-14,6 z" fill={CAKE_DARK} />
+        <path d="M60,30 l14,-6 l2,4 l-14,6 z" fill={CAKE_HI} />
+        <path d="M96,36 l12,2 l-2,12 l-12,-2 z" fill={CAKE_DARK} />
+        <path d="M40,52 c3,-6 9,-6 10,0 c-3,4 -7,4 -10,0 z" fill={CHIP} />
+        <path d="M84,44 c3,-6 9,-6 10,0 c-3,4 -7,4 -10,0 z" fill={CHIP} />
+        <path d="M112,50 c3,-6 9,-6 10,0 c-3,4 -7,4 -10,0 z" fill={CHIP} />
+      </g>
+    </svg>
+  );
+}
+
+/** Scale icon: the more likely, the fuller the mug (1 = crumbs, 5 = overflowing). */
+export function MugLevel({ level, size = 44, className = "" }: { level: number; size?: number; className?: string }) {
+  const top = [0, 128, 112, 92, 72, 66][level] ?? 128;
+  return (
+    <svg width={size} height={size} viewBox="0 0 160 160" className={className} aria-hidden>
+      <MugShell>
+        <clipPath id={`lvl-${level}`}><path d={MUG_INSIDE} /></clipPath>
+        <rect x="28" y={top} width="96" height={150 - top} fill={CAKE} clipPath={`url(#lvl-${level})`} />
+        {level === 1 && <g fill={CAKE}><circle cx="62" cy="130" r="4" /><circle cx="80" cy="133" r="3" /><circle cx="96" cy="129" r="4" /></g>}
+      </MugShell>
+      {level >= 4 && <path d={`M26,68 C24,${level === 5 ? 34 : 52} 54,${level === 5 ? 24 : 44} 80,${level === 5 ? 24 : 44} C106,${level === 5 ? 24 : 44} 136,${level === 5 ? 34 : 52} 134,68 Z`} fill={CAKE} stroke={INK} strokeWidth="5" strokeLinejoin="round" />}
+      {level === 5 && <path d="M34,66 H118 V74 C114,74 114,96 108,96 C102,96 103,74 96,74 C90,74 90,84 85,84 C80,84 81,74 70,74 C64,74 65,104 58,104 C51,104 53,74 46,74 C41,74 41,86 37,86 C33,86 33,74 30,74 Z" fill={CAKE_DARK} stroke={INK} strokeWidth="3" strokeLinejoin="round" />}
     </svg>
   );
 }
 
 /** Retro sticker wordmark: cream letters, chocolate outline, chunky 3D drop. Drawn as SVG text so the outline renders everywhere. */
 export function Wordmark({ height = 56, className = "" }: { height?: number; className?: string }) {
-  const text = { x: 200, y: 82, textAnchor: "middle" as const, fontSize: 92, style: { fontFamily: "var(--font-modak)" } };
+  // textLength pins the word to a known width, so the outline and 3D drop always fit inside the canvas.
+  const text = { x: 220, y: 92, textAnchor: "middle" as const, fontSize: 92, textLength: 392, lengthAdjust: "spacingAndGlyphs" as const, style: { fontFamily: "var(--font-modak)" } };
   return (
-    <svg viewBox="0 0 400 112" height={height} className={className} role="img" aria-label="muggoozz">
+    <svg viewBox="0 0 440 128" height={height} className={className} role="img" aria-label="muggoozz">
       <text {...text} dx="3" dy="7" fill="#2b140a" stroke="#2b140a" strokeWidth="10" strokeLinejoin="round">muggoozz</text>
       <text {...text} fill="#fff6ea" stroke="#3b1d0e" strokeWidth="9" strokeLinejoin="round" paintOrder="stroke">muggoozz</text>
     </svg>
@@ -122,7 +139,7 @@ export function Doodles({ className = "" }: { className?: string }) {
   const chunk = (x: number, y: number, r: number, s = 1) => (
     <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
       <rect x="-14" y="-11" width="28" height="22" rx="4" fill={CAKE} stroke={INK} strokeWidth="2.5" />
-      <path d="M-9,-6 h18" stroke={CAKE_TOP} strokeWidth="3" strokeLinecap="round" />
+      <path d="M-9,-6 h18" stroke={CAKE_HI} strokeWidth="3" strokeLinecap="round" />
     </g>
   );
   const chip = (x: number, y: number, r: number) => (
