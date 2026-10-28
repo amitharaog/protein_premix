@@ -8,7 +8,8 @@ One Next.js codebase with two faces that share one Neon Postgres database:
 
 1. **Public launch site** (`/`, `/survey`, `/waitlist`, `/flavours`, later `/shop`) for a single-serve,
    eggless, gluten-free, bake-it-yourself protein mug cake premix sachet for India
-   (~50 g, ~10 g protein; mix with milk or water; microwave ~1 min, air fryer ~10 min, OTG or pressure cooker).
+   (target 25–32 g protein per sachet, set by the founder 28 Oct 2026; made with gluten-free ingredients;
+   mix with milk or water; microwave ~1 min, air fryer ~10 min, OTG or pressure cooker).
    US analog: BĀK Goods.
 2. **Private research app** (`/admin/*`, owner only): market dashboard, survey results, competitors,
    recipe/formulation lab, ingredient price tracker, purchase orders, weekly refresh log.
@@ -82,7 +83,7 @@ docs/                    # SPEC, REFRESH_JOBS, COMPLIANCE, DESIGN
    Only the admin can approve; only approved rows appear on dashboards.
 5. **No health or medical claims on the public site.** No "builds muscle", "boosts immunity", "for diabetics", etc.
    "High protein" / "Source of protein" copy is only allowed when `lib/fssai.ts` says the recipe qualifies
-   (see `docs/COMPLIANCE.md`) AND `products.lab_tested=true`. Until then use "~10 g protein (target, recipe in testing)".
+   (see `docs/COMPLIANCE.md`) AND `products.lab_tested=true`. Until then use "25–32 g protein (target, recipe in testing)".
 6. **Public survey must work without login.** (The current Claude survey needs a Claude login — that is the main
    reason it has 0 responses.) Use a cookie `respondent_id` + rate limit + honeypot, not accounts.
 7. **Personal data:** store waitlist emails/phones only with explicit consent checkbox; never send them to the AI

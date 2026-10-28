@@ -25,3 +25,5 @@ Shapes, briefly:
 - **Recipe doc**: `{slug, name, type: Global|Indian, order, total_g, protein_g, items:[{id, label, grams}]}`.
   - `protein_g` and `total_g` are estimates from the recipe agent, not lab values.
 - **Competitors**: `price` is free text (e.g. `"214 / 428 (new flavours 225/450)"`). Only parse it to a number when it's a single plain number.
+
+**Edited 28 Oct 2026 at the founder's request:** `survey_questions.json` Q5 now says 25–32 g protein and made with gluten-free ingredients (was about 10 g), and the old ₹100+ band is split into ₹100-150 and ₹150+. No responses existed, so nothing became incomparable.

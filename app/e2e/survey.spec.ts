@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("completes the survey on a phone, logged out, and joins the waitlist", async ({ page }) => {
   await page.goto("/survey?utm_source=e2e");
-  await page.getByRole("button", { name: /Interrogate me/ }).click();
+  await page.getByRole("button", { name: /^Start/ }).click();
 
   await page.getByText("Microwave", { exact: true }).click();
   await page.getByRole("button", { name: "Next →" }).click();

@@ -3,11 +3,12 @@
 // (see docs/COMPLIANCE.md; enforced by src/content/content.test.ts).
 
 export const intro = {
-  kicker: "a 2-minute survey, no login",
-  title: "The Great Dessert Interrogation",
+  kicker: "10 questions · no login",
+  poster: { small: "Give us your", big: "cravings", tail: "It only takes 2 minutes" },
+  ask: "Do your dessert cravings deserve to be heard?",
+  spec: "We're making a bake-at-home brownie and cake mix. Target: 25–32 g protein per sachet (recipe in testing), made with gluten-free ingredients.",
   host: "Hi, I'm a mug. I ask people about dessert. It's my whole personality.",
-  promise: "10 questions · about 2 minutes · zero login · one very nosy mug",
-  cta: "Interrogate me",
+  cta: "Start",
   purpose:
     "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: deciding which dessert to make. Nothing is sold or shared.",
 };
@@ -64,10 +65,11 @@ export const questionCopy: Record<string, QuestionCopy> = {
   },
   Q5: {
     host: "The money question. We'll act very casual about it.",
-    emoji: { "₹40-60": "🪙", "₹60-80": "💵", "₹80-100": "💸", "₹100+": "👑", "Wouldn't pay for this": "🙅" },
+    emoji: { "₹40-60": "🪙", "₹60-80": "💵", "₹80-100": "💸", "₹100-150": "👑", "₹150+": "💎", "Wouldn't pay for this": "🙅" },
     reactions: {
       "Wouldn't pay for this": "Ouch. But thank you, honesty keeps us humble.",
-      "₹100+": "Royalty has entered the chat.",
+      "₹100-150": "Royalty has entered the chat.",
+      "₹150+": "Big spender. The mug is blushing.",
     },
   },
   Q6: {

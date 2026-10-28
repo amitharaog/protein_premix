@@ -25,7 +25,9 @@ const plainPrice = (text: string | null | undefined) =>
 const stockFrom = (note: string | null | undefined) =>
   /out of stock|unavailable/i.test(note ?? "") ? ("out_of_stock" as const)
     : /dead link|404|page not found/i.test(note ?? "") ? ("dead" as const) : ("unknown" as const);
-const excluded = (cols: string[]) => Object.fromEntries(cols.map((c) => [c, sql.raw(`excluded."${c}"`)]));
+/** ON CONFLICT ... SET col = excluded.col. Keys must be the schema's camelCase property names, or Drizzle drops them. */
+const camel = (c: string) => c.replace(/_([a-z0-9])/g, (_, ch: string) => ch.toUpperCase());
+const excluded = (cols: string[]) => Object.fromEntries(cols.map((c) => [camel(c), sql.raw(`excluded."${c}"`)]));
 
 const counts: Record<string, number> = {};
 const tally = (t: string, n: number) => (counts[t] = (counts[t] ?? 0) + n);

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from
 import { done as doneCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui, type Personality } from "@/content/survey";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { joinWaitlist, submitSurvey } from "./actions";
-import { MugProgress } from "./mug-progress";
+import { BrownieTray, Drip, HourglassProgress, PosterArt } from "./art";
 
 type Props = { questions: SurveyQuestion[]; initial: Answers | null; startToken: string; siteUrl: string };
 
@@ -126,26 +126,24 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   const fraction = step >= n ? 1 : answeredCount / n;
 
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-8 pt-4">
+    <main className={`mx-auto flex min-h-dvh w-full max-w-md flex-col pb-8 ${step === -1 ? "" : "px-4 pt-4"}`}>
       <input ref={honeypot} name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
 
-      <header className="flex items-center gap-3">
-        <div key={bump} className={bump ? "anim-wobble" : ""}>
-          <MugProgress fraction={fraction} done={step >= n} />
-        </div>
-        <div className="min-w-0 flex-1">
-          {step >= 0 && step < n ? (
-            <>
-              <p className="tabular text-xs font-medium uppercase tracking-wide text-muted">{ui.progress(step + 1, n)}</p>
-              <div className="mt-1 h-2 overflow-hidden rounded-full bg-accent-soft" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
-                <div className="h-full rounded-full bg-accent transition-[width] duration-300 ease-out" style={{ width: `${fraction * 100}%` }} />
-              </div>
-            </>
-          ) : (
-            <p className="text-xs font-medium uppercase tracking-wide text-muted">{intro.kicker}</p>
-          )}
-        </div>
-      </header>
+      {step >= 0 && (
+        <header className="flex items-center gap-3">
+          <div key={bump} className={bump ? "anim-wobble" : ""}>
+            <HourglassProgress fraction={fraction} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="tabular font-head text-sm font-semibold uppercase tracking-widest text-accent">
+              {step < n ? ui.progress(step + 1, n) : doneCopy.title}
+            </p>
+            <div className="mt-1.5" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
+              <BrownieTray total={n} answered={questions.map((x) => !isEmpty(answers[x.id]))} current={step < n ? step : -1} />
+            </div>
+          </div>
+        </header>
+      )}
 
       {step === -1 && (
         <Intro welcomeBack={Boolean(initial)} onStart={() => setStep(0)} />
@@ -154,7 +152,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       {q && copy && (
         <section key={q.id} className="anim-pop mt-5 flex flex-1 flex-col" aria-labelledby={`h-${q.id}`}>
           <HostBubble text={hostLine ?? copy.host} />
-          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-4 font-display text-2xl leading-tight font-semibold outline-none">
+          <h1 id={`h-${q.id}`} ref={headingRef} tabIndex={-1} className="mt-4 font-head text-[26px] leading-[1.1] font-semibold uppercase tracking-tight text-frost outline-none">
             {q.question}
           </h1>
           {q.hint && <p className="mt-1 text-sm text-muted">{q.hint}{q.required || /optional/i.test(q.hint) ? "" : " · optional"}</p>}
@@ -185,7 +183,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
               type="button"
               onClick={() => goNext()}
               disabled={pending}
-              className="h-12 min-w-28 rounded-full bg-accent px-6 font-semibold text-accent-fg shadow-sm transition active:scale-95 disabled:opacity-60"
+              className="h-12 min-w-28 rounded-full bg-accent px-6 font-head text-lg font-semibold uppercase tracking-wide text-accent-fg shadow-[0_4px_0_#7f4a2b] transition active:translate-y-0.5 active:shadow-[0_1px_0_#7f4a2b] disabled:opacity-60"
             >
               {step === n - 1 ? (pending ? ui.submitting : ui.submit) : `${ui.next} →`}
             </button>
@@ -207,20 +205,34 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
 
 function Intro({ welcomeBack, onStart }: { welcomeBack: boolean; onStart: () => void }) {
   return (
-    <section className="anim-pop mt-8 flex flex-1 flex-col">
-      <HostBubble text={intro.host} />
-      <h1 className="mt-6 font-display text-4xl leading-[1.05] font-bold">{intro.title}</h1>
-      <p className="mt-3 text-muted">{intro.promise}</p>
-      {welcomeBack && <p className="mt-4 rounded-[14px] bg-accent-soft p-3 text-sm">{ui.welcomeBack}</p>}
-      <div className="flex-1" />
-      <button
-        type="button"
-        onClick={onStart}
-        className="mt-8 h-14 w-full rounded-full bg-accent text-lg font-semibold text-accent-fg shadow-md transition active:scale-[0.98]"
-      >
-        {intro.cta} 🥄
-      </button>
-      <p className="mt-4 text-xs leading-relaxed text-muted">{intro.purpose}</p>
+    <section className="anim-pop flex flex-1 flex-col">
+      <div className="relative aspect-[2/3] max-h-[78dvh] w-full overflow-hidden">
+        <PosterArt />
+        <p className="absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-bg/90 px-3 py-1 font-head text-[11px] font-semibold uppercase tracking-[0.25em] text-accent">{intro.kicker}</p>
+        <h1 className="absolute inset-x-0 bottom-[7%] flex flex-col items-center font-display uppercase leading-[0.86]">
+          <span className="flex items-end gap-2">
+            <span className="text-[34px] text-[#c98a5e]">{intro.poster.small.split(" ").slice(0, 2).join(" ")}</span>
+            <span className="text-[52px] text-accent">{intro.poster.small.split(" ").slice(2).join(" ")}</span>
+          </span>
+          <span className="text-[76px] tracking-tight text-accent">{intro.poster.big}</span>
+          <span className="mt-1 text-[24px] tracking-wide text-frost">{intro.poster.tail}</span>
+        </h1>
+      </div>
+      <div className="px-4">
+        <div className="mt-5 grid grid-cols-2 gap-4 text-[13px] leading-snug">
+          <p className="font-semibold text-accent">{intro.ask}</p>
+          <p className="text-frost/90">{intro.spec}</p>
+        </div>
+        {welcomeBack && <p className="mt-4 rounded-[14px] border border-milk bg-panel p-3 text-sm">{ui.welcomeBack}</p>}
+        <button
+          type="button"
+          onClick={onStart}
+          className="mt-6 h-14 w-full rounded-full bg-accent font-display text-2xl uppercase tracking-wider text-accent-fg shadow-[0_6px_0_#7f4a2b] transition active:translate-y-1 active:shadow-[0_2px_0_#7f4a2b]"
+        >
+          {intro.cta} →
+        </button>
+        <p className="mt-4 text-[11px] leading-relaxed text-muted">{intro.purpose}</p>
+      </div>
     </section>
   );
 }
@@ -229,7 +241,7 @@ function HostBubble({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-2" aria-live="polite">
       <span aria-hidden className="mt-1 text-2xl">☕</span>
-      <p key={text} className="anim-pop relative rounded-[14px] rounded-tl-sm border border-line bg-panel px-4 py-3 text-[15px] leading-snug shadow-sm">
+      <p key={text} className="anim-pop relative rounded-[14px] rounded-tl-sm border border-milk/60 bg-panel px-4 py-3 text-[15px] leading-snug text-frost">
         {text}
       </p>
     </div>
@@ -252,7 +264,7 @@ function ChoiceList({ q, value, emoji, onPick }: { q: SurveyQuestion; value: str
               key={o}
               className={[
                 "group relative flex min-h-14 cursor-pointer items-center gap-3 rounded-[14px] border-2 px-4 py-3 transition duration-150 ease-out active:scale-[0.98]",
-                on ? "border-accent bg-accent-soft" : "border-line bg-panel hover:border-accent/50",
+                on ? "border-accent bg-accent-soft pt-5" : "border-line bg-panel hover:border-milk",
                 full && !on ? "opacity-50" : "",
                 grid ? "flex-col justify-center text-center" : "",
               ].join(" ")}
@@ -265,10 +277,11 @@ function ChoiceList({ q, value, emoji, onPick }: { q: SurveyQuestion; value: str
                 onChange={() => onPick(o)}
                 className="peer sr-only"
               />
+              {on && <Drip className="rounded-t-[12px]" />}
               <span aria-hidden className={`text-2xl transition-transform duration-150 ${on ? "scale-125" : ""}`}>{emoji[o] ?? "•"}</span>
               <span className={`text-[15px] font-medium leading-tight ${grid ? "" : "flex-1"}`}>{o}</span>
               {!grid && <kbd className="hidden text-xs text-muted sm:inline">{i + 1}</kbd>}
-              {on && <span aria-hidden className="absolute right-2 top-2 text-xs">✓</span>}
+              {on && <span aria-hidden className="absolute right-2 bottom-1.5 text-xs text-accent">✓</span>}
               <span className="pointer-events-none absolute inset-0 rounded-[14px] peer-focus-visible:outline-3 peer-focus-visible:outline-kesar" />
             </label>
           );
@@ -288,9 +301,10 @@ function Scale({ q, value, emoji, onPick }: { q: SurveyQuestion; value: string |
           return (
             <label
               key={o}
-              className={`relative flex cursor-pointer flex-col items-center gap-1 rounded-[14px] border-2 py-3 transition duration-150 active:scale-95 ${on ? "border-accent bg-accent-soft" : "border-line bg-panel"}`}
+              className={`relative flex cursor-pointer flex-col items-center gap-1 overflow-hidden rounded-[14px] border-2 pb-3 pt-4 transition duration-150 active:scale-95 ${on ? "border-accent bg-accent-soft" : "border-line bg-panel"}`}
             >
               <input type="radio" name={q.id} value={o} checked={on} onChange={() => onPick(o)} className="peer sr-only" />
+              {on && <Drip />}
               <span aria-hidden className={`text-3xl transition-transform duration-150 ${on ? "scale-125" : "grayscale-[40%]"}`}>{emoji[o]}</span>
               <span className="tabular text-sm font-semibold">{o}</span>
               <span className="text-center text-[11px] leading-tight text-muted">{scaleLabels[o]}</span>
@@ -330,12 +344,12 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
   return (
     <section className="anim-pop mt-6 flex flex-1 flex-col">
       <Sprinkles />
-      <p className="text-center text-sm font-medium text-muted">{doneCopy.title}</p>
-      <div className="mt-3 rounded-[20px] border-2 border-accent bg-panel p-6 text-center shadow-md">
-        <p className="text-sm text-muted">{doneCopy.personalityLead}</p>
-        <p aria-hidden className="mt-2 text-6xl">{personality.emoji}</p>
-        <h1 className="mt-2 font-display text-3xl font-bold">{personality.title}</h1>
-        <p className="mt-2 text-muted">{personality.line}</p>
+      <div className="relative mt-2 overflow-hidden rounded-[20px] border-4 border-milk bg-panel px-6 pb-6 pt-8 text-center">
+        <Drip className="h-4" />
+        <p className="font-head text-sm font-semibold uppercase tracking-widest text-accent">{doneCopy.personalityLead}</p>
+        <p aria-hidden className="mt-3 text-6xl">{personality.emoji}</p>
+        <h1 className="mt-3 font-display text-[44px] uppercase leading-[0.9] text-frost">{personality.title}</h1>
+        <p className="mt-3 text-muted">{personality.line}</p>
       </div>
 
       <p className="mt-6 text-center text-sm">{doneCopy.shareLead}</p>
@@ -358,7 +372,7 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
               setCopied(false);
             }
           }}
-          className="h-12 rounded-full border-2 border-line bg-panel font-semibold"
+          className="h-12 rounded-full border-2 border-milk bg-panel font-semibold"
         >
           {copied ? doneCopy.copied : doneCopy.copy}
         </button>
@@ -387,7 +401,7 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
 
   return (
     <form
-      className="mt-8 rounded-[14px] border border-line bg-panel p-4"
+      className="relative mt-8 rounded-[14px] border-2 border-milk bg-panel p-4"
       onSubmit={(e) => {
         e.preventDefault();
         startTransition(async () => {
@@ -398,7 +412,7 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
       }}
       noValidate
     >
-      <h2 className="font-display text-xl font-semibold">{doneCopy.waitlistTitle}</h2>
+      <h2 className="font-head text-xl font-semibold uppercase text-accent">{doneCopy.waitlistTitle}</h2>
       <p className="mt-1 text-sm text-muted">{doneCopy.waitlistBody}</p>
       <input ref={trap} name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
       <label className="mt-3 block text-sm font-medium" htmlFor="wl-email">Email</label>
@@ -421,7 +435,7 @@ function WaitlistMini({ utm }: { utm: Record<string, string> }) {
         </label>
       )}
       {errors._ && <p className="mt-2 text-sm text-bad">{errors._}</p>}
-      <button type="submit" disabled={pending} className="mt-4 h-12 w-full rounded-full bg-accent font-semibold text-accent-fg disabled:opacity-60">
+      <button type="submit" disabled={pending} className="mt-4 h-12 w-full rounded-full bg-accent font-head text-lg font-semibold uppercase tracking-wide text-accent-fg disabled:opacity-60">
         {doneCopy.join}
       </button>
     </form>

@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Figtree, Fraunces } from "next/font/google";
+import { Anton, Figtree, Oswald } from "next/font/google";
 import { brand } from "@/config/brand";
 import "./globals.css";
 
-const fraunces = Fraunces({ subsets: ["latin"], weight: ["500", "700"], variable: "--font-fraunces" });
+const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton" });
+const oswald = Oswald({ subsets: ["latin"], weight: ["500", "600"], variable: "--font-oswald" });
 const figtree = Figtree({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-figtree" });
 
 export const metadata: Metadata = {
@@ -14,15 +15,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fbf6f1" },
-    { media: "(prefers-color-scheme: dark)", color: "#1a1310" },
-  ],
+  themeColor: "#140b07",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" className={`${fraunces.variable} ${figtree.variable}`}>
+    <html lang="en-IN" className={`${anton.variable} ${oswald.variable} ${figtree.variable}`}>
       <body className="min-h-dvh antialiased">{children}</body>
     </html>
   );
