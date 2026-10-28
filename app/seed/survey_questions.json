@@ -1,17 +1,16 @@
 [
  {
-  "id": "Q1",
-  "question": "Which of these do you have regular access to?",
+  "id": "Q3",
+  "question": "How often do you crave something sweet?",
   "options": [
-   "Microwave",
-   "Air fryer",
-   "OTG / oven",
-   "Pressure cooker",
-   "None of these"
+   "Daily",
+   "3-5 times a week",
+   "1-2 times a week",
+   "Rarely"
   ],
-  "type": "multi",
-  "hint": "Select all that apply",
-  "required": false
+  "type": "single",
+  "required": false,
+  "active": true
  },
  {
   "id": "Q2",
@@ -25,30 +24,40 @@
   ],
   "type": "multi",
   "hint": "Select all that apply",
-  "required": false
+  "required": false,
+  "active": true
  },
  {
-  "id": "Q3",
-  "question": "How often do you crave something sweet?",
+  "id": "Q1",
+  "question": "Which of these do you have regular access to?",
   "options": [
-   "Daily",
-   "3-5 times a week",
-   "1-2 times a week",
-   "Rarely"
+   "Microwave",
+   "Air fryer",
+   "OTG / oven",
+   "Pressure cooker",
+   "None of these"
   ],
-  "type": "single",
-  "required": false
+  "type": "multi",
+  "hint": "Select all that apply",
+  "required": false,
+  "active": true
  },
  {
-  "id": "Q4",
-  "question": "How important is it that it's eggless?",
+  "id": "Q8",
+  "question": "What would worry you most?",
   "options": [
-   "Must be eggless",
-   "Prefer eggless",
-   "Doesn't matter"
+   "Taste / protein aftertaste",
+   "Dry or rubbery texture",
+   "Price",
+   "Sugar / ingredients",
+   "Whether the protein claim is true",
+   "Effort to make"
   ],
-  "type": "single",
-  "required": false
+  "type": "multi",
+  "hint": "Pick up to 2",
+  "max": 2,
+  "required": false,
+  "active": true
  },
  {
   "id": "Q5",
@@ -62,7 +71,45 @@
    "Wouldn't pay for this"
   ],
   "type": "single",
-  "required": true
+  "required": true,
+  "active": true
+ },
+ {
+  "id": "Q9",
+  "question": "If it tasted good, how likely are you to buy it?",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "type": "scale_1_5",
+  "hint": "1 = not at all, 5 = definitely",
+  "required": true,
+  "active": true
+ },
+ {
+  "id": "Q10",
+  "question": "What would make this a must-buy or a no-go for you?",
+  "type": "free_text",
+  "options": [],
+  "hint": "Optional",
+  "max_length": 1000,
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q4",
+  "question": "How important is it that it's eggless?",
+  "options": [
+   "Must be eggless",
+   "Prefer eggless",
+   "Doesn't matter"
+  ],
+  "type": "single",
+  "required": false,
+  "active": false
  },
  {
   "id": "Q6",
@@ -81,7 +128,8 @@
   "type": "multi",
   "hint": "Pick up to 3",
   "max": 3,
-  "required": false
+  "required": false,
+  "active": false
  },
  {
   "id": "Q7",
@@ -95,45 +143,7 @@
    "Office or hostel canteen"
   ],
   "type": "single",
-  "required": false
- },
- {
-  "id": "Q8",
-  "question": "What would worry you most?",
-  "options": [
-   "Taste / protein aftertaste",
-   "Dry or rubbery texture",
-   "Price",
-   "Sugar / ingredients",
-   "Whether the protein claim is true",
-   "Effort to make"
-  ],
-  "type": "multi",
-  "hint": "Pick up to 2",
-  "max": 2,
-  "required": false
- },
- {
-  "id": "Q9",
-  "question": "If it tasted good, how likely are you to buy it?",
-  "options": [
-   "1",
-   "2",
-   "3",
-   "4",
-   "5"
-  ],
-  "type": "scale_1_5",
-  "hint": "1 = not at all, 5 = definitely",
-  "required": true
- },
- {
-  "id": "Q10",
-  "question": "What would make this a must-buy or a no-go for you?",
-  "type": "free_text",
-  "options": [],
-  "hint": "Optional",
-  "max_length": 1000,
-  "required": false
+  "required": false,
+  "active": false
  }
 ]

@@ -4,6 +4,6 @@
 export const brand = {
   name: null as string | null, // e.g. "CRMBYTZ" once chosen and cleared for class 30
   siteTitle: "The Great Dessert Interrogation",
-  description: "A 2-minute, slightly unserious survey about desserts, cravings and protein. No login.",
+  description: "A 1-minute, slightly unserious survey about desserts, cravings and protein. No login.",
   instagram: null as string | null,
 };

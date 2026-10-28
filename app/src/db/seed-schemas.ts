@@ -13,6 +13,7 @@ export const surveyQuestionsFile = z.array(z.object({
   max: n,
   max_length: n,
   required: z.boolean(),
+  active: z.boolean().default(true),
 }));
 
 export const catalogFile = z.array(z.object({

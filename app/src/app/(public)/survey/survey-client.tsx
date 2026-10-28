@@ -146,7 +146,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       )}
 
       {step === -1 && (
-        <Intro welcomeBack={Boolean(initial)} onStart={() => setStep(0)} />
+        <Intro count={n} welcomeBack={Boolean(initial)} onStart={() => setStep(0)} />
       )}
 
       {q && copy && (
@@ -203,12 +203,12 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   );
 }
 
-function Intro({ welcomeBack, onStart }: { welcomeBack: boolean; onStart: () => void }) {
+function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: boolean; onStart: () => void }) {
   return (
     <section className="anim-pop flex flex-1 flex-col">
       <div className="relative aspect-[2/3] max-h-[78dvh] w-full overflow-hidden">
         <PosterArt />
-        <p className="absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-bg/90 px-3 py-1 font-head text-[11px] font-semibold uppercase tracking-[0.25em] text-accent">{intro.kicker}</p>
+        <p className="absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-bg/90 px-3 py-1 font-head text-[11px] font-semibold uppercase tracking-[0.25em] text-accent">{intro.kicker(count)}</p>
         <h1 className="absolute inset-x-0 bottom-[7%] flex flex-col items-center font-display uppercase leading-[0.86]">
           <span className="flex items-end gap-2">
             <span className="text-[34px] text-[#c98a5e]">{intro.poster.small.split(" ").slice(0, 2).join(" ")}</span>

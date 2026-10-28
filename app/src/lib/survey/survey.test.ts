@@ -85,8 +85,8 @@ describe("personalityFor", () => {
   it("picks the critic for low likelihood first", () => {
     expect(personalityFor({ Q9: "2", Q3: "Daily" }).id).toBe("critic");
   });
-  it("picks mithai royalty when most flavours are Indian", () => {
-    expect(personalityFor({ Q9: "4", Q6: ["Kesar pista", "Gulab jamun", "Vanilla"] }).id).toBe("mithai");
+  it("picks the texture snob when rubbery texture is a worry", () => {
+    expect(personalityFor({ Q9: "4", Q8: ["Dry or rubbery texture"] }).id).toBe("texture");
   });
   it("falls back to curious crumb", () => {
     expect(personalityFor({}).id).toBe("curious");

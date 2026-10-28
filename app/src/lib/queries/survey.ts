@@ -1,7 +1,7 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { surveyQuestions, surveyResponses } from "@/db/schema";
+import { surveyQuestions, surveyResponses, waitlist } from "@/db/schema";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 
 export async function getSurveyQuestions(): Promise<SurveyQuestion[]> {
@@ -25,8 +25,21 @@ export async function recentSubmitsFromIp(ipHash: string): Promise<number> {
   return row?.n ?? 0;
 }
 
-export async function surveyStats() {
-  const [total] = await db.select({ n: count() }).from(surveyResponses);
-  const latest = await db.select().from(surveyResponses).orderBy(desc(surveyResponses.updatedAt)).limit(20);
-  return { total: total?.n ?? 0, latest };
+/** Everything the results dashboard and CSV export need. Small data today; paginate past ~10k responses. */
+export async function surveyResults() {
+  const [all, responses, [wl]] = await Promise.all([
+    db.select().from(surveyQuestions).orderBy(asc(surveyQuestions.position)),
+    db.select().from(surveyResponses).orderBy(desc(surveyResponses.updatedAt)),
+    db.select({ n: count() }).from(waitlist).where(isNull(waitlist.deletedAt)),
+  ]);
+  const toQ = (r: (typeof all)[number]): SurveyQuestion => ({
+    id: r.id, question: r.question, type: r.type, options: r.options, hint: r.hint,
+    maxSelect: r.maxSelect, required: r.required, maxLength: r.maxLength,
+  });
+  return {
+    questions: all.filter((q) => q.active).map(toQ),
+    allQuestions: all.map(toQ),
+    responses,
+    waitlistCount: wl?.n ?? 0,
+  };
 }

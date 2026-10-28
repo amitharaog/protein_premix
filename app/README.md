@@ -11,7 +11,7 @@ https://mugcake.vercel.app/survey (Vercel project `mugcake`, team amitharaog's p
 | Phase | State |
 |---|---|
 | 1. Foundation | Done: schema + migration, seed (all 14 files, idempotent), Auth.js Google gate on `/admin`, design tokens, Vitest, Playwright, CI |
-| 2. Public site | `/survey` done (interactive, one question per screen, no login), plus an inline waitlist with consent. Still to do: landing page, `/waitlist` with double opt-in, flavours, FAQ, legal pages |
+| 2. Public site | `/survey` done (7 questions, one per screen, no login), plus an inline waitlist with consent. Results at `/admin` (bars per question, comments, sources, every response, CSV download). Still to do: landing page, `/waitlist` with double opt-in, flavours, FAQ, legal pages |
 | 3 to 5 | Not started |
 
 ## Database

@@ -3,8 +3,8 @@
 // (see docs/COMPLIANCE.md; enforced by src/content/content.test.ts).
 
 export const intro = {
-  kicker: "10 questions · no login",
-  poster: { small: "Give us your", big: "cravings", tail: "It only takes 2 minutes" },
+  kicker: (n: number) => `${n} quick questions · no login`,
+  poster: { small: "Give us your", big: "cravings", tail: "It only takes 1 minute" },
   ask: "Do your dessert cravings deserve to be heard?",
   spec: "We're making a bake-at-home brownie and cake mix. Target: 25–32 g protein per sachet (recipe in testing), made with gluten-free ingredients.",
   host: "Hi, I'm a mug. I ask people about dessert. It's my whole personality.",
@@ -183,9 +183,9 @@ export const done = {
 export type Personality = { id: string; title: string; line: string; emoji: string };
 
 export const personalities: Record<string, Personality> = {
-  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you.", emoji: "🧐" },
+  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you.", emoji: "🫡" },
   detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug.", emoji: "🕵️" },
-  mithai: { id: "mithai", title: "Mithai Royalty", line: "Your taste buds have a family tree.", emoji: "👑" },
+  texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room.", emoji: "🧐" },
   midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment.", emoji: "🌙" },
   macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front.", emoji: "🥤" },
   lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid.", emoji: "🛋️" },

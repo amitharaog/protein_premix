@@ -25,6 +25,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
 /** Server-side gate for every admin page and server action (CLAUDE.md rule 10). */
 export async function requireAdmin() {
+  // Local screenshots/tests only: `next dev` with ADMIN_DEV_BYPASS=1. Production builds never take this branch.
+  if (process.env.NODE_ENV === "development" && process.env.ADMIN_DEV_BYPASS === "1") {
+    return { user: { email: adminEmails()[0] ?? "dev@localhost" }, expires: "" };
+  }
   const session = await auth();
   if (!isAdminEmail(session?.user?.email)) return null;
   return session;

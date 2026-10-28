@@ -37,10 +37,10 @@ const questions = read("survey_questions.json", z.surveyQuestionsFile);
 for (const [i, q] of questions.entries()) {
   await db.insert(s.surveyQuestions).values({
     id: q.id, position: i + 1, question: q.question, type: q.type, options: q.options,
-    hint: q.hint ?? null, maxSelect: q.max ?? null, required: q.required, maxLength: q.max_length ?? null,
+    hint: q.hint ?? null, maxSelect: q.max ?? null, required: q.required, maxLength: q.max_length ?? null, active: q.active,
   }).onConflictDoUpdate({
     target: s.surveyQuestions.id,
-    set: excluded(["position", "question", "type", "options", "hint", "max_select", "required", "max_length"]),
+    set: excluded(["position", "question", "type", "options", "hint", "max_select", "required", "max_length", "active"]),
   });
 }
 tally("survey_questions", questions.length);

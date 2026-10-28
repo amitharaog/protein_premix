@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Take the survey",
-  description: "10 questions about desserts, cravings and protein. About 2 minutes. No login.",
+  description: "7 quick questions about desserts, cravings and protein. About a minute. No login.",
 };
 
 export default async function SurveyPage() {
