@@ -2,6 +2,10 @@
 
 The Next.js app built from the build kit. Rules: `CLAUDE.md`. Features: `docs/SPEC.md`. Setup and phase prompts: `START_HERE.md`.
 
+## Live
+
+https://mugcake.vercel.app/survey (Vercel project `mugcake`, team amitharaog's projects, functions in Singapore `sin1`). Env vars are set in Vercel; Google sign-in keys are not yet.
+
 ## Status
 
 | Phase | State |
