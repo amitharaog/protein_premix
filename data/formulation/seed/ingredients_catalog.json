@@ -1,0 +1,1295 @@
+[
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "allulose",
+  "name": "Allulose",
+  "options": [
+   {
+    "brand": "Meld Wellness (mfd. Matsutani, Japan)",
+    "note": "MRP 1499. FSSAI FLAG: allulose is not a listed sweetener in FSSAI additive regs; approvals appear product/company-specific (e.g., 1-2-Taste B2B approval, Oct 2024 news). Meld's Flipkart listing shows FSSAI lic 10018021003888 but that is a licence, not an ingredient approval. OK for kitchen trials; get regulatory clearance before commercial use. | 2026-10-26: OUT OF STOCK / unavailable on Tata 1mg",
+    "pack_g": 312,
+    "price_inr": 1447,
+    "price_type": "sale",
+    "site": "Tata 1mg",
+    "title": "Meld Wellness Always Natural Allulose Powder, 312 g",
+    "url": "https://www.1mg.com/otc/meld-wellness-always-natural-allulose-low-calorie-sweetener-gluten-free-powder-otc812406",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Meld Wellness",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Same FSSAI caveat.",
+    "pack_g": 312,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "MELD Wellness Allulose Powder 312 g",
+    "url": "https://www.amazon.in/MELD-Wellness-Allulose-Sweetener-Aftertaste/dp/B0B5WXXR45",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Meld Wellness",
+    "note": "Fetched: ₹1200.47 (MRP ₹1333.86; old MRP ₹1499). Stock status not stated on page. | Added 2026-10-26 as replacement for out-of-stock option",
+    "pack_g": 312,
+    "price_inr": 1200.47,
+    "price_type": "sale",
+    "site": "Truemeds",
+    "title": "Meld Wellness Always Natural Allulose Sweetener Powder 312gm",
+    "url": "https://www.truemeds.in/otc/meld-wellness-always-natural-allulose-sweetner-powder-312gm-tm-heca1-003710",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "almond_flour",
+  "name": "Blanched almond flour",
+  "options": [
+   {
+    "brand": "Urban Platter",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Gluten-free, vegan.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Urban Platter California Blanched Almond Flour",
+    "url": "https://www.amazon.in/Urban-Platter-Fine-Almond-Flour/dp/B01FSK1Y8I",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Agile Organic",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Agile Organic Fine Almond Flour (blanched), 500 g",
+    "url": "https://www.amazon.in/Agile-Organic%C2%AE-Naturally-Protein-Rich-Blanched/dp/B07CQLVC5Y",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "baking_powder",
+  "name": "Baking powder, GF, aluminium-free",
+  "options": [
+   {
+    "brand": "Urban Platter",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Confirm starch source is GF (corn).",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Urban Platter Aluminium-Free Baking Powder, 250 g (double-acting)",
+    "url": "https://www.amazon.in/Platter-Aluminium-Free-Double-Acting-Leavening-Perfect/dp/B06ZZ97TY7",
+    "url_kind": "product"
+   },
+   {
+    "brand": "The Select Aisle",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Labelled GF + Al-free.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "The Select Aisle Aluminium Free Baking Powder, 100 g (gluten-free)",
+    "url": "https://www.amazon.in/Select-Aisle-Aluminium-Gluten-Free-Ingredients/dp/B0BFQZTYWL",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "baking_soda",
+  "name": "Baking soda",
+  "options": [
+   {
+    "brand": "Weikfield",
+    "note": "Price from listing title.",
+    "pack_g": 100,
+    "price_inr": 36,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "Weikfield Baking Soda, 100 g",
+    "url": "https://www.bigbasket.com/pd/40213548/weikfield-baking-soda-100-g/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Weikfield",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Weikfield Baking Soda 100 g",
+    "url": "https://www.amazon.in/Weikfield-Baking-Soda-100-gm/dp/B09G96K43Z",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "beetroot",
+  "name": "Beetroot powder",
+  "options": [
+   {
+    "brand": "Holy Natural",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Food grade (avoid listings sold under Beauty).",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Holy Natural Beet Root Powder, 100 g",
+    "url": "https://www.amazon.in/Holy-Natural-Beetroot-Powder-100g/dp/B0744LYP8C",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Excellent Foods",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Excellent Foods Dehydrated Beetroot Powder, 100 g",
+    "url": "https://www.amazon.in/EXCELLENT-FOODS-Dehydrated-Beetroot-Powder/dp/B099WNN3G7",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "cardamom",
+  "name": "Cardamom (elaichi) powder",
+  "options": [
+   {
+    "brand": "Tasteful",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Tasteful Green Cardamom (Elaichi) Powder, 100 g (50 g bottle + 50 g refill)",
+    "url": "https://www.amazon.in/Tasteful-Cardamom-Elaichi-Powder-Bottle/dp/B096Q2TTF1",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Neotea",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Neotea Cardamom Powder, 100 g",
+    "url": "https://www.amazon.in/Neotea-Cardamom-Elaichi-Elakki-Powder/dp/B076YB74ZD",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "carrot_powder",
+  "name": "Dehydrated carrot powder",
+  "options": [
+   {
+    "brand": "Holy Natural",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Spray-dried may contain maltodextrin carrier - check.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Holy Natural Carrot Powder 100 g (spray dried)",
+    "url": "https://www.amazon.in/Holy-Natural-Wonder-Carrot-Powder/dp/B0744M9MV7",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Bliss of Earth",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Bliss of Earth Carrot Powder, dehydrated, 100 g",
+    "url": "https://www.amazon.in/Natural-Dehydrated-Freshly-Delicious-Cooking/dp/B0BQYT7WHP",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "casein",
+  "name": "Micellar casein, unflavoured",
+  "options": [
+   {
+    "brand": "AS-IT-IS Nutrition",
+    "note": "1 kg = 1526 (MRP 2108). Vegetarian (dairy).",
+    "pack_g": 500,
+    "price_inr": 828,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "AS-IT-IS Nutrition One Micellar Casein, Unflavoured, 500 g (1.1 lb)",
+    "url": "https://www.healthkart.com/sv/as-it-is-nutrition-one-micellar-casein/SP-75351",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Nutrabay",
+    "note": "Price not captured. Note: Nakpro casein on HealthKart is flavoured-only/unavailable. | 2026-10-26: price unknown -> 2819.94 | 2026-10-26: OUT OF STOCK / unavailable on PharmEasy",
+    "pack_g": 1000,
+    "price_inr": 2819.94,
+    "price_type": "sale",
+    "site": "PharmEasy",
+    "title": "Nutrabay Pure 100% Micellar Casein Protein, Unflavoured, 1 kg",
+    "url": "https://pharmeasy.in/health-care/products/nutrabay-pure-100-micellar-casein-protein-unflavoured---1kg-3736063",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Nutrabay",
+    "note": "Fetched: ₹2962.33 (MRP ₹3291.48). Stock status not stated on page. | Added 2026-10-26 as replacement for out-of-stock option",
+    "pack_g": 1000,
+    "price_inr": 2962.33,
+    "price_type": "sale",
+    "site": "Truemeds",
+    "title": "Nutrabay Pure Micellar Casein Protein Unflavoured Powder 1000gm",
+    "url": "https://truemeds.in/otc/nutrabay-pure-micellar-casein-protein-unflavoured-powder-1000gm-tm-poer1-004086",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "choc_chips",
+  "name": "Sugar-free or 55% dark chocolate chips",
+  "options": [
+   {
+    "brand": "Benaulim",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Check sweetener used.",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Benaulim Organic Dark Chocolate Chips, Sugar Free (no added sugar alcohol), 250 g",
+    "url": "https://www.amazon.in/Benaulim-Organic-Chocolate-Ingredients-Friendly/dp/B09VGNBTVF",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Marssi",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Alt 55%: Van Houten Professional Dark Compound 55% 1 kg (compound - contains veg fat & sugar) https://www.amazon.in/Vanhouten-Professional-Dark-chocolate-Compound/dp/B0F9T4PF1S",
+    "pack_g": 1000,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Marssi Dark Chocolate Chip Sugar Free 70% cocoa, 1 kg",
+    "url": "https://www.amazon.in/Marssi-Chocolate-Baking-Sugar-Friendly/dp/B09GKSTLBM",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "cinnamon",
+  "name": "Cinnamon powder",
+  "options": [
+   {
+    "brand": "Organic Tattva",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Likely cassia - check.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Organic Tattva Cinnamon Powder, 100 g",
+    "url": "https://www.amazon.in/Organic-Tattva-Cinnamon-Powder-100g/dp/B01IENF0BI",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Organic Forest",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. True Ceylon (low coumarin).",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Organic Forest Ceylon Cinnamon Powder, 100 g",
+    "url": "https://www.amazon.in/Organic-Forest-Cinnamon-Premium-Quality/dp/B07SVGQBMG",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "cocoa",
+  "name": "Dutch-processed (alkalised) cocoa powder",
+  "options": [
+   {
+    "brand": "The Select Aisle",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "The Select Aisle Dutch Processed Baking Cocoa Powder, 250 g (unsweetened, alkalised)",
+    "url": "https://www.amazon.in/Select-Aisle-Processed-Baking-Alkalised/dp/B09KVBWHB2",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Ossoro",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Alt: Urban Platter Special Dark Cocoa 250 g https://www.amazon.in/Urban-Platter-Special-Cocoa-Powder/dp/B077SGWMKL",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Ossoro Cocoa Powder (Dutch processed, alkalised), 250 g",
+    "url": "https://www.amazon.in/Ossoro-Cocoa-Powder-Processed-Alkalised/dp/B08B9HM1CK",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "coconut_milk_powder",
+  "name": "Coconut milk powder",
+  "options": [
+   {
+    "brand": "Harima",
+    "note": "Price from listing title. Check for maltodextrin/caseinate carrier (some CMPs are not vegan).",
+    "pack_g": 100,
+    "price_inr": 150,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "Harima Coconut Milk Powder, dairy free, 100 g box",
+    "url": "https://www.bigbasket.com/pd/40275846/harima-coconut-milk-powder-dairy-free-used-for-sweet-savoury-preparations-100-g-box/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Urban Platter",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Alt: Maggi Coconut Milk Powder 100 g https://www.amazon.in/Nestle-Maggi-Coconut-Milk-Powder/dp/B00TFY0XP4",
+    "pack_g": 400,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Urban Platter Coconut Milk Powder, 400 g",
+    "url": "https://www.amazon.in/Platter-Plant-Based-Preservative-Free-Dairy-Free-smoothies/dp/B071DCG229",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "coffee",
+  "name": "Instant coffee / with chicory",
+  "options": [
+   {
+    "brand": "Bru",
+    "note": "Price from listing title. Contains chicory (~30-40%).",
+    "pack_g": 100,
+    "price_inr": 202.4,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "Bru Instant Coffee (coffee-chicory), 100 g",
+    "url": "https://www.bigbasket.com/pd/266531/bru-instant-coffee-100-g/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Nescafe",
+    "note": "Price from listing title. No chicory. | 2026-10-26: pack now 90 g (was 100 g) | 2026-10-26: price 356 -> 338",
+    "pack_g": 90,
+    "price_inr": 338,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "Nescafe Classic 100% Pure Instant Coffee, 100 g jar",
+    "url": "https://www.bigbasket.com/pd/231187/nescafe-classic-100-pure-instant-coffee-100-g-dawn-jar/",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "cranberries",
+  "name": "Dried cranberries (unsweetened / FD)",
+  "options": [
+   {
+    "brand": "Btonica",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Verify ingredients - 'unsweetened' cranberries in India are often apple-juice infused.",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Btonica Unsweetened Dried Cranberries, 250 g",
+    "url": "https://www.amazon.in/Btonica-Unsweetened-Cranberries-Diabetic-Friendly-Superfood/dp/B0DPG3LT7Y",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Herbsnut",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. True freeze-dried cranberry not found at retail.",
+    "pack_g": 200,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Herbsnut Premium Dried Cranberries without sugar, 200 g",
+    "url": "https://www.amazon.in/Herbsnut-Premium-Cranberries-Naturally-Berries/dp/B08QNGSCLJ",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "erythritol",
+  "name": "Erythritol",
+  "options": [
+   {
+    "brand": "So Sweet",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Erythritol is an FSSAI-permitted polyol (laxative-effect labelling required above limits).",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "So Sweet Erythritol Powder, 250 g x 2",
+    "url": "https://www.amazon.in/So-Sweet-Erythritol-Natural-Sweetener/dp/B016KQJ9GS",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Food Summary",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Food Summary Erythritol Powder 500 g",
+    "url": "https://www.amazon.in/Food-Summary-Powdered-Erythritol-Sweetener/dp/B0B1D7LMQ2",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "fat_powder",
+  "name": "Vegetable fat powder / non-dairy creamer",
+  "options": [
+   {
+    "brand": "Tea Planet",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Substitute - NDCs usually contain glucose syrup solids + palm fat + caseinate.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Tea Planet Creamer NDC (non-dairy creamer)",
+    "url": "https://www.amazon.in/Tea-Planet-Creamer-NDC-Dairy-Free/dp/B0DYYZFD5Y",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Pruthvi Foods / others",
+    "note": "Retail packs of true VFP not found; B2B only (~Rs 270-280/kg in 20-25 kg bags) - ask for sample. Alt: coconut milk powder.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "IndiaMART",
+    "title": "Vegetable Fat Powder (B2B)",
+    "url": "https://www.indiamart.com/pruthvifoods/vegetable-fat-powder.html",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "fd_strawberry",
+  "name": "Freeze-dried strawberry powder",
+  "options": [
+   {
+    "brand": "FzyEzy",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. No added sugar/preservatives per title.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "FzyEzy Premium Freeze-dried Strawberry Fruit Powder",
+    "url": "https://www.amazon.in/Strawberry-Preservatives-Artificial-Groceries-Smoothies/dp/B08BLXPV81",
+    "url_kind": "product"
+   },
+   {
+    "brand": "La Casa",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "La Casa Organic Strawberry Powder (freeze-dried)",
+    "url": "https://www.amazon.in/Casa-Strawberry-Freeze-Dried-Additives-Preservatives/dp/B0FG3PJ7B5",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "inulin",
+  "name": "Inulin (chicory)",
+  "options": [
+   {
+    "brand": "DZPLN",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "DZPLN Inulin Prebiotic Dietary Fibre Powder (chicory root), 250 g",
+    "url": "https://www.amazon.in/DZPLN-Prebiotic-Dietary-Sugar-Free-Gluten-Free/dp/B0FRFQY9FG",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Ori",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Do not confuse with roasted chicory coffee powder.",
+    "pack_g": 350,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Ori Chicory Inulin, 350 g",
+    "url": "https://www.amazon.in/Ori-Chicory-Inulin-350-Pack/dp/B0CFL685JQ",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "jaggery",
+  "name": "Jaggery powder",
+  "options": [
+   {
+    "brand": "24 Mantra Organic",
+    "note": "Price from listing title. Contains sugar (~65-85% sucrose). | 2026-10-26: price 67.96 -> 68.89",
+    "pack_g": 500,
+    "price_inr": 68.89,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "24 Mantra Organic Jaggery Powder, 500 g pouch",
+    "url": "https://www.bigbasket.com/pd/279803/24-mantra-organic-jaggery-powder-500-g-pouch/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Organic Tattva",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Contains sugar.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Organic Tattva Jaggery Powder",
+    "url": "https://www.amazon.in/Unrefined-Chemical-Free-Sweetener-Alternative-Desserts/dp/B00M57WTAU",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "jowar_flour",
+  "name": "Jowar (sorghum) flour",
+  "options": [
+   {
+    "brand": "24 Mantra Organic",
+    "note": "MRP 90. Naturally GF, not certified. | 2026-10-26: price 84.5 -> 84.6",
+    "pack_g": 500,
+    "price_inr": 84.6,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "24 Mantra Organic Flour - Jowar, 500 g pouch",
+    "url": "https://bigbasket.com/pd/279827/24-mantra-organic-flour-jowar-500-g-pouch",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Organic Tattva",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Multipack - larger than needed.",
+    "pack_g": 2500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Organic Tattva Jowar Flour 500 g (pack of 5)",
+    "url": "https://www.amazon.in/Organic-Tattva-Jowar-Gluten-Sorghum/dp/B0H8CNFW9C",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "maltodextrin",
+  "name": "Maltodextrin",
+  "options": [
+   {
+    "brand": "Fooding",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Food grade (avoid the 'Industrial & Scientific' listing).",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Fooding Maltodextrin Powder, 500 g",
+    "url": "https://www.amazon.in/Fooding-Maltodextrin-Powder-500-Grams/dp/B0CNRYGRNJ",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Fooding",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 1000,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Fooding Maltodextrin Powder, 1 kg",
+    "url": "https://www.amazon.in/Fooding-Maltodextrin-Powder-1-KG/dp/B0CNRX2CMJ",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "mpc70",
+  "name": "Milk protein concentrate 70-80",
+  "options": [
+   {
+    "brand": "various (IndiaMART suppliers)",
+    "note": "NOT FOUND AT RETAIL in small consumer packs. Only B2B (IndiaMART, 25 kg bags; ask for 1 kg sample). Substitute: blend ~80:20 micellar casein + WPC80 (MPC is ~80:20 casein:whey), or use SMP for a lower-protein version.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "IndiaMART",
+    "title": "Milk Protein Concentrate 50/70/78/80% (B2B, bag)",
+    "url": "https://www.indiamart.com/proddetail/milk-protein-concentrate-50-70-78-and-80-21274764030.html",
+    "url_kind": "product"
+   },
+   {
+    "brand": "various",
+    "note": "Search page only; no confirmed unflavoured retail MPC listing found.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Amazon.in search: milk protein concentrate powder",
+    "url": "https://www.amazon.in/milk-protein-concentrate-powder/s?k=milk+protein+concentrate+powder",
+    "url_kind": "search"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "nutmeg",
+  "name": "Nutmeg powder",
+  "options": [
+   {
+    "brand": "Profchef",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Profchef Nutmeg Powder (Jaifal), 100 g",
+    "url": "https://www.amazon.in/Profchef-Nutmeg-Powder-Jaifal-100g/dp/B07WH711CT",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Darshini",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Darshini Nutmeg Powder, 100 g",
+    "url": "https://www.amazon.in/Darshini-Nutmeg-Powder-100-Beverages/dp/B09FHWPHHQ",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "orange_flavour",
+  "name": "Natural orange flavour powder / orange oil",
+  "options": [
+   {
+    "brand": "Urban Platter",
+    "note": "pack_g approx (10 ml). Food-grade culinary oil. Page did not load for price check.",
+    "pack_g": 10,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "urbanplatter.in",
+    "title": "Urban Platter Orange Oil, 10 ml (natural flavour, with dropper)",
+    "url": "https://urbanplatter.in/product/urban-platter-orange-oil-10ml-citrus-zesty-natural-flavour-with-a-dropper/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Confect",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Check if natural vs nature-identical.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Confect Orange Fruit Powder",
+    "url": "https://www.amazon.in/Confect-Natural-Smoothies-Beverages-Gluten-Free/dp/B0FVM4HBXW",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "orange_powder",
+  "name": "Dehydrated orange / orange peel powder",
+  "options": [
+   {
+    "brand": "Yeshvi",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Spray-dried juice powder may contain maltodextrin/sugar.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Yeshvi Natural Orange Powder, spray dried, 100 g",
+    "url": "https://www.amazon.in/Yeshvi-NATURAL-Smoothies-Beverages-Antioxidants/dp/B0C77LHS6P",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Natural and Herbal Products",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Listed under Beauty - most peel powders are cosmetic grade; confirm FSSAI food label.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Natural and Herbal Products Orange Peel Powder (edible), 100 g",
+    "url": "https://www.amazon.in/Orange-Peel-Powder-Drinking-Natural/dp/B0CV7BJCK7",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "pea",
+  "name": "Pea protein isolate 80, unflavoured",
+  "options": [
+   {
+    "brand": "AS-IT-IS Nutrition",
+    "note": "MRP 832. 81% protein per serving. 1 kg = 999 (MRP 1428). Vegan.",
+    "pack_g": 500,
+    "price_inr": 582,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "AS-IT-IS Nutrition One Pea Protein Isolate, Unflavoured, 500 g (1.1 lb)",
+    "url": "https://www.healthkart.com/sv/as-it-is-nutrition-one-pea-protein-isolate/SP-75337?navKey=VRNT-142397",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Nutrabay",
+    "note": "MRP 1109. Listed out of stock at time of check. | 2026-10-26: price 854 -> 853.93 | 2026-10-26: OUT OF STOCK / unavailable on PharmEasy",
+    "pack_g": 1000,
+    "price_inr": 853.93,
+    "price_type": "sale",
+    "site": "PharmEasy",
+    "title": "Nutrabay Pure 100% Pea Protein Isolate, Unflavoured, 1 kg",
+    "url": "https://pharmeasy.in/health-care/products/nutrabay-pure-100-pea-protein-isolate-unflavoured---1kg-3736062",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Nutrabay",
+    "note": "MRP 1699 per page; Rs 807 for HealthKart Premium members. Add To Cart shown (stock not explicitly stated). | Added 2026-10-26 as replacement for out-of-stock option",
+    "pack_g": 1000,
+    "price_inr": 849,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "Nutrabay Pure Pea Protein Isolate, Unflavoured, 2.2 lb (1 kg)",
+    "url": "https://www.healthkart.com/sv/nutrabay-pure-pea-protein-isolate/SP-98354?navKey=VRNT-183200",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "pistachio",
+  "name": "Pistachio powder/flour",
+  "options": [
+   {
+    "brand": "Urban Platter",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 200,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Urban Platter Pista Flour (pistachio powder), 200 g",
+    "url": "https://www.amazon.in/Platter-Pistachio-Powder-Finely-Ground/dp/B0DWT1Y5M1",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Healthy Feast",
+    "note": "Price from listing title. Alt: grind unsalted pistachios - https://www.amazon.in/unsalted-pistachios/s?k=unsalted+pistachios (search page). | 2026-10-26: OUT OF STOCK / unavailable on BigBasket",
+    "pack_g": 200,
+    "price_inr": 900,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "Healthy Feast Nut Toppers Pistachios Flour, fine powder, 200 g",
+    "url": "https://www.bigbasket.com/pd/40223174/healthy-feast-nut-toppers-pistachios-flour-fine-powder-for-baking-cake-200-g/",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "psyllium",
+  "name": "Psyllium husk powder (isabgol)",
+  "options": [
+   {
+    "brand": "Pure Nutrition",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Check it is unflavoured powder (not husk).",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Pure Nutrition Psyllium Husk Isabgol Powder, 100 g",
+    "url": "https://www.amazon.in/Nutrition-Psyllium-Supplement-Digestive-Irregularity/dp/B0G38CB3D4",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Sown and Grown",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Sown and Grown Psyllium Husk Powder (Isabgol), 250 g",
+    "url": "https://www.amazon.in/Psyllium-Isabgol-Natural-Plant-Based-Soluble/dp/B0GCM2VM8N",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "ragi_flour",
+  "name": "Ragi (finger millet) flour",
+  "options": [
+   {
+    "brand": "Aashirvaad",
+    "note": "MRP 50.",
+    "pack_g": 500,
+    "price_inr": 46,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "Aashirvaad Nature's Super Foods Ragi Flour, 500 g pouch",
+    "url": "https://www.bigbasket.com/pd/40172981/aashirvaad-natures-super-foods-ragi-flour-500-g-pouch/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Manna",
+    "note": "Sprouted - may behave differently. | 2026-10-26: price unknown -> 64.35",
+    "pack_g": 500,
+    "price_inr": 64.35,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "Manna Sprouted Ragi Flour, 500 g pouch",
+    "url": "https://www.bigbasket.com/pd/278982/manna-flour-sprouted-ragi-500-g-pouch/",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "ramekins",
+  "name": "Microwave + oven-safe ramekins / silicone cups",
+  "options": [
+   {
+    "brand": "Mirakii",
+    "note": "pack_g = number of pieces (6). Amazon.in price not captured (site blocks automated fetch) - check listing. Microwave, OTG, convection, dishwasher safe. Not for air-fryer direct-heat issues; fine for most.",
+    "pack_g": 6,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Mirakii OTG Oven Microwave Safe Porcelain Ramekin Bowls, 150 ml, set of 6",
+    "url": "https://www.amazon.in/Mirakii-Microwave-Convection-Porcelain-Ramekins/dp/B089ZN8T2D",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Webake",
+    "note": "pack_g = number of pieces (8). Amazon.in price not captured (site blocks automated fetch) - check listing. BPA-free silicone - microwave/oven/air-fryer.",
+    "pack_g": 8,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Webake Silicone Jumbo Muffin Baking Cups 3.5 inch, pack of 8",
+    "url": "https://www.amazon.in/Webake-Silicone-Cupcake-Reusable-Individual/dp/B07R67M6SG",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "rice_flour",
+  "name": "Fine rice flour (gluten-free)",
+  "options": [
+   {
+    "brand": "bb Royal",
+    "note": "Price from listing title. Naturally GF but not certified GF (shared-facility risk).",
+    "pack_g": 500,
+    "price_inr": 30,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "bb Royal Rice Flour, 500 g pouch",
+    "url": "https://www.bigbasket.com/pd/10000420/bb-royal-rice-flour-500-g-pouch/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Turn Organic",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Not certified GF.",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Turn Organic Rice Flour, 500 g",
+    "url": "https://www.amazon.in/Turn-Organic-Rice-Flour-500g/dp/B09CQBFYJ4",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "rice_protein",
+  "name": "Brown rice protein 80",
+  "options": [
+   {
+    "brand": "AS-IT-IS Nutrition",
+    "note": "MRP 760. 77% per serving (claims 80%). Vegan. 1 kg = 999.",
+    "pack_g": 500,
+    "price_inr": 532,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "AS-IT-IS Nutrition Brown Rice Protein Isolate, Unflavoured, 500 g",
+    "url": "https://www.healthkart.com/sv/as-it-is-nutrition-brown-rice-protein-isolate/SP-78825?navKey=VRNT-148581",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Health Oxide",
+    "note": "Price/pack not captured. | 2026-10-26: pack now 250 g (was None g) | 2026-10-26: price unknown -> 699",
+    "pack_g": 250,
+    "price_inr": 699,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "Health Oxide Brown Rice Protein Isolate 80%",
+    "url": "https://www.healthkart.com/sv/health-oxide-brown-rice-protein-isolate-80/SP-89471",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "rose",
+  "name": "Rose petal powder",
+  "options": [
+   {
+    "brand": "unbranded/various",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Many rose powders are cosmetic grade - insist on FSSAI-labelled food grade.",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Edible Rose Powder (culinary, no additives/preservatives)",
+    "url": "https://www.amazon.in/Rose-Culinary-Desserts-Additives-Preservatives/dp/B0FLQ9CMRF",
+    "url_kind": "product"
+   },
+   {
+    "brand": "various",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Organic Dried Rose Petals (Gulab Patti) edible grade, 100 g - grind to powder",
+    "url": "https://www.amazon.in/Organic-Petals-Edible-Sweets-Decoration/dp/B0FL7YMXH7",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "saffron",
+  "name": "Saffron (kesar), 1 g",
+  "options": [
+   {
+    "brand": "Lion",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 1,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "LION Brand Saffron 1 g, Kashmiri whole",
+    "url": "https://www.amazon.in/LION-BRAND-SAFFRON-Kashmiri-Biryani/dp/B01BVAZK8O",
+    "url_kind": "product"
+   },
+   {
+    "brand": "House of Saffron",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Adulteration common - prefer ISO 3632 certificate.",
+    "pack_g": 1,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "House of Saffron 1 g Kashmir Kesar, ISO 3632 A1",
+    "url": "https://www.amazon.in/House-Saffron-Kashmir-Original-Pregnant/dp/B08R7S7FRZ",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "salt",
+  "name": "Fine salt",
+  "options": [
+   {
+    "brand": "Tata Salt",
+    "note": "Price from listing title (MRP-level). | 2026-10-26: price 29 -> 28",
+    "pack_g": 1000,
+    "price_inr": 28,
+    "price_type": "sale",
+    "site": "BigBasket",
+    "title": "Tata Salt Iodized, 1 kg pouch",
+    "url": "https://www.bigbasket.com/pd/241600/tata-salt-iodized-1-kg-pouch/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Tata Salt",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 1000,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Tata Salt, 1 kg",
+    "url": "https://www.amazon.in/Tata-Invictus_EAN_IJAEAEDJABABF-Salt-1kg-Pack/dp/B00L141L2K",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "smp",
+  "name": "Skimmed milk powder",
+  "options": [
+   {
+    "brand": "Nandini (KMF)",
+    "note": "Price from BigBasket listing title (Rs 205); availability may be Bangalore/South-specific. 1 kg pouch Rs 340: https://www.bigbasket.com/pd/100285710/nandini-milk-powder-skimmed-1-kg-pouch/",
+    "pack_g": 500,
+    "price_inr": 205,
+    "price_type": "unknown",
+    "site": "BigBasket",
+    "title": "Nandini Skimmed Milk Powder, 500 g pouch",
+    "url": "https://www.bigbasket.com/pd/100285709/nandini-skimmed-milk-powder-500-g-pouch/",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Amul",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Also on shop.amul.com: https://shop.amul.com/en/product/sagar-skimmed-milk-powder-pouch-500-g",
+    "pack_g": 500,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Amul Sagar Skim Milk Powder, 500 g",
+    "url": "https://www.amazon.in/Amul-Sagar-Skimmed-Milk-Powder/dp/B011NZ4LLE",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "stevia",
+  "name": "Stevia (pure / high Reb-A)",
+  "options": [
+   {
+    "brand": "Magic Leaf",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Steviol glycosides FSSAI-permitted. Verify whether pure extract or bulked with a carrier.",
+    "pack_g": 250,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Magic Leaf Stevia Powder, 99.9% Reb-A, 250 g",
+    "url": "https://www.amazon.in/Magic-Leaf-Extract-Sugar-Free-Healthy/dp/B08HYVFMGF",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Bliss of Earth",
+    "note": "Price not captured (fetch blocked).",
+    "pack_g": null,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Flipkart",
+    "title": "Bliss of Earth Stevia Powder 99.8% Reb-A",
+    "url": "https://www.flipkart.com/bliss-earth-sugarfree-stevia-powder-99-8-reb-a-purity-diabetes-natural-sugarfree-zero-calorie-sweetener-sweetener/p/itmefa17ecc19403",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "sucralose",
+  "name": "Sucralose",
+  "options": [
+   {
+    "brand": "Tripathi Products",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Artificial sweetener; FSSAI-permitted with category limits and mandatory label declaration. Also on BigBasket: https://www.bigbasket.com/pd/40264266/tripathi-products-pure-sucralose-powder-zero-calorie-used-for-making-traditional-sweets-50-g/",
+    "pack_g": 50,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Tripathi Products Pure Sucralose Powder, 50 g",
+    "url": "https://www.amazon.in/Tripathi-Products-Sucralose-Powder-Grams/dp/B07R2DSD7M",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Profoods",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Pure sucralose is ~600x sugar - dose by mg; consider pre-diluting.",
+    "pack_g": 350,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Profoods Sucralose Powder, 350 g",
+    "url": "https://www.amazon.in/Profoods-Sucralose-Powder-350-grams/dp/B07G78B737",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "vanilla",
+  "name": "Vanilla flavour/extract powder",
+  "options": [
+   {
+    "brand": "Exotic Vanilla",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Check whether natural vanilla bean vs flavour on a sugar carrier.",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Exotic Vanilla Gourmet Vanilla Powder with Seeds, 100 g",
+    "url": "https://www.amazon.in/Exotic-Vanilla-Gourmet-Powder-Seeds/dp/B0GLQH7VX8",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Goodness Vanilla",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. Larger than needed. Alt small: Yellow Crumb French Vanilla Powder 30 g https://www.amazon.in/YELLOW-CRUMB-Vanilla-Intense-Natural/dp/B07PYN2K5T",
+    "pack_g": 1000,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Goodness Vanilla 100% Natural Premium Vanilla Powder, 1 kg",
+    "url": "https://www.amazon.in/Goodness-Vanilla-Powder-Natural-1kg/dp/B0BY4MJGNT",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "wpc80",
+  "name": "Whey protein concentrate 80, unflavoured",
+  "options": [
+   {
+    "brand": "MuscleBlaze",
+    "note": "MRP 2499. 24 g protein/30 g. Vegetarian (dairy). 1 kg/2 kg also listed.",
+    "pack_g": 500,
+    "price_inr": 1899,
+    "price_type": "sale",
+    "site": "muscleblaze.com",
+    "title": "MuscleBlaze 100% Clean Raw Whey Protein Concentrate 80%, Unflavoured, 500 g",
+    "url": "https://www.muscleblaze.com/sv/muscleblaze-100-clean-raw-whey-protein-concentrate/SP-40454?navKey=VRNT-131607",
+    "url_kind": "product"
+   },
+   {
+    "brand": "TrueBasics",
+    "note": "MRP 2669. Vegetarian (dairy). | 2026-10-26: price 2319 -> 3799",
+    "pack_g": 1000,
+    "price_inr": 3799,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "TrueBasics Clean Raw Whey Concentrate, Unflavoured, 1 kg",
+    "url": "https://www.healthkart.com/sv/truebasics-clean-raw-whey-concentrate/SP-135891",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "wpi90",
+  "name": "Whey protein isolate 90, unflavoured",
+  "options": [
+   {
+    "brand": "AS-IT-IS Nutrition",
+    "note": "Also 500 g and 1 kg (1 kg MRP 5779). Protein % not stated on page; brand markets as 90% isolate - verify label. | 2026-10-26: link now opens 1000 g variant at Rs 3514; 250 g price not re-confirmed",
+    "pack_g": 250,
+    "price_inr": 1065,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "AS-IT-IS Nutrition Whey Protein Isolate, Unflavoured (0.55 lb / 250 g)",
+    "url": "https://www.healthkart.com/sv/as-it-is-nutrition-whey-protein-isolate/SP-77041",
+    "url_kind": "product"
+   },
+   {
+    "brand": "MuscleBlaze",
+    "note": "No MRP shown; protein % not stated - check label.",
+    "pack_g": 500,
+    "price_inr": 1959,
+    "price_type": "sale",
+    "site": "HealthKart",
+    "title": "MuscleBlaze Raw Whey Isolate, Unflavoured, 500 g",
+    "url": "https://www.healthkart.com/sv/muscleblaze-raw-whey-isolate/SP-41013",
+    "url_kind": "product"
+   }
+  ]
+ },
+ {
+  "checked_at": "2026-10-26",
+  "chosen": 0,
+  "id": "xanthan",
+  "name": "Xanthan gum",
+  "options": [
+   {
+    "brand": "Bliss of Earth",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing. GF, vegan.",
+    "pack_g": 113,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Bliss of Earth Xanthan Gum Powder, food grade, 113 g",
+    "url": "https://www.amazon.in/Xanthan-Powder-Natural-Thickener-Friendly/dp/B0BK4V1H2Z",
+    "url_kind": "product"
+   },
+   {
+    "brand": "Siera",
+    "note": "Amazon.in price not captured (site blocks automated fetch) - check listing",
+    "pack_g": 100,
+    "price_inr": null,
+    "price_type": "unknown",
+    "site": "Amazon.in",
+    "title": "Siera Xanthan Gum, 100 g",
+    "url": "https://www.amazon.in/Siera-Thickening-Natural-Gluten-Free-Non-GMO/dp/B09FGWSK37",
+    "url_kind": "product"
+   }
+  ]
+ }
+]

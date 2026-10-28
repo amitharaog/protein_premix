@@ -1,0 +1,128 @@
+[
+ {
+  "source": "Whey protein isolate (WPI 90)",
+  "protein_pct": 90,
+  "baking": "Sets fast, can toughen/dry; best ≤50% of protein; great foam/egg-white replacer; browns readily",
+  "taste": "Clean, milky",
+  "price_inr_per_kg": "2400-3000",
+  "diet": "Vegetarian",
+  "notes": "Low lactose; pricier. Mainly used to push protein % in PRO sku."
+ },
+ {
+  "source": "Whey protein concentrate (WPC 80)",
+  "protein_pct": 80,
+  "baking": "Good emulsifier & binder, acts as partial egg replacer; alone gives springy/rubbery mug cake if over-cooked",
+  "taste": "Milky, slightly cooked",
+  "price_inr_per_kg": "1200-1600",
+  "diet": "Vegetarian",
+  "notes": "Workhorse; Indian supply ample (domestic + imported)."
+ },
+ {
+  "source": "Micellar casein",
+  "protein_pct": 80,
+  "baking": "Absorbs water, thickens batter, gives soft fudgy/dense crumb and slower setting—counteracts whey rubberiness",
+  "taste": "Mild, creamy, slightly chalky",
+  "price_inr_per_kg": "2500-3200",
+  "diet": "Vegetarian",
+  "notes": "Mostly imported; key texture partner to whey."
+ },
+ {
+  "source": "Milk protein concentrate (MPC 70/80)",
+  "protein_pct": 70,
+  "baking": "Natural ~80:20 casein:whey; moist, tender; good cost alternative to whey+casein blend",
+  "taste": "Dairy/milk powder",
+  "price_inr_per_kg": "900-1400",
+  "diet": "Vegetarian",
+  "notes": "Domestic (Amul, Hatsun etc. B2B). Contains lactose."
+ },
+ {
+  "source": "Skimmed milk powder",
+  "protein_pct": 34,
+  "baking": "Lactose aids browning (Maillard), tender crumb, khoa/rabri flavour for Indian SKUs",
+  "taste": "Milky, sweet",
+  "price_inr_per_kg": "300-350",
+  "diet": "Vegetarian",
+  "notes": "Cheap protein top-up; carbs higher."
+ },
+ {
+  "source": "Pea protein isolate",
+  "protein_pct": 80,
+  "baking": "High water absorption, dense; needs extra liquid + leavening; gelling helps structure",
+  "taste": "Earthy/beany; needs masking (cocoa, coffee, jaggery)",
+  "price_inr_per_kg": "900-1300",
+  "diet": "Vegan",
+  "notes": "Lysine-rich; pair with rice."
+ },
+ {
+  "source": "Soy protein isolate",
+  "protein_pct": 90,
+  "baking": "Good binding & emulsification, moist crumb; can be beany; good egg replacer",
+  "taste": "Beany unless deflavoured",
+  "price_inr_per_kg": "450-700",
+  "diet": "Vegan",
+  "notes": "Cheapest isolate in India; allergen; GMO/NON-GMO declaration consumers ask about."
+ },
+ {
+  "source": "Brown rice protein",
+  "protein_pct": 80,
+  "baking": "Gritty if coarse; low gelling; blend 30-40% with pea",
+  "taste": "Earthy, grainy",
+  "price_inr_per_kg": "1100-1500",
+  "diet": "Vegan",
+  "notes": "Methionine-rich, complements pea; check heavy-metal specs."
+ },
+ {
+  "source": "Almond flour",
+  "protein_pct": 21,
+  "baking": "Fat + fibre keep crumb moist/tender, reduces rubberiness; no gluten",
+  "taste": "Nutty, rich",
+  "price_inr_per_kg": "800-1000",
+  "diet": "Vegan",
+  "notes": "Tree-nut allergen; costly but a texture essential (8-10 g/serve)."
+ },
+ {
+  "source": "Peanut flour (defatted)",
+  "protein_pct": 45,
+  "baking": "Absorbs water, dense; good in chocolate/PB",
+  "taste": "Strong peanut",
+  "price_inr_per_kg": "250-400",
+  "diet": "Vegan",
+  "notes": "Allergen; aflatoxin testing essential."
+ },
+ {
+  "source": "Sattu (roasted chana)",
+  "protein_pct": 22,
+  "baking": "Pre-roasted so less raw/beany; absorbs water; dense crumb",
+  "taste": "Toasty, nutty",
+  "price_inr_per_kg": "120-180",
+  "diet": "Vegan",
+  "notes": "Naturally gluten-free ONLY if 100% chana—many sattu blends include barley (jau). Source certified single-ingredient."
+ },
+ {
+  "source": "Besan (chickpea flour)",
+  "protein_pct": 22,
+  "baking": "Good binding, partial egg replacer; raw taste if under-cooked in microwave",
+  "taste": "Beany raw; fine in spiced flavours",
+  "price_inr_per_kg": "90-130",
+  "diet": "Vegan",
+  "notes": "Gluten-free; check mill cross-contact with wheat."
+ },
+ {
+  "source": "Egg-white powder",
+  "protein_pct": 80,
+  "baking": "Best foam/rise & structure; light crumb",
+  "taste": "Neutral, slightly sulphurous",
+  "price_inr_per_kg": "1500-2200",
+  "diet": "Non-vegetarian (brown dot in India) – CONFLICTS with eggless positioning",
+  "notes": "Exclude from core range; only for an 'egg' variant."
+ },
+ {
+  "source": "Collagen peptides (bovine/fish)",
+  "protein_pct": 90,
+  "baking": "No gelling (hydrolysed), adds no structure; makes batter thin; incomplete protein (no tryptophan)",
+  "taste": "Neutral",
+  "price_inr_per_kg": "2500-4000",
+  "diet": "Non-vegetarian",
+  "notes": "Not suited for protein-claim backbone; FSSAI protein quality (PDCAAS) concerns."
+ }
+]

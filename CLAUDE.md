@@ -20,7 +20,7 @@ Never start economics work because demand "seems likely". The gate exists so we 
 Agents may challenge any of these with evidence. They may not silently replace them.
 
 ## Off limits
-- Product formulation, ingredients, ratios, baking method. That is the founder's domain. Do not suggest changes.
+- Product formulation, ingredients, ratios, baking method. That is the founder's domain. Do not suggest changes. One exception: the `recipe-builder` agent, which runs only when the founder calls `/recipe`. It writes only to `data/formulation/suggestions/`, never edits `data/formulation/seed/`, and its output never goes into drafts or anything public.
 - Posting, commenting, DMing or emailing anywhere on the user's behalf. Agents draft; the user posts.
 - Fake accounts, personas or "a friend of mine" framing in drafts. If asked who is behind a post, the honest answer is someone exploring making this product.
 - Fabricated customers, quotes, numbers or survey results. If data is missing, write `MISSING` and say what would fill it.
@@ -41,8 +41,8 @@ Drafts must not contain: brand name, prices, unit cost, the single-serve cup for
 
 ## File layout
 ```
-.claude/agents/     eight subagents (demand phase: 5, economics: 3)
-.claude/commands/   /demand, /gate, /economics, /status
+.claude/agents/     nine subagents (demand phase: 5, economics: 3, founder kitchen: recipe-builder)
+.claude/commands/   /demand, /gate, /economics, /status, /recipe
 data/
   signals/          passive listening (signals.csv)
   keywords/         autocomplete + trends output
@@ -50,8 +50,9 @@ data/
   responses/        pulled replies, manual/ pastes, coded.csv
   gate/             criteria.json, decision.md, gate.json
   economics/        competitors.csv, survey/, channels.csv, cac_inputs.json, cac outputs
+  formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
-scripts/            keywords.py, reddit_pull.py, van_westendorp.py, cac_model.py, subreddits.txt
+scripts/            keywords.py, reddit_pull.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
 ```
 
 ## Writing style for all outputs

@@ -25,18 +25,20 @@ Eight subagents that answer one question in order: **do people actually want thi
 | 3 | `/gate` | Pass, fail or insufficient against `data/gate/criteria.json` | Edit thresholds before running if you disagree |
 | 4 | `/economics` | Competitor shelf, Van Westendorp survey, channel scoring, CAC Monte Carlo | Run the survey form it writes, export to `data/economics/survey/responses.csv` |
 | any | `/status` | Where things stand, next action | |
+| any | `/recipe whey, cocoa, almond flour, ...` | Founder-only: which recipes you can bake with what you have, with grams per serving and per batch | Optional: fill `data/formulation/pantry.csv` with what you have and how many grams |
 
 `/economics override gate` runs economics anyway and stamps every report as unvalidated.
 
 ## What the agents will not do
 - Post, comment or DM anywhere. You post.
-- Touch the formulation.
+- Touch the formulation, except `recipe-builder` when you call `/recipe`. It only suggests, in `data/formulation/suggestions/`.
 - Invent customers, quotes or numbers. Gaps show as `MISSING`.
 
 ## Scripts (usable on their own)
 - `scripts/keywords.py`: Google India, YouTube and Amazon.in autocomplete with a-z expansion, clustered into buy / make / problem / adjacent.
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
+- `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.
 - `scripts/cac_model.py`: `--template` prints an inputs file of E4 placeholders; running it gives CAC, LTV:CAC, break-even repeat rate and a tornado sensitivity per channel.
 
 Every number in `cac_model.py --template` is a placeholder to be replaced. The model's main job before launch is to show which unknown matters most, so you know what to test first.

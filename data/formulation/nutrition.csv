@@ -1,0 +1,54 @@
+id,name,kind,protein_g,fat_g,carbs_g,kcal,source_url,date_captured,grade,note
+wpc80,Whey protein concentrate 80,protein,80,6,7,400,manual,2026-10-28,E4,protein % from seed/protein_sources.json; other macros typical. Replace with your pack label
+wpi90,Whey protein isolate 90,protein,90,1,2,375,manual,2026-10-28,E4,protein % from seed/protein_sources.json; other macros typical. Replace with your pack label
+casein,Micellar casein,protein,80,1.5,5,360,manual,2026-10-28,E4,protein % from seed/protein_sources.json; water-holding protein
+mpc70,Milk protein concentrate 70,protein,70,1.5,17,360,manual,2026-10-28,E4,protein % from seed/protein_sources.json; water-holding protein
+smp,Skimmed milk powder,protein,34,0.8,52,357,manual,2026-10-28,E4,protein % from seed/protein_sources.json; water-holding protein
+pea,Pea protein isolate 80,protein,80,7,3,390,manual,2026-10-28,E4,protein % from seed/protein_sources.json
+rice_protein,Brown rice protein 80,protein,80,3,8,380,manual,2026-10-28,E4,protein % from seed/protein_sources.json
+soy_isolate,Soy protein isolate 90,protein,90,1,2,370,manual,2026-10-28,E4,protein % from seed/protein_sources.json; soy is a declarable allergen
+peanut_flour,Peanut flour (defatted),protein,45,12,33,400,manual,2026-10-28,E4,protein % from seed/protein_sources.json; peanut is a declarable allergen
+sattu,Sattu (roasted chana),flour,22,6,60,400,manual,2026-10-28,E4,protein % from seed/protein_sources.json; keep sattu at or under 30% of protein blend (seed f5)
+besan,Besan (chickpea flour),flour,22,6,58,390,manual,2026-10-28,E4,protein % from seed/protein_sources.json
+almond_flour,Blanched almond flour,flour,21,50,20,580,manual,2026-10-28,E4,protein % from seed/protein_sources.json; carbs include about 10 g fibre
+rice_flour,Fine rice flour,flour,6,1.4,80,366,manual,2026-10-28,E4,typical value
+jowar_flour,Jowar (sorghum) flour,flour,10,3.5,72,349,manual,2026-10-28,E4,typical value
+ragi_flour,Ragi (finger millet) flour,flour,7.3,1.3,72,328,manual,2026-10-28,E4,typical value
+oat_flour,Oat flour,flour,13,7,66,390,manual,2026-10-28,E4,typical value; oats are not gluten-free unless certified
+pistachio,Pistachio powder/flour,flour,20,45,28,560,manual,2026-10-28,E4,typical value; tree-nut allergen
+cocoa,Dutch-processed cocoa powder,flavour,20,21,45,350,manual,2026-10-28,E4,typical 20-22% fat cocoa; carbs include about 30 g fibre
+choc_chips,Dark chocolate chips 55% sugar-reduced,inclusion,6,35,50,500,manual,2026-10-28,E4,typical value; varies a lot by brand
+erythritol,Erythritol,sweetener,0,0,100,0,manual,2026-10-28,E4,counted 0 kcal per seed nutrition assumption
+allulose,Allulose,sweetener,0,0,100,40,manual,2026-10-28,E4,counted 0.4 kcal/g per seed nutrition assumption; FSSAI status flagged in catalog
+stevia,Stevia Reb-A,sweetener,0,0,0,0,manual,2026-10-28,E4,negligible at use level
+sucralose,Sucralose,sweetener,0,0,0,0,manual,2026-10-28,E4,negligible at use level
+jaggery,Jaggery powder,sweetener,0.4,0.1,98,383,manual,2026-10-28,E4,typical value; counts as added sugar
+sugar,Sugar,sweetener,0,0,100,400,manual,2026-10-28,E4,typical value; counts as added sugar
+maltodextrin,Maltodextrin,sweetener,0,0,95,380,manual,2026-10-28,E4,typical value
+inulin,Inulin (chicory),binder,0,0,90,150,manual,2026-10-28,E4,fibre counted about 1.5 kcal/g per seed assumption
+psyllium,Psyllium husk powder,binder,1.5,0.5,85,170,manual,2026-10-28,E4,mostly fibre; about 2 kcal/g
+xanthan,Xanthan gum,binder,0,0,80,160,manual,2026-10-28,E4,negligible at use level
+baking_powder,Baking powder,leavening,0,0,28,53,manual,2026-10-28,E4,typical value
+baking_soda,Baking soda,leavening,0,0,0,0,manual,2026-10-28,E4,typical value
+salt,Fine salt,seasoning,0,0,0,0,manual,2026-10-28,E4,typical value
+vanilla,Vanilla flavour powder,flavour,0,0,95,380,manual,2026-10-28,E4,usually on a maltodextrin carrier
+orange_flavour,Orange flavour powder,flavour,0,0,90,360,manual,2026-10-28,E4,typical value
+orange_powder,Dehydrated orange peel powder,flavour,5,1,75,330,manual,2026-10-28,E4,typical value
+cardamom,Cardamom powder,flavour,11,7,68,311,manual,2026-10-28,E4,typical value
+cinnamon,Cinnamon powder,flavour,4,1.2,81,247,manual,2026-10-28,E4,typical value
+nutmeg,Nutmeg powder,flavour,6,36,49,525,manual,2026-10-28,E4,typical value
+saffron,Saffron,flavour,11,6,65,310,manual,2026-10-28,E4,negligible at use level
+rose,Rose petal powder,flavour,3,1,60,250,manual,2026-10-28,E4,typical value
+coffee,Instant coffee,flavour,12,0.5,75,350,manual,2026-10-28,E4,typical value
+beetroot,Beetroot powder,flavour,10,1,75,330,manual,2026-10-28,E4,colour; typical value
+carrot_powder,Dehydrated carrot powder,flavour,7,1.5,70,340,manual,2026-10-28,E4,typical value
+fd_strawberry,Freeze-dried strawberry powder,flavour,7,3,80,360,manual,2026-10-28,E4,typical value
+cranberries,Dried cranberries,inclusion,0.5,1,80,320,manual,2026-10-28,E4,typical value
+fat_powder,Vegetable fat powder,fat,2,35,60,540,manual,2026-10-28,E4,typical non-dairy creamer
+coconut_milk_powder,Coconut milk powder,fat,7,60,25,670,manual,2026-10-28,E4,typical value
+ghee,Ghee,fat,0,99.5,0,895,manual,2026-10-28,E4,user-added fat
+oil,Neutral oil,fat,0,100,0,900,manual,2026-10-28,E4,user-added fat
+milk_toned,Toned milk,liquid,3.1,3,4.7,58,manual,2026-10-28,E4,per 100 ml; liquid the buyer adds; grams taken as ml
+water,Water,liquid,0,0,0,0,manual,2026-10-28,E4,liquid the buyer adds
+egg,Whole egg,egg,12.6,9.5,0.7,143,manual,2026-10-28,E4,CONFLICTS with vegetarian / no-egg hypothesis; never in the pack
+egg_white_powder,Egg-white powder,egg,80,0,5,360,manual,2026-10-28,E4,CONFLICTS with vegetarian / no-egg hypothesis; never in the pack
