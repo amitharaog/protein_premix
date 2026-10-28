@@ -1,0 +1,110 @@
+[
+ {
+  "id": "score",
+  "kind": "score",
+  "score": 6.5,
+  "text": "Demand-side signals are strong and current: protein-based products are growing ~15% CAGR (IMARC), protein orders on Instamart grew 150% in two years with protein snacks ~300%, quick commerce runs >9M orders/day and is projected ~7x by FY31, and Gen Z treats protein as a core health marker. There is also a clear format white space - no Indian brand sells a single-serve protein mug/air-fryer cake, and the closest analogs are multi-serve protein pancake mixes or non-protein cooker/mug cake mixes. Offsetting this: microwave household penetration is only ~3.4% nationally, so the hero 1-minute use case addresses a narrow urban affluent base; price sensitivity is high (71% would switch to cheaper protein; ready-to-eat 10 g protein snacks sit at ~₹45/serve); 10 g protein is modest versus global analogs; formulation (eggless + gluten-free + microwave rise) is technically hard; and regulatory scrutiny of protein claims and proposed sugar warnings is intensifying. Net: market is ready for a focused metro, q-commerce-led test launch with multi-appliance instructions and a ₹60-90/serve price target, but not yet for mass national scale - hence 6.5/10."
+ },
+ {
+  "id": "r1",
+  "kind": "risk",
+  "score": null,
+  "text": "Microwave access is very low nationally (3.4% of households, Euromonitor 2024); product must work convincingly in air fryer, OTG and pressure cooker, and the 1-minute promise only applies to a small affluent base."
+ },
+ {
+  "id": "r2",
+  "kind": "risk",
+  "score": null,
+  "text": "Price sensitivity: 71% of urban respondents would switch to cheaper protein; 10 g protein snacks already sell at ~₹45/serve (SuperYou wafer), Betty Crocker mug treat ~₹50/serve. A ₹100+ sachet needs strong taste/convenience justification."
+ },
+ {
+  "id": "r3",
+  "kind": "risk",
+  "score": null,
+  "text": "Protein per serve (10 g) is far below US analogs (BĀK 35 g+, FlapJacked 20 g, Myprotein mug cake 25 g+) - fitness-focused buyers may see it as weak; mainstream buyers may not value it."
+ },
+ {
+  "id": "r4",
+  "kind": "risk",
+  "score": null,
+  "text": "Regulatory scrutiny of protein claims is rising (FSSAI notices June 2026, mislabelling studies, 'protein washing' media narrative, proposed FOP sugar warnings)."
+ },
+ {
+  "id": "r5",
+  "kind": "risk",
+  "score": null,
+  "text": "Eggless + gluten-free + high protein + good rise in a microwave is a hard formulation; texture failure in mug format drives trial-without-repeat."
+ },
+ {
+  "id": "r6",
+  "kind": "risk",
+  "score": null,
+  "text": "Category education needed - no Indian single-serve protein mug-cake category exists; incumbents (MuscleBlaze, Myprotein, Cosmix, Pillsbury/General Mills) can copy quickly."
+ },
+ {
+  "id": "r7",
+  "kind": "risk",
+  "score": null,
+  "text": "Quick commerce listing fees, margins and dark-store shelf competition (~10,000 protein SKUs on Instamart) raise CAC for a new brand; Indian D2C repeat rates are typically only 10-30%."
+ },
+ {
+  "id": "r8",
+  "kind": "risk",
+  "score": null,
+  "text": "Whey-based shelf-stable premix carries quality/heat-damage and aflatoxin/contaminant testing risk given trust deficit in protein products."
+ },
+ {
+  "id": "o1",
+  "kind": "opportunity",
+  "score": null,
+  "text": "White space: no Indian brand found selling single-serve, microwave/air-fryer protein mug cakes; Indian protein mixes are all multi-serve pancake/dosa formats."
+ },
+ {
+  "id": "o2",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Q-commerce protein boom: Instamart protein orders +150% in 2 yrs, protein snacks ~+300%; impulse dessert + protein fits 10-minute delivery and AOV-building."
+ },
+ {
+  "id": "o3",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Eggless/vegetarian default (39% vegetarian) is a moat vs imported mug cakes and fits Indian incumbents' eggless cooker-cake norm."
+ },
+ {
+  "id": "o4",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Air fryer (+103% YoY online GMV) and OTG (6M+ units/yr) adoption expand the 'bake-it-yourself' base beyond microwaves; pressure cooker (~80% urban, dated) enables mass-market fallback."
+ },
+ {
+  "id": "o5",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Trust gap after mislabelling scandals: third-party lab-tested, transparent label could differentiate."
+ },
+ {
+  "id": "o6",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Clears FSSAI 'high protein' threshold on a 50 g / 10 g basis (20 g/100 g vs ~10.8 g/100 g required), enabling front-of-pack claim if substantiated."
+ },
+ {
+  "id": "o7",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Sachet economics proven in India (Protinex sachets, TWT protein samplers) - singles for trial, variety bundles/subscriptions for repeat."
+ },
+ {
+  "id": "o8",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Gen Z: 82% see protein as core to a healthy diet - social/UGC-friendly 'mug cake in 60 s' content; gifting and hostel/PG use-cases."
+ },
+ {
+  "id": "o9",
+  "kind": "opportunity",
+  "score": null,
+  "text": "Tier II protein growth outpacing metros on Instamart suggests expansion runway once metro PMF proven."
+ }
+]

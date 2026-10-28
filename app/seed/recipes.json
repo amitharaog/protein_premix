@@ -1,0 +1,1197 @@
+[
+ {
+  "items": [
+   {
+    "grams": 37.5,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 2.5,
+    "id": "maltodextrin",
+    "label": "Maltodextrin"
+   },
+   {
+    "grams": 0.6,
+    "id": "orange_flavour",
+    "label": "Natural orange flavour"
+   },
+   {
+    "grams": 0.3,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.04,
+    "id": "sucralose",
+    "label": "Sucralose"
+   },
+   {
+    "grams": 8,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 3.5,
+    "id": "orange_powder",
+    "label": "Dehydrated orange powder"
+   },
+   {
+    "grams": 3.5,
+    "id": "cranberries",
+    "label": "Dried cranberries (unsweetened)"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free, GF)"
+   },
+   {
+    "grams": 0.03,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 0.2,
+    "id": "orange_flavour",
+    "label": "Orange zest/oil (natural)"
+   }
+  ],
+  "name": "Cranberry Orange PRO (BĀK-style)",
+  "order": 0,
+  "protein_g": 31.9,
+  "slug": "cranberry-orange-pro-bak-style",
+  "total_g": 58.5,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 8,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 5,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 8,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 8,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch, 20-22% fat)"
+   },
+   {
+    "grams": 10,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 5,
+    "id": "choc_chips",
+    "label": "Dark chocolate chips 55% (sugar-reduced)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "baking_soda",
+    "label": "Baking soda"
+   },
+   {
+    "grams": 0.3,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.3,
+    "id": "vanilla",
+    "label": "Natural vanilla flavour powder"
+   }
+  ],
+  "name": "Classic Chocolate Fudge Mug Cake",
+  "order": 1,
+  "protein_g": 14.8,
+  "slug": "classic-chocolate-fudge-mug-cake",
+  "total_g": 58,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 12,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 9,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 9,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch, 20-22% fat)"
+   },
+   {
+    "grams": 5,
+    "id": "allulose",
+    "label": "Allulose"
+   },
+   {
+    "grams": 5,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.06,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 4,
+    "id": "choc_chips",
+    "label": "Dark chocolate chips 55% (sugar-reduced)"
+   },
+   {
+    "grams": 1.5,
+    "id": "inulin",
+    "label": "Inulin (chicory)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "baking_soda",
+    "label": "Baking soda"
+   },
+   {
+    "grams": 0.3,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.3,
+    "id": "vanilla",
+    "label": "Natural vanilla flavour powder"
+   }
+  ],
+  "name": "Deep Chocolate PRO (BĀK-style)",
+  "order": 2,
+  "protein_g": 20.8,
+  "slug": "deep-chocolate-pro-bak-style",
+  "total_g": 59.6,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 8,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 5,
+    "id": "mpc70",
+    "label": "Milk protein concentrate 70"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 10,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 10,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 4,
+    "id": "allulose",
+    "label": "Allulose"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 3,
+    "id": "fat_powder",
+    "label": "Vegetable fat powder (70% fat, palm-free sunflower)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.3,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.6,
+    "id": "vanilla",
+    "label": "Natural vanilla flavour powder"
+   }
+  ],
+  "name": "Vanilla Bean Birthday Mug Cake",
+  "order": 3,
+  "protein_g": 12.5,
+  "slug": "vanilla-bean-birthday-mug-cake",
+  "total_g": 54.3,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 12,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 10,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 9,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 5,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 8,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 6,
+    "id": "allulose",
+    "label": "Allulose"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 1.5,
+    "id": "cinnamon",
+    "label": "Cinnamon powder"
+   },
+   {
+    "grams": 3,
+    "id": "fat_powder",
+    "label": "Vegetable fat powder (70% fat, palm-free sunflower)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.3,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.4,
+    "id": "vanilla",
+    "label": "Natural flavour powder (as named)"
+   }
+  ],
+  "name": "Cinnamon Roll PRO (BĀK-style, swirl pouch)",
+  "order": 4,
+  "protein_g": 19.7,
+  "slug": "cinnamon-roll-pro-bak-style-swirl-pouch",
+  "total_g": 58.4,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 5,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 4,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 9,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 8,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 4,
+    "id": "fd_strawberry",
+    "label": "Freeze-dried strawberry powder"
+   },
+   {
+    "grams": 0.5,
+    "id": "beetroot",
+    "label": "Beetroot powder (colour)"
+   },
+   {
+    "grams": 10,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.4,
+    "id": "fd_strawberry",
+    "label": "Natural flavour powder (as named)"
+   }
+  ],
+  "name": "Strawberry Cream Mug Cake",
+  "order": 5,
+  "protein_g": 14.6,
+  "slug": "strawberry-cream-mug-cake",
+  "total_g": 53.3,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 6,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 4,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 8,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 8,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 4,
+    "id": "pistachio",
+    "label": "Pistachio powder"
+   },
+   {
+    "grams": 8,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 3,
+    "id": "jaggery",
+    "label": "Jaggery powder"
+   },
+   {
+    "grams": 0.03,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 0.008,
+    "id": "saffron",
+    "label": "Saffron (kesar)"
+   },
+   {
+    "grams": 0.3,
+    "id": "cardamom",
+    "label": "Cardamom (elaichi) powder"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.4,
+    "id": "cardamom",
+    "label": "Natural flavour powder (as named)"
+   }
+  ],
+  "name": "Rasmalai Kesar-Pista Mug Cake",
+  "order": 6,
+  "protein_g": 15.3,
+  "slug": "rasmalai-kesar-pista-mug-cake",
+  "total_g": 54.1,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 5,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 9,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 8,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 2.5,
+    "id": "coffee",
+    "label": "Instant coffee (chicory blend, filter-style)"
+   },
+   {
+    "grams": 1.5,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch, 20-22% fat)"
+   },
+   {
+    "grams": 4,
+    "id": "jaggery",
+    "label": "Jaggery powder"
+   },
+   {
+    "grams": 8,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.03,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 3,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Filter Coffee Kaapi Mug Cake",
+  "order": 7,
+  "protein_g": 15,
+  "slug": "filter-coffee-kaapi-mug-cake",
+  "total_g": 53.4,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 5,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 4,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 9,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 6,
+    "id": "jowar_flour",
+    "label": "Jowar (sorghum) flour"
+   },
+   {
+    "grams": 5,
+    "id": "carrot_powder",
+    "label": "Dehydrated carrot powder"
+   },
+   {
+    "grams": 4,
+    "id": "jaggery",
+    "label": "Jaggery powder"
+   },
+   {
+    "grams": 7,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.03,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 0.3,
+    "id": "cardamom",
+    "label": "Cardamom (elaichi) powder"
+   },
+   {
+    "grams": 0.1,
+    "id": "nutmeg",
+    "label": "Nutmeg powder"
+   },
+   {
+    "grams": 1.2,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.3,
+    "id": "cardamom",
+    "label": "Natural flavour powder (as named)"
+   }
+  ],
+  "name": "Gajar Halwa Carrot Cake",
+  "order": 8,
+  "protein_g": 14.9,
+  "slug": "gajar-halwa-carrot-cake",
+  "total_g": 53.3,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 7,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 4,
+    "id": "casein",
+    "label": "Micellar casein"
+   },
+   {
+    "grams": 8,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 8,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 3,
+    "id": "jaggery",
+    "label": "Jaggery powder"
+   },
+   {
+    "grams": 8,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 3,
+    "id": "allulose",
+    "label": "Allulose"
+   },
+   {
+    "grams": 0.03,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 0.4,
+    "id": "cardamom",
+    "label": "Cardamom (elaichi) powder"
+   },
+   {
+    "grams": 0.3,
+    "id": "rose",
+    "label": "Rose petal powder"
+   },
+   {
+    "grams": 2,
+    "id": "fat_powder",
+    "label": "Vegetable fat powder (70% fat, palm-free sunflower)"
+   },
+   {
+    "grams": 1,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 2.2,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.3,
+    "id": "rose",
+    "label": "Natural flavour powder (as named)"
+   }
+  ],
+  "name": "Gulab Jamun Elaichi Mug Cake",
+  "order": 9,
+  "protein_g": 14.9,
+  "slug": "gulab-jamun-elaichi-mug-cake",
+  "total_g": 56.4,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 9,
+    "id": "pea",
+    "label": "Pea protein isolate 80"
+   },
+   {
+    "grams": 6,
+    "id": "rice_protein",
+    "label": "Brown rice protein 80"
+   },
+   {
+    "grams": 10,
+    "id": "ragi_flour",
+    "label": "Ragi (finger millet) flour"
+   },
+   {
+    "grams": 8,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 7,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch, 20-22% fat)"
+   },
+   {
+    "grams": 5,
+    "id": "jaggery",
+    "label": "Jaggery powder"
+   },
+   {
+    "grams": 7,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia (Reb-A 97%)"
+   },
+   {
+    "grams": 3,
+    "id": "coconut_milk_powder",
+    "label": "Coconut milk powder"
+   },
+   {
+    "grams": 1.5,
+    "id": "psyllium",
+    "label": "Psyllium husk powder"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 2.5,
+    "id": "baking_powder",
+    "label": "Baking powder (GF, double-acting)"
+   },
+   {
+    "grams": 0.2,
+    "id": "baking_soda",
+    "label": "Baking soda"
+   },
+   {
+    "grams": 0.3,
+    "id": "salt",
+    "label": "Salt"
+   },
+   {
+    "grams": 0.4,
+    "id": "vanilla",
+    "label": "Natural vanilla flavour powder"
+   }
+  ],
+  "name": "Ragi Chocolate Millet Mug Cake (Vegan)",
+  "order": 10,
+  "protein_g": 15.9,
+  "slug": "ragi-chocolate-millet-mug-cake-vegan",
+  "total_g": 60.1,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 36,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 7,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch)"
+   },
+   {
+    "grams": 4,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Simple Chocolate Fudge",
+  "order": 20,
+  "protein_g": 32.3,
+  "slug": "simple-simple-chocolate-fudge",
+  "total_g": 59.7,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 38,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 12,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 5,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.5,
+    "id": "vanilla",
+    "label": "Vanilla flavour powder"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Simple Vanilla",
+  "order": 21,
+  "protein_g": 32.9,
+  "slug": "simple-simple-vanilla",
+  "total_g": 58.2,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 35,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 6,
+    "id": "smp",
+    "label": "Skimmed milk powder"
+   },
+   {
+    "grams": 4,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.4,
+    "id": "cardamom",
+    "label": "Cardamom (elaichi) powder"
+   },
+   {
+    "grams": 0.01,
+    "id": "saffron",
+    "label": "Saffron (kesar)"
+   },
+   {
+    "grams": 0.1,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Simple Kesar Elaichi",
+  "order": 22,
+  "protein_g": 32.2,
+  "slug": "simple-simple-kesar-elaichi",
+  "total_g": 58,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 37,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 3,
+    "id": "coffee",
+    "label": "Instant coffee"
+   },
+   {
+    "grams": 2,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch)"
+   },
+   {
+    "grams": 4,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Simple Filter Coffee",
+  "order": 23,
+  "protein_g": 32.5,
+  "slug": "simple-simple-filter-coffee",
+  "total_g": 58.7,
+  "type": "Indian"
+ },
+ {
+  "items": [
+   {
+    "grams": 38,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 11,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 5,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 1.5,
+    "id": "cinnamon",
+    "label": "Cinnamon powder"
+   },
+   {
+    "grams": 2.3,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.3,
+    "id": "vanilla",
+    "label": "Vanilla flavour powder"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Simple Cinnamon Sugar",
+  "order": 24,
+  "protein_g": 32.8,
+  "slug": "simple-simple-cinnamon-sugar",
+  "total_g": 58.5,
+  "type": "Global"
+ },
+ {
+  "items": [
+   {
+    "grams": 17,
+    "id": "wpc80",
+    "label": "Whey protein concentrate 80 (unflavoured)"
+   },
+   {
+    "grams": 16,
+    "id": "rice_flour",
+    "label": "Rice flour (fine)"
+   },
+   {
+    "grams": 10,
+    "id": "almond_flour",
+    "label": "Almond flour (blanched)"
+   },
+   {
+    "grams": 7,
+    "id": "cocoa",
+    "label": "Cocoa powder (Dutch)"
+   },
+   {
+    "grams": 6,
+    "id": "erythritol",
+    "label": "Erythritol"
+   },
+   {
+    "grams": 0.04,
+    "id": "stevia",
+    "label": "Stevia"
+   },
+   {
+    "grams": 2.5,
+    "id": "baking_powder",
+    "label": "Baking powder (aluminium-free)"
+   },
+   {
+    "grams": 0.2,
+    "id": "xanthan",
+    "label": "Xanthan gum"
+   },
+   {
+    "grams": 0.2,
+    "id": "salt",
+    "label": "Salt"
+   }
+  ],
+  "name": "Daily Chocolate (lighter, ~18 g)",
+  "order": 25,
+  "protein_g": 18.1,
+  "slug": "simple-daily-chocolate-lighter-15-g",
+  "total_g": 58.9,
+  "type": "Global"
+ }
+]

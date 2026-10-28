@@ -1,0 +1,227 @@
+[
+ {
+  "id": "q1",
+  "quote": "The pancakes are fluffy and taste great.",
+  "paraphrase": false,
+  "source": "Myprotein India - Protein Pancake Mix review (5/5)",
+  "url": "https://www.myprotein.co.in/p/12263804/reviews",
+  "sentiment": "positive",
+  "theme": "taste"
+ },
+ {
+  "id": "q2",
+  "quote": "ready in just two minutes!!",
+  "paraphrase": false,
+  "source": "Myprotein India - Protein Pancake Mix review (5/5)",
+  "url": "https://www.myprotein.co.in/p/12263804/reviews",
+  "sentiment": "positive",
+  "theme": "convenience"
+ },
+ {
+  "id": "q3",
+  "quote": "Yes, it's lil dry but if you'll have it with honey or peanut butter it will taste superb!",
+  "paraphrase": false,
+  "source": "Myprotein India - Protein Pancake Mix review (5/5)",
+  "url": "https://www.myprotein.co.in/p/12263804/reviews",
+  "sentiment": "neutral",
+  "theme": "texture"
+ },
+ {
+  "id": "q4",
+  "quote": "i haven't tried it just with the pancake mix coz it doest taste that great.",
+  "paraphrase": false,
+  "source": "Myprotein India - Protein Pancake Mix review",
+  "url": "https://www.myprotein.co.in/p/12263804/reviews",
+  "sentiment": "negative",
+  "theme": "taste"
+ },
+ {
+  "id": "q5",
+  "quote": "Perfect only if you strictly go with the suggested quantity of mix",
+  "paraphrase": false,
+  "source": "Myprotein India - Protein Pancake Mix review (5/5)",
+  "url": "https://www.myprotein.co.in/p/12263804/reviews",
+  "sentiment": "neutral",
+  "theme": "convenience"
+ },
+ {
+  "id": "q6",
+  "quote": "It's chocolaty, gooey and satisfying without any artificial protein taste.",
+  "paraphrase": false,
+  "source": "Myprotein Protein Mug Cake review (5/5, UAE site - global analog)",
+  "url": "https://www.myprotein.ae/sports-nutrition/protein-mug-cake/11308926.reviews",
+  "sentiment": "positive",
+  "theme": "taste"
+ },
+ {
+  "id": "q7",
+  "quote": "The texture is really not that good very chewy and dry.",
+  "paraphrase": false,
+  "source": "Myprotein Protein Mug Cake review (3/5, UAE site)",
+  "url": "https://www.myprotein.ae/sports-nutrition/protein-mug-cake/11308926.reviews",
+  "sentiment": "negative",
+  "theme": "texture"
+ },
+ {
+  "id": "q8",
+  "quote": "you have to eat it very fast or it'll dry like a rock.",
+  "paraphrase": false,
+  "source": "Myprotein Protein Mug Cake review (3/5, UAE site)",
+  "url": "https://www.myprotein.ae/sports-nutrition/protein-mug-cake/11308926.reviews",
+  "sentiment": "negative",
+  "theme": "texture"
+ },
+ {
+  "id": "q9",
+  "quote": "it pretty much felt like a sponge with a gentle chocolatey flavour.",
+  "paraphrase": false,
+  "source": "Myprotein Protein Mug Cake review (2/5, UAE site)",
+  "url": "https://www.myprotein.ae/sports-nutrition/protein-mug-cake/11308926.reviews",
+  "sentiment": "negative",
+  "theme": "texture"
+ },
+ {
+  "id": "q10",
+  "quote": "The taste also kind of artificial and very sweet to my liking.",
+  "paraphrase": false,
+  "source": "Myprotein Protein Mug Cake review (3/5, UAE site)",
+  "url": "https://www.myprotein.ae/sports-nutrition/protein-mug-cake/11308926.reviews",
+  "sentiment": "negative",
+  "theme": "taste"
+ },
+ {
+  "id": "q11",
+  "quote": "we failed at one thing. Making it maad tasty ... If it's not maad tasty, it's not SuperYou.",
+  "paraphrase": false,
+  "source": "SuperYou co-founder Nikunj Biyani on killing a 20g protein bar after 100+ people found it too chewy (afaqs)",
+  "url": "https://www.afaqs.com/news/mktg/chewy-taste-forces-superyou-to-kill-new-20g-protein-bar-10623123",
+  "sentiment": "negative",
+  "theme": "texture"
+ },
+ {
+  "id": "q12",
+  "quote": "Earlier protein prototypes were 'too chewy' and 'powdery' for Indian tastes; protein must go into 'something which is more edible'.",
+  "paraphrase": true,
+  "source": "Govt food scientist Aashitosh Inamdar via Reuters/The Vibes",
+  "url": "https://www.thevibes.com/articles/lifestyle/112026/in-protein-deficient-india-mcdonalds-bollywood-and-cricket-fuel-wellness-craze",
+  "sentiment": "negative",
+  "theme": "texture"
+ },
+ {
+  "id": "q13",
+  "quote": "The protein addition makes this easier to eat without much guilt",
+  "paraphrase": false,
+  "source": "Customer Baiju C.T., 53 (Reuters/The Vibes)",
+  "url": "https://www.thevibes.com/articles/lifestyle/112026/in-protein-deficient-india-mcdonalds-bollywood-and-cricket-fuel-wellness-craze",
+  "sentiment": "positive",
+  "theme": "health"
+ },
+ {
+  "id": "q14",
+  "quote": "I buy protein yoghurt, bars and even protein coffee because they seem like healthier options.",
+  "paraphrase": false,
+  "source": "Bengaluru consumer Arohi Tejpal (Deccan Chronicle)",
+  "url": "https://www.deccanchronicle.com/tabloid/hyderabad-chronicle/whey-too-much-protein-fixation-1980195",
+  "sentiment": "positive",
+  "theme": "health"
+ },
+ {
+  "id": "q15",
+  "quote": "Earlier I never checked nutrition labels, but now I automatically compare protein content.",
+  "paraphrase": false,
+  "source": "Bengaluru consumer Arohi Tejpal (Deccan Chronicle)",
+  "url": "https://www.deccanchronicle.com/tabloid/hyderabad-chronicle/whey-too-much-protein-fixation-1980195",
+  "sentiment": "neutral",
+  "theme": "trust/labels"
+ },
+ {
+  "id": "q16",
+  "quote": "The solution isn't necessarily buying protein cookies or protein chips.",
+  "paraphrase": false,
+  "source": "Nutritionist Vaishnavi Pen (Deccan Chronicle)",
+  "url": "https://www.deccanchronicle.com/tabloid/hyderabad-chronicle/whey-too-much-protein-fixation-1980195",
+  "sentiment": "negative",
+  "theme": "health"
+ },
+ {
+  "id": "q17",
+  "quote": "most recreational exercisers don't need bodybuilder-level protein intakes",
+  "paraphrase": false,
+  "source": "Fitness coach Ajay Solanki (Deccan Chronicle)",
+  "url": "https://www.deccanchronicle.com/tabloid/hyderabad-chronicle/whey-too-much-protein-fixation-1980195",
+  "sentiment": "negative",
+  "theme": "health"
+ },
+ {
+  "id": "q18",
+  "quote": "Put 'protein' in large letters on a packet and the product begins to look as though it has been to the gym.",
+  "paraphrase": false,
+  "source": "Srinath Sridharan opinion column (Basis Point Insight)",
+  "url": "https://basispointinsight.com/Story/sarci-sense--india-has-discovered-protein--again-_5387b01a87b9.html",
+  "sentiment": "negative",
+  "theme": "trust/labels"
+ },
+ {
+  "id": "q19",
+  "quote": "adding protein to a highly processed product does not magically turn it into a wholesome food.",
+  "paraphrase": false,
+  "source": "Srinath Sridharan opinion column (Basis Point Insight)",
+  "url": "https://basispointinsight.com/Story/sarci-sense--india-has-discovered-protein--again-_5387b01a87b9.html",
+  "sentiment": "negative",
+  "theme": "health"
+ },
+ {
+  "id": "q20",
+  "quote": "Protein washing: the protein on the label may be accurate, but it distracts from added sugar, often with a steep price increase that goes unnoticed.",
+  "paraphrase": true,
+  "source": "MedBound Times article on 'protein washing'",
+  "url": "https://www.medboundtimes.com/diet-and-nutrition/protein-washing-high-protein-food-marketing",
+  "sentiment": "negative",
+  "theme": "price"
+ },
+ {
+  "id": "q21",
+  "quote": "the majority of protein supplements did not contain labelled and advertised protein content (25 of 36 tested had 10-50% less protein)",
+  "paraphrase": false,
+  "source": "Study author via NutraIngredients",
+  "url": "https://www.nutraingredients.com/Article/2024/04/29/Protein-products-tested-in-India-don-t-meet-label-claims",
+  "sentiment": "negative",
+  "theme": "trust/labels"
+ },
+ {
+  "id": "q22",
+  "quote": "Affordability is the top reason urban Indians eat less protein, followed by taste; 71% would switch to more affordable protein alternatives.",
+  "paraphrase": true,
+  "source": "LocalCircles/Country Delight survey (press release via The Wire)",
+  "url": "https://m.thewire.in/article/ptiprnews/indias-protein-gap-a-survey-by-localcircles-country-delight-reveals-60-of-urban-india-is-protein-deficient",
+  "sentiment": "negative",
+  "theme": "price"
+ },
+ {
+  "id": "q23",
+  "quote": "86% say protein matters when picking snacks, but only 32% will pay a premium; 62% rank ingredient transparency as the top brand factor.",
+  "paraphrase": true,
+  "source": "Farmley Healthy Snacking Report 2026 (Telangana Today)",
+  "url": "https://telanganatoday.com/86-per-cent-indians-prioritise-protein-in-snacks-report",
+  "sentiment": "neutral",
+  "theme": "price"
+ },
+ {
+  "id": "q24",
+  "quote": "Across ~60K Reddit comments and 28K community-group posts, convenience (41%) and taste (24%) drive protein interest; negatives (11%) cite artificial taste, authenticity and pricing.",
+  "paraphrase": true,
+  "source": "Convosight social-listening case study (India, Jul 2024-Jun 2025)",
+  "url": "https://www.convosight.com/case-studies/protein-consumption-strategy-analysis/",
+  "sentiment": "neutral",
+  "theme": "convenience"
+ },
+ {
+  "id": "q25",
+  "quote": "Protein category has long meant 'powders that taste like chalk, and bars that look and feel like cardboard'.",
+  "paraphrase": false,
+  "source": "The CapTable on SuperYou",
+  "url": "https://the-captable.com/2025/07/can-superyou-change-indias-snacking-with-protein-snacks/",
+  "sentiment": "negative",
+  "theme": "taste"
+ }
+]

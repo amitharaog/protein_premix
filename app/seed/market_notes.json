@@ -1,0 +1,296 @@
+[
+ {
+  "section": "Appliance access",
+  "item": "Microwave oven",
+  "detail": "3.4% of households (<4% in 2023) (India national (urban split not reported), 2024)",
+  "source_url": "https://www.euromonitor.com/globalassets/samples/pdf/consumer-appliances/microwaves/microwaves-in-india---pdf-sample.pdf",
+  "id": "n1"
+ },
+ {
+  "section": "Appliance access",
+  "item": "Air fryer",
+  "detail": "not found (household %); online GMV +103% YoY Aug 2026; market USD 48.8M (2025) (India, 2025-2026)",
+  "source_url": "https://bwretailworld.com/companies/air-fryers-flat-grills-drive-online-small-appliance-growth-with-103-94-gmv-surge",
+  "id": "n2"
+ },
+ {
+  "section": "Appliance access",
+  "item": "Air fryer",
+  "detail": "Sales ~+38% YoY; Mumbai leads (Croma retail (India), 2025)",
+  "source_url": "https://www.freepressjournal.in/tech/mumbai-leads-75-inch-tvs-air-fryer-sales-in-india-says-croma-report",
+  "id": "n3"
+ },
+ {
+  "section": "Appliance access",
+  "item": "OTG",
+  "detail": "not found (household %); 6M+ units/yr, INR 2,000 Cr+ market (India retail audit, FY2025-26)",
+  "source_url": "https://matrix.indiagri.in/otg-report",
+  "id": "n4"
+ },
+ {
+  "section": "Appliance access",
+  "item": "Pressure cooker",
+  "detail": "~80% of urban households (stated as 'believed'; dated estimate) (Urban India, 2010)",
+  "source_url": "https://openthemagazine.com/features/living/the-final-whistle",
+  "id": "n5"
+ },
+ {
+  "section": "Channels",
+  "item": "Quick commerce - scale",
+  "detail": ">9M daily orders across 6 platforms; Blinkit 3.4-3.6M/day, Zepto 2.4-2.6M, Instamart 1.3-1.45M, Flipkart Minutes 0.9-1M, Amazon Now 0.6-0.7M (Aug 2026 estimates)",
+  "source_url": "https://www.newsbytesapp.com/news/business/india-s-quick-commerce-platforms-cross-9m-daily-orders/story",
+  "id": "n6"
+ },
+ {
+  "section": "Channels",
+  "item": "Quick commerce - AOV",
+  "detail": "Blinkit AOV ₹518, Instamart ₹691 (June qtr 2026); Zepto ~₹300-350 (industry est.)",
+  "source_url": "https://www.newsbytesapp.com/news/business/india-s-quick-commerce-platforms-cross-9m-daily-orders/story",
+  "id": "n7"
+ },
+ {
+  "section": "Channels",
+  "item": "Quick commerce - growth",
+  "detail": "GMV ~USD 13B FY26 to ~USD 90B FY31; urban users 28M->50M; small-city MAU up to 60M by 2031",
+  "source_url": "https://yourstory.com/2026/10/india-quick-commerce-set-for-usd-90b-boom-by-2031-google-redseer-study",
+  "id": "n8"
+ },
+ {
+  "section": "Channels",
+  "item": "Quick commerce - protein",
+  "detail": "Instamart protein orders +150% in 2 yrs; ~10,000 protein SKUs; >6 in 10 searching protein chips/high-protein paneer bought directly from search",
+  "source_url": "https://kadence.com/knowledge/why-protein-has-become-indias-new-health-shortcut/",
+  "id": "n9"
+ },
+ {
+  "section": "Channels",
+  "item": "Quick commerce share of e-retail",
+  "detail": "16-17% of India e-retail GMV in 2025 (Bain/Flipkart, as cited)",
+  "source_url": "https://kadence.com/knowledge/why-protein-has-become-indias-new-health-shortcut/",
+  "id": "n10"
+ },
+ {
+  "section": "Channels",
+  "item": "D2C repeat/retention",
+  "detail": "Indian D2C brands typically report 10-30% repeat rates; supplements 18-30% 30-day repeat (global); global D2C 12-month retention ~31%",
+  "source_url": "https://echai.ventures/d2c/d2c-cohorts-ltv/good-repeat-purchase-rate-benchmark-india-vs-global",
+  "id": "n11"
+ },
+ {
+  "section": "Channels",
+  "item": "Amazon.in",
+  "detail": "Runs dedicated 'Protein Week' around World Protein Day with up to 45% off protein products; no sales figures disclosed",
+  "source_url": "https://press.aboutamazon.com/in/news/retail/2026/3/amazon-in-celebrates-protein-week-to-mark-world-protein-day-for-every-nutrition-goal",
+  "id": "n12"
+ },
+ {
+  "section": "Channels",
+  "item": "Sachet format precedent",
+  "detail": "Danone launched Protinex sachets (Mar 2025); The Whole Truth sells 30-35 g protein sampler sachets",
+  "source_url": "https://kadence.com/knowledge/why-protein-has-become-indias-new-health-shortcut/",
+  "id": "n13"
+ },
+ {
+  "section": "Consumers",
+  "item": "Protein RDA vs intake gap",
+  "detail": "ICMR-NIN 2020 RDA 0.83 g/kg/day (54 g/day adult man, 45.7 g/day woman); avg intake ~0.6 g/kg/day",
+  "source_url": "https://www.nin.res.in/rdabook/brief_note.pdf",
+  "id": "n14"
+ },
+ {
+  "section": "Consumers",
+  "item": "Average intake gap (cited figure)",
+  "detail": "Average intake ~0.6 g/kg vs 0.8-1 g/kg recommended; ~60% of protein from cereals",
+  "source_url": "https://www.orfonline.org/expert-speak/indias-protein-deficiency-and-the-need-to-address-the-problem",
+  "id": "n15"
+ },
+ {
+  "section": "Consumers",
+  "item": "Widely cited '73% protein deficient' stat is from a 2017 consumer survey (IMRB/Right to Protein era) - use with caution",
+  "detail": "73% deficient; >90% unaware of requirement (2017 survey); 85% believe protein causes weight gain (Right to Protein 16-city survey)",
+  "source_url": "https://www.orfonline.org/expert-speak/indias-protein-deficiency-and-the-need-to-address-the-problem",
+  "id": "n16"
+ },
+ {
+  "section": "Consumers",
+  "item": "Urban awareness gap",
+  "detail": "~74% can't state daily protein requirement; 85% don't track intake; affordability is #1 barrier, taste #2",
+  "source_url": "https://m.thewire.in/article/ptiprnews/indias-protein-gap-a-survey-by-localcircles-country-delight-reveals-60-of-urban-india-is-protein-deficient",
+  "id": "n17"
+ },
+ {
+  "section": "Consumers",
+  "item": "Price sensitivity",
+  "detail": "71% willing to switch to more affordable protein alternatives",
+  "source_url": "https://m.thewire.in/article/ptiprnews/indias-protein-gap-a-survey-by-localcircles-country-delight-reveals-60-of-urban-india-is-protein-deficient",
+  "id": "n18"
+ },
+ {
+  "section": "Consumers",
+  "item": "Rural households under-consume protein",
+  "detail": "80% of 785 rural households consumed less protein than recommended (CESS Hyderabad)",
+  "source_url": "https://www.theweek.in/news/health/2025/06/05/are-indians-consuming-enough-proteins-to-meet-their-nutrient-requirement.amp.html",
+  "id": "n19"
+ },
+ {
+  "section": "Consumers",
+  "item": "Gen Z protein attitudes",
+  "detail": "82% see adequate protein as core to healthy diet; 73% believe plant-based diet can meet protein needs",
+  "source_url": "https://www.ipsos.com/en-in/gen-z-and-plant-powered-plate-young-indians-are-fueling-next-wave-plant-based-food-growth",
+  "id": "n20"
+ },
+ {
+  "section": "Consumers",
+  "item": "Protein snacking surge on q-commerce, Tier II growing faster",
+  "detail": "Protein snacks ~+300%, yogurt ~+280%, milk/shakes +225%; ~10,000 protein SKUs on Instamart; Tier II growth >200% higher than metros",
+  "source_url": "https://kadence.com/knowledge/why-protein-has-become-indias-new-health-shortcut/",
+  "id": "n21"
+ },
+ {
+  "section": "Consumers",
+  "item": "Vegetarian/eggless demand",
+  "detail": "39% of Indian adults self-identify as vegetarian; ~8 in 10 limit meat",
+  "source_url": "https://www.pewresearch.org/short-reads/2021/07/08/eight-in-ten-indians-limit-meat-in-their-diets-and-four-in-ten-consider-themselves-vegetarian/",
+  "id": "n22"
+ },
+ {
+  "section": "Consumers",
+  "item": "Home baking (OTG demand as proxy)",
+  "detail": "6M+ OTG units/yr; growth attributed to baking/cooking-at-home trend (no direct home-baking survey % found)",
+  "source_url": "https://matrix.indiagri.in/otg-report",
+  "id": "n23"
+ },
+ {
+  "section": "Consumers",
+  "item": "'Protein washing' backlash is emerging in media",
+  "detail": "Media now advise consumers to check protein kcal share vs total kcal",
+  "source_url": "https://www.medboundtimes.com/diet-and-nutrition/protein-washing-high-protein-food-marketing",
+  "id": "n24"
+ },
+ {
+  "section": "Regulation",
+  "item": "FSSAI Advertising & Claims Regulations 2018, Schedule I (Protein)",
+  "detail": "FSSAI Advertising & Claims Regulations 2018, Schedule I (Protein): 'Source of protein' needs >=10% RDA per 100 g (solids) or 5% RDA per 100 kcal; 'High/Rich in protein' needs >=20% RDA per 100 g or 10% RDA per 100 kcal.",
+  "source_url": "https://www.fssai.gov.in/upload/advisories/2019/06/5d164a5daa382Direction_Advertising_Claims_28_06_2019.pdf",
+  "id": "n25"
+ },
+ {
+  "section": "Regulation",
+  "item": "Thresholds measured against revised ICMR-NIN 2020 RDA (FSSAI directions 16 Jul /",
+  "detail": "Thresholds measured against revised ICMR-NIN 2020 RDA (FSSAI directions 16 Jul / 2 Aug 2021). ICMR-NIN RDA for adult man = 54 g/day, so 'high protein' ≈ 10.8 g/100 g. A 50 g sachet with 10 g protein (=20 g/100 g dry) clears this on a dry basis; confirm with FSSAI consultant whether claim is assessed on 'as sold' or 'as prepared' basis.",
+  "source_url": "https://compass.khaitanco.com/protein-on-trial-regulating-nutritional-claims-in-indias-growing-food-market",
+  "id": "n26"
+ },
+ {
+  "section": "Regulation",
+  "item": "ICMR-NIN 2020",
+  "detail": "ICMR-NIN 2020: protein RDA 0.83 g/kg/day; 54.0 g/day (man, 65 kg), 45.7 g/day (woman, 55 kg).",
+  "source_url": "https://www.nin.res.in/rdabook/brief_note.pdf",
+  "id": "n27"
+ },
+ {
+  "section": "Regulation",
+  "item": "Claims must be scientifically substantiated; FSSAI June 2026 notices to Medizen ",
+  "detail": "Claims must be scientifically substantiated; FSSAI June 2026 notices to Medizen Labs (whey) over 'Easy Digest', 'Lean Muscle Gains', 'Rapid Recovery' claims, and to Marico, Ferrero, Pluckk, Raw Pressery etc. over labelling/claims.",
+  "source_url": "https://businesstoday.in/india/story/why-is-fssai-cracking-down-on-food-brands-538120-2026-06-19",
+  "id": "n28"
+ },
+ {
+  "section": "Regulation",
+  "item": "Protein supplements are governed separately (health supplements/nutraceutical fr",
+  "detail": "Protein supplements are governed separately (health supplements/nutraceutical framework); FSSAI signalled stricter rules after 2024 mislabelling study. A bake-mix using whey should be positioned as a general food (proprietary/bakery premix) not a health supplement to avoid nutraceutical rules - verify categorisation.",
+  "source_url": "https://health.medicaldialogues.in/diet-and-nutition/fssai-enforces-stricter-regulations-on-protein-supplements-after-study-reveals-misleading-claims-131083",
+  "id": "n29"
+ },
+ {
+  "section": "Regulation",
+  "item": "Citizens Protein Project (Apr 2024)",
+  "detail": "Citizens Protein Project (Apr 2024): ~69% of 36 protein supplements had less protein than labelled; 14% had aflatoxins. San Nutrition v. influencers case pending in Delhi HC.",
+  "source_url": "https://theprint.in/health/70-of-36-popular-protein-supplements-sold-in-india-mislabeled-14-contain-toxins-says-new-study/2035264/",
+  "id": "n30"
+ },
+ {
+  "section": "Regulation",
+  "item": "Front-of-pack warning labels ('HIGH SUGAR/FAT/SALT') proposed by FSSAI under Sup",
+  "detail": "Front-of-pack warning labels ('HIGH SUGAR/FAT/SALT') proposed by FSSAI under Supreme Court pressure (Aug 2026); sugar-heavy dessert mixes may need a red warning - formulate low-sugar.",
+  "source_url": "https://www.etvbharat.com/en/health/fssai-red-warning-front-pack-food-beverages-high-salt-sugar-fat-enn26082900822",
+  "id": "n31"
+ },
+ {
+  "section": "Regulation",
+  "item": "'Gluten-free' and 'eggless'/veg (green dot) claims require compliance with FSSAI",
+  "detail": "'Gluten-free' and 'eggless'/veg (green dot) claims require compliance with FSSAI labelling; gluten-free claim needs testing (specific threshold not verified in this research).",
+  "source_url": "https://fssai-digest.fssai.gov.in/research-and-innovations/claims.php",
+  "id": "n32"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 1",
+  "detail": "Texture is the #1 product risk: 'dry', 'chewy', 'rubbery/sponge', 'dries like a rock' recur for both Indian protein snacks (SuperYou killed a bar over chewiness) and protein mug cakes. Lead R&D on moistness (fat/fibre/humectants) and test all 4 appliances.",
+  "source_url": null,
+  "id": "n33"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 2",
+  "detail": "Taste beats protein: brands and scientists alike say Indians reject 'powdery/chalky' protein; artificial/over-sweet flavour is a frequent complaint. 'No protein aftertaste' is a credible claim worth earning.",
+  "source_url": null,
+  "id": "n34"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 3",
+  "detail": "Price sensitivity is real: only ~32% will pay a protein premium; affordability is the top barrier. Singles must feel like an impulse treat (likely Rs 50-80 band); validate via survey.",
+  "source_url": null,
+  "id": "n35"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 4",
+  "detail": "Trust/labels is a headwind and an opening: 'protein washing' and lab tests showing ~70% of supplements under-deliver protein make transparency (clean label, third-party protein test, honest sugar) a differentiator; 62% rank ingredient transparency first.",
+  "source_url": null,
+  "id": "n36"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 5",
+  "detail": "Convenience is the strongest positive driver (41% of social conversation); '2 minutes', 'easy' are praised. One-sachet, no-measuring format fits — reviewers note results depend on exact quantities, so premeasured single serves are an advantage.",
+  "source_url": null,
+  "id": "n37"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 6",
+  "detail": "Health-halo skepticism is growing among nutritionists/columnists ('protein cookies aren't the solution'); position as a better dessert swap / guilt-free craving fix, not a health food or supplement.",
+  "source_url": null,
+  "id": "n38"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 7",
+  "detail": "Gap: direct Reddit threads could not be fetched (site blocked; search engines did not index them). Reddit sentiment is represented only via the Convosight aggregate — run the outreach posts to collect first-hand r/fitnessindia voices.",
+  "source_url": null,
+  "id": "n39"
+ },
+ {
+  "section": "Voice of customer",
+  "item": "Takeaway 8",
+  "detail": "Context: air fryer sales grew ~38% YoY (Croma 2025) — air fryer + microwave instructions are both necessary; eggless is table stakes for a large vegetarian base (not directly quantified in sources found).",
+  "source_url": null,
+  "id": "n40"
+ },
+ {
+  "section": "Regulation",
+  "item": "FSSAI notices over protein / muscle-strength claims (Oct 2026)",
+  "detail": "FSSAI sent notices to Dr Reddy's, Nestlé Health Science, Amazon, Flipkart, Netmeds and Tirupati Wellness over 'high protein' / 'muscle strength' marketing claims that may mislead; asked them to explain the claims (reported 8 Oct 2026). Enforcement on protein claims is active, including against marketplaces.",
+  "source_url": "https://www.newsbytesapp.com/news/business/fssai-sends-notices-over-protein-and-muscle-strength-claims/tldr",
+  "id": "n41"
+ },
+ {
+  "section": "Regulation",
+  "item": "Front-of-pack warning plan updated (Sep 2026)",
+  "detail": "FSSAI told the Supreme Court (affidavit 23 Sep 2026) it will bring red-hexagon front-of-pack warnings in a single phase: covers added/total sugar, added/total fat and salt; solid-food thresholds ~5% energy from added sugar, 10% total sugar, ~15% added fat, 30% total fat. Draft regs (~4 months, 60-day comment) then 365-day implementation. Still proposed, not final.",
+  "source_url": "https://theprint.in/health/fssai-tells-sc-it-will-introduce-front-of-pack-warnings-in-single-phase-gives-food-firms-1-yr-to-comply/3051546/",
+  "id": "n42"
+ }
+]

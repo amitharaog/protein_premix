@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+/* Tokens from docs/DESIGN.md */
+:root {
+  --bg: #fbf6f1;
+  --panel: #ffffff;
+  --fg: #2b1d16;
+  --muted: #7a6558;
+  --line: #eadfd5;
+  --accent: #8a3f1d;
+  --accent-fg: #ffffff;
+  --accent-soft: #f3e3d8;
+  --ok: #2f7a4b;
+  --warn: #a86a00;
+  --bad: #b3261e;
+  --kesar: #e8892b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1310;
+    --panel: #241b17;
+    --fg: #f3e9e1;
+    --muted: #b9a698;
+    --line: #3a2d26;
+    --accent: #e59a6c;
+    --accent-fg: #1a1310;
+    --accent-soft: #3a271d;
+    --ok: #7cc79a;
+    --warn: #f0b45a;
+    --bad: #f2948c;
+    --kesar: #f0a75a;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-bad: var(--bad);
+  --color-kesar: var(--kesar);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-figtree);
+  --radius-card: 14px;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: var(--font-figtree), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 3px solid var(--kesar);
+  outline-offset: 2px;
+}
+
+/* Survey motion. 150 ms ease-out per DESIGN.md; everything off under reduced motion. */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes wobble {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-4deg); }
+  75% { transform: rotate(4deg); }
+}
+@keyframes sprinkle-fall {
+  from { transform: translateY(-10vh) rotate(0); opacity: 1; }
+  to { transform: translateY(105vh) rotate(540deg); opacity: 0.9; }
+}
+@keyframes steam {
+  0% { transform: translateY(0) scaleX(1); opacity: 0; }
+  30% { opacity: 0.7; }
+  100% { transform: translateY(-18px) scaleX(1.4); opacity: 0; }
+}
+.anim-pop { animation: pop-in 220ms ease-out both; }
+.anim-wobble { animation: wobble 400ms ease-out; }
+.anim-steam { animation: steam 2.4s ease-out infinite; }
+.sprinkle { position: fixed; top: 0; pointer-events: none; animation: sprinkle-fall linear forwards; z-index: 50; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-pop, .anim-wobble, .anim-steam, .sprinkle { animation: none !important; }
+  .sprinkle { display: none; }
+  * { transition-duration: 0ms !important; }
+}

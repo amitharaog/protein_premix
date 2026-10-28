@@ -1,0 +1,138 @@
+[
+ {
+  "id": "Q1",
+  "question": "Which of these do you have regular access to?",
+  "options": [
+   "Microwave",
+   "Air fryer",
+   "OTG / oven",
+   "Pressure cooker",
+   "None of these"
+  ],
+  "type": "multi",
+  "hint": "Select all that apply",
+  "required": false
+ },
+ {
+  "id": "Q2",
+  "question": "How do you currently get extra protein?",
+  "options": [
+   "Whey / protein powder",
+   "Protein bars or snacks",
+   "Protein dairy (milk, curd, buttermilk)",
+   "Regular food only (dal, paneer, eggs)",
+   "I don't think about protein"
+  ],
+  "type": "multi",
+  "hint": "Select all that apply",
+  "required": false
+ },
+ {
+  "id": "Q3",
+  "question": "How often do you crave something sweet?",
+  "options": [
+   "Daily",
+   "3-5 times a week",
+   "1-2 times a week",
+   "Rarely"
+  ],
+  "type": "single",
+  "required": false
+ },
+ {
+  "id": "Q4",
+  "question": "How important is it that it's eggless?",
+  "options": [
+   "Must be eggless",
+   "Prefer eggless",
+   "Doesn't matter"
+  ],
+  "type": "single",
+  "required": false
+ },
+ {
+  "id": "Q5",
+  "question": "What would you pay for one sachet (about 10 g protein)?",
+  "options": [
+   "₹40-60",
+   "₹60-80",
+   "₹80-100",
+   "₹100+",
+   "Wouldn't pay for this"
+  ],
+  "type": "single",
+  "required": true
+ },
+ {
+  "id": "Q6",
+  "question": "Which flavours would you try?",
+  "options": [
+   "Chocolate fudge / brownie",
+   "Vanilla",
+   "Filter coffee",
+   "Kesar pista",
+   "Elaichi / chai spice",
+   "Gulab jamun",
+   "Gajar halwa",
+   "Peanut butter",
+   "Red velvet"
+  ],
+  "type": "multi",
+  "hint": "Pick up to 3",
+  "max": 3,
+  "required": false
+ },
+ {
+  "id": "Q7",
+  "question": "Where would you most likely buy it?",
+  "options": [
+   "Blinkit / Zepto / Instamart",
+   "Amazon / Flipkart",
+   "Brand website",
+   "Gym or café",
+   "Supermarket",
+   "Office or hostel canteen"
+  ],
+  "type": "single",
+  "required": false
+ },
+ {
+  "id": "Q8",
+  "question": "What would worry you most?",
+  "options": [
+   "Taste / protein aftertaste",
+   "Dry or rubbery texture",
+   "Price",
+   "Sugar / ingredients",
+   "Whether the protein claim is true",
+   "Effort to make"
+  ],
+  "type": "multi",
+  "hint": "Pick up to 2",
+  "max": 2,
+  "required": false
+ },
+ {
+  "id": "Q9",
+  "question": "If it tasted good, how likely are you to buy it?",
+  "options": [
+   "1",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "type": "scale_1_5",
+  "hint": "1 = not at all, 5 = definitely",
+  "required": true
+ },
+ {
+  "id": "Q10",
+  "question": "What would make this a must-buy or a no-go for you?",
+  "type": "free_text",
+  "options": [],
+  "hint": "Optional",
+  "max_length": 1000,
+  "required": false
+ }
+]

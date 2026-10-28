@@ -1,0 +1,152 @@
+[
+ {
+  "section": "Blend",
+  "item": "Dairy standard",
+  "detail": "WPC80:micellar casein 60:40: Whey gives rise/structure, casein holds water and slows setting → fudgy, non-rubbery; lowest-risk texture.",
+  "id": "f1"
+ },
+ {
+  "section": "Blend",
+  "item": "Dairy value",
+  "detail": "WPC80:MPC70 50:50 (or WPC80:SMP 65:35): MPC/SMP replaces costly imported casein; adds milk flavour (great for rasmalai/gulab jamun).",
+  "id": "f2"
+ },
+ {
+  "section": "Blend",
+  "item": "PRO (≥20 g)",
+  "detail": "WPC80:WPI:casein 45:15:40: WPI lifts protein % without volume; casein ≥35-40% essential at high protein to avoid sponge-rubber.",
+  "id": "f3"
+ },
+ {
+  "section": "Blend",
+  "item": "Vegan",
+  "detail": "Pea isolate:brown rice 60:40 (+ optional 10-20% soy isolate): Complementary amino acids (PDCAAS ~0.9+), rice softens pea gel; add 15-20% more liquid.",
+  "id": "f4"
+ },
+ {
+  "section": "Blend",
+  "item": "Desi budget",
+  "detail": "WPC80:sattu (pure chana) 70:30: Sattu lowers cost and adds roasted Indian flavour; keep sattu ≤30% to avoid dense crumb.",
+  "id": "f5"
+ },
+ {
+  "section": "Blend",
+  "item": "Protein to flour ratio",
+  "detail": "Protein powders 35-45% of dry mix; GF flours (almond+rice/millet) 30-35%: Above ~50% protein powder the matrix behaves like a set omelette → rubbery; flour starch/fat interrupts protein network.",
+  "id": "f6"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 1",
+  "detail": "Keep protein powders ≤45% of dry mix; above ~50% the heat-set protein network (no starch/fat interruption) turns spongy-rubbery.",
+  "id": "f7"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 2",
+  "detail": "Always pair whey with a water-holding protein (casein/MPC) at ≥35-40% of total protein; whey alone dries out when microwaved (thebigmansworld advises casein/pea over pure whey).",
+  "id": "f8"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 3",
+  "detail": "Add tenderisers: fat (almond flour, fat powder, or 1 tsp oil/ghee by user), humectants (allulose, inulin, jaggery) which hold water and lower firmness.",
+  "id": "f9"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 4",
+  "detail": "Microwave is the #1 rubber cause: instruct 60 s first, then 10 s bursts; pull while centre is slightly glossy; 1 min rest finishes it via carryover. Print wattage table on pack (700/900/1100 W).",
+  "id": "f10"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 5",
+  "detail": "Air fryer: 150°C max with allulose/jaggery/milk powder (fast Maillard browning); foil cover after half-time; use a ramekin ≤ half full.",
+  "id": "f11"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 6",
+  "detail": "Pressure cooker: no whistle/weight, stand + water, covered bowl so condensate doesn't drip; 12-17 min.",
+  "id": "f12"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 7",
+  "detail": "Eggless leavening: 2-2.5 g double-acting GF baking powder per 50-60 g mix + 0.2 g soda when cocoa/fruit acids present; double-acting is important because some rise happens before cooking while user mixes.",
+  "id": "f13"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 8",
+  "detail": "Binders replacing egg/gluten: psyllium 1-1.5 g (moisture, crumb cohesion) + xanthan 0.1-0.2 g; more makes gummy. Whey/WPC also partially acts as egg replacer (Arla).",
+  "id": "f14"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 9",
+  "detail": "Sweeteners: erythritol for bulk (≤12 g/serve to limit cooling effect and laxation); allulose gives moisture + browning but is 70% sweetness and pricey in India (check FSSAI permission status for allulose before launch—historically not listed as approved); stevia 0.03-0.05 g Reb-A, avoid more (bitter). Jaggery for Indian SKUs (adds iron/flavour, but counts as added sugar on label).",
+  "id": "f15"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 10",
+  "detail": "Let batter rest 1-2 min after mixing so psyllium/casein hydrate—smoother, less gritty crumb.",
+  "id": "f16"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 11",
+  "detail": "Use agglomerated/instantised proteins for lump-free mixing with a spoon.",
+  "id": "f17"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 12",
+  "detail": "Water activity: target finished dry mix aw <0.30 (moisture <5%) to prevent baking powder pre-reaction, caking, and Maillard browning/staleness of whey; jaggery and FD fruit are hygroscopic—use dried/encapsulated grades.",
+  "id": "f18"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 13",
+  "detail": "Shelf life: 9-12 months achievable at aw<0.3 in high-barrier pack; main failure modes are fat oxidation (almond flour, fat powder) → use rosemary extract/mixed tocopherols and nitrogen flush; lysine loss/browning in whey + reducing sugars (jaggery, milk powder) at Indian ambient (30-40°C, high RH)—run accelerated tests at 38°C/90% RH.",
+  "id": "f19"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 14",
+  "detail": "Packaging: single-serve sachet in PET12/Alu-foil 9 µm/PE 50-70 (or PET/MetPET/PE minimum) — WVTR <0.1 g/m²/day and OTR <1 cc/m²/day; nitrogen flush (residual O2 <3%); heat seal integrity tests; option for in-pack paper cup/silicone mug for 'Bake-in-the-cup' variant (must be microwave & 160°C safe).",
+  "id": "f20"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 15",
+  "detail": "Label: gluten-free claim in India needs <20 ppm gluten (FSSAI); source certified-GF rice/jowar/ragi flours and pure chana sattu; test each batch (ELISA R5). Declare milk, tree nut (almond, pistachio), soy allergens. Use green veg dot (no egg).",
+  "id": "f21"
+ },
+ {
+  "section": "Tip",
+  "item": "Tip 16",
+  "detail": "Protein claim: FSSAI 'source of protein' ≥10% RDA per 100 g, 'high protein' ≥20% of energy from protein — all formulations here exceed 25% energy from protein.",
+  "id": "f22"
+ },
+ {
+  "section": "BĀK Goods reference",
+  "item": "What BĀK publishes",
+  "detail": "BĀK Goods (USA) sells single-serve gluten-free microwave protein cake mixes, 35 g+ protein per mix (Pumpkin Spice 36 g), US$6.99 each; flavours Cinnamon Roll, Deep Chocolate, Strawberry Cream, Vanilla Bean, Cranberry Orange, Pumpkin Spice (LTO); claims no added sugar, no artificial dyes, ready in under 3 min ('mix, cook, enjoy'). Full ingredient lists are NOT published on the homepage and none were found in public search results; our formulations infer a whey/casein + nut-flour + non-nutritive-sweetener base typical of the category. BĀK's 35 g implies a larger (~70-80 g) serve vs our 50-60 g sachet; our PRO tier delivers ~20 g at ~60 g.",
+  "id": "f23"
+ },
+ {
+  "section": "Assumptions",
+  "item": "Prices",
+  "detail": "Approx. Indian B2B/bulk ingredient prices (₹/kg, ex-GST, 25-100 kg lots, late 2026 estimate): WPC80 1400, WPI 2600, micellar casein 2800, MPC70 1100, pea isolate 1100, rice protein 1300, soy isolate 550, almond flour 900, rice/jowar/ragi flour 70-80, besan 110, cocoa 700, erythritol 350, allulose 1200, Reb-A stevia 9000, jaggery powder 90, psyllium 500, xanthan 900, SMP 320, pistachio 1400, FD strawberry 3500, saffron ₹250/g. Verify with suppliers; FX and dairy prices volatile.",
+  "id": "f24"
+ },
+ {
+  "section": "Assumptions",
+  "item": "Nutrition",
+  "detail": "Computed from typical per-100g supplier/IFCT/USDA-type values; erythritol counted 0 kcal, allulose 0.4 kcal/g, fibres ~1.5-2 kcal/g. Lab analysis required before labelling.",
+  "id": "f25"
+ }
+]

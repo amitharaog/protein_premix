@@ -52,6 +52,7 @@ data/
   economics/        competitors.csv, survey/, channels.csv, cac_inputs.json, cac outputs
   formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
+app/                Next.js launch site + research app from the build kit (its own CLAUDE.md applies inside app/)
 scripts/            keywords.py, reddit_pull.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
 ```
 

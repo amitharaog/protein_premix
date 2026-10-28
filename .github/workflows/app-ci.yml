@@ -1,0 +1,51 @@
+name: app CI
+
+on:
+  push:
+    paths: ["app/**", ".github/workflows/app-ci.yml"]
+  pull_request:
+    paths: ["app/**", ".github/workflows/app-ci.yml"]
+
+defaults:
+  run:
+    working-directory: app
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: mugcake
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/mugcake
+      DATABASE_URL_UNPOOLED: postgresql://postgres:postgres@localhost:5432/mugcake
+      AUTH_SECRET: ci-only-secret-ci-only-secret-ci-only
+      IP_HASH_SALT: ci-salt
+      ADMIN_EMAILS: admin@example.com
+      NEXT_PUBLIC_SITE_URL: http://localhost:3100
+      SURVEY_MIN_SECONDS: "1"
+      ENV_FILE: /dev/null
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: app/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: npx tsx scripts/migrate.mts
+      - run: npx tsx scripts/seed.mts
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm e2e

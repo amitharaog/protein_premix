@@ -1,0 +1,90 @@
+[
+ {
+  "id": "k1",
+  "label": "Protein-related orders on Swiggy Instamart",
+  "value": "+150% over 2 years",
+  "note": "Protein snacks ~+300%, protein yogurt ~+280% growth; Instamart data",
+  "source_url": "https://agronfoodprocessing.com/from-whey-to-wellness-indias-protein-craze-fuels-150-surge-in-quick-commerce-orders/",
+  "date": "2026-05-26"
+ },
+ {
+  "id": "k2",
+  "label": "India protein-based product market",
+  "value": "INR 44,048 Cr (2025)",
+  "note": "Forecast INR 1,60,767 Cr by 2034; 14.7% CAGR 2026-34 (IMARC)",
+  "source_url": "https://www.imarcgroup.com/india-protein-based-product-market",
+  "date": "2026 (page accessed 2026-10-24)"
+ },
+ {
+  "id": "k3",
+  "label": "Quick commerce daily orders (6 platforms)",
+  "value": ">9 million/day",
+  "note": "Blinkit 3.4-3.6M, Zepto 2.4-2.6M, Instamart 1.3-1.45M (Datum Intelligence estimates, Aug 2026)",
+  "source_url": "https://www.newsbytesapp.com/news/business/india-s-quick-commerce-platforms-cross-9m-daily-orders/story",
+  "date": "2026-08-17"
+ },
+ {
+  "id": "k4",
+  "label": "Quick commerce GMV",
+  "value": "~USD 13B (FY26) -> ~USD 90B (FY31)",
+  "note": "Google-Redseer study",
+  "source_url": "https://yourstory.com/2026/10/india-quick-commerce-set-for-usd-90b-boom-by-2031-google-redseer-study",
+  "date": "2026-10-07"
+ },
+ {
+  "id": "k5",
+  "label": "Urban Indians not eating protein-rich food daily",
+  "value": "6 in 10",
+  "note": "LocalCircles/Country Delight survey, 2.07 lakh responses, 25 urban districts; 85% don't track protein; 71% would switch to cheaper protein alternatives",
+  "source_url": "https://m.thewire.in/article/ptiprnews/indias-protein-gap-a-survey-by-localcircles-country-delight-reveals-60-of-urban-india-is-protein-deficient",
+  "date": "2026-02-05"
+ },
+ {
+  "id": "k6",
+  "label": "Self-identified vegetarian adults",
+  "value": "39%",
+  "note": "Pew Research (eggless positioning relevant); egg-avoidance share not reported",
+  "source_url": "https://www.pewresearch.org/short-reads/2021/07/08/eight-in-ten-indians-limit-meat-in-their-diets-and-four-in-ten-consider-themselves-vegetarian/",
+  "date": "2021-07-08"
+ },
+ {
+  "id": "k7",
+  "label": "Microwave household penetration (national)",
+  "value": "3.4% (2024)",
+  "note": "Euromonitor; <4% of households in 2023. Urban split not reported - key access constraint",
+  "source_url": "https://www.euromonitor.com/globalassets/samples/pdf/consumer-appliances/microwaves/microwaves-in-india---pdf-sample.pdf",
+  "date": "2024-02"
+ },
+ {
+  "id": "k8",
+  "label": "Air fryer online GMV growth",
+  "value": "+103% YoY (Aug 2026)",
+  "note": "Redseer, leading online marketplace; Croma reported ~38% YoY air fryer sales growth in 2025",
+  "source_url": "https://bwretailworld.com/companies/air-fryers-flat-grills-drive-online-small-appliance-growth-with-103-94-gmv-surge",
+  "date": "2026-10-16"
+ },
+ {
+  "id": "k9",
+  "label": "Gen Z view protein as core to healthy diet",
+  "value": "82%",
+  "note": "PBFIA-Ipsos 'Gen Z & the Plant-Powered Plate' (sample size not disclosed on page)",
+  "source_url": "https://www.ipsos.com/en-in/gen-z-and-plant-powered-plate-young-indians-are-fueling-next-wave-plant-based-food-growth",
+  "date": "2026-03-10"
+ },
+ {
+  "id": "k10",
+  "label": "Protein supplements found mislabelled",
+  "value": "~69% (25 of 36)",
+  "note": "Citizens Protein Project, journal Medicine; trust gap that a transparent, lab-tested brand can exploit",
+  "source_url": "https://theprint.in/health/70-of-36-popular-protein-supplements-sold-in-india-mislabeled-14-contain-toxins-says-new-study/2035264/",
+  "date": "2024-04-11"
+ },
+ {
+  "id": "k11",
+  "label": "Direct Indian competitor in single-serve microwave protein mug cake",
+  "value": "None found",
+  "note": "Indian protein bake-mixes found are multi-serve pancake mixes (Myprotein, MuscleBlaze, Cosmix, No Nonsense); mug-format exists only in non-protein Betty Crocker Mug Treats",
+  "source_url": "https://cosmix.in/collections/pancakes",
+  "date": "2026-10-24 (searched)"
+ }
+]
