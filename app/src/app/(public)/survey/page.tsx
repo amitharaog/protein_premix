@@ -6,7 +6,7 @@ import { SurveyClient } from "./survey-client";
 
 export const dynamic = "force-dynamic";
 
-export const viewport: Viewport = { themeColor: "#b8b2f0", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#172062", colorScheme: "light" };
 
 export const metadata: Metadata = {
   title: "Take the survey",

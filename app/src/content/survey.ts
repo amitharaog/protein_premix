@@ -5,6 +5,7 @@
 export const intro = {
   kicker: (n: number) => `${n} quick questions · no login`,
   tagline: "Mug cake quiz",
+  est: "Est. MMXXVI", // the year the brand started, 2026
   badges: [["Protein-", "based"], ["Gluten-free", "ingredients"], ["Ready in", "minutes"]] as [string[], string[], string[]],
   stepsTitle: "3-step premix",
   steps: ["Tip the mix into a mug", "Add milk or water, stir", "Bake. Ready in minutes"],
@@ -169,7 +170,7 @@ export const ui = {
 
 export const done = {
   title: "All done",
-  personalityLead: "Your dessert personality is",
+  personalityLead: "By royal decree, your dessert personality is",
   shareLead: "Make your friends take it too. It's only fair.",
   shareText: (personality: string, url: string) =>
     `Took the muggoozz mug cake quiz and apparently I'm "${personality}". Your turn: ${url}`,

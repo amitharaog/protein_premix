@@ -1,15 +1,17 @@
-// Original illustrations for muggoozz: a line-art molten mug cake, a chunky wordmark, chocolate doodles,
-// a brownie-tray progress bar and the "goo" drip used on selected answers. Style follows playful
-// doodle packaging; the name, lettering and drawings are our own.
+import { brand } from "@/config/brand";
 
-const INK = "#2a1a3f";       // line art: purple-black, sits well on lavender
-const CREAM = "#fff6ea";
-const MUG_SHADE = "#ece2f6";
+// Original illustrations for muggoozz in a vintage royal style: a crowned wordmark crest, gold seals,
+// checkerboard trim and a molten mug cake with a checkered band. The name, lettering and drawings are our own.
+
+const INK = "#17205a";       // navy line art, matches the royal theme ink
+const CREAM = "#f7eedb";
+const MUG_SHADE = "#e9dcbd";
 const CAKE = "#6b3418";
 const CAKE_DARK = "#43200e";
 const CAKE_HI = "#94532c";
 const CHIP = "#d9a066";
-const GOLD = "#e0b24f";
+const GOLD = "#c9a23a";
+const GOLD_DARK = "#8a6212";
 
 // Mug outline shared by the hero and the scale icons (viewBox 0 0 160 160).
 const MUG_BODY = "M28,66 H124 L119,134 Q117,146 104,146 H48 Q35,146 33,134 Z";
@@ -30,15 +32,27 @@ function MugShell({ children }: { children?: React.ReactNode }) {
       <Handle />
       <path d={MUG_BODY} fill={CREAM} stroke={INK} strokeWidth="5" strokeLinejoin="round" />
       <path d="M104,72 L100,134 Q99,140 92,140 H104 Q114,140 115,132 L119,72 Z" fill={MUG_SHADE} />
-      {/* a simple hand-drawn band, so it reads as a real mug */}
-      <path d="M38,108 q9,-7 18,0 t18,0 t18,0 t18,0 t12,0" fill="none" stroke={INK} strokeWidth="3" strokeLinecap="round" opacity="0.85" />
       {children}
       <path d={MUG_BODY} fill="none" stroke={INK} strokeWidth="5" strokeLinejoin="round" />
     </>
   );
 }
 
-/** The hero: a molten chocolate mug cake with chunks, a spoon and curly steam. Original line art. */
+/** Two rows of checkerboard squares across the mug, inside its tapered sides. */
+function MugBand() {
+  return (
+    <g>
+      {Array.from({ length: 22 }, (_, i) => {
+        const col = i % 11;
+        const row = Math.floor(i / 11);
+        return <rect key={i} x={32 + col * 8} y={100 + row * 8} width="8" height="8" fill={(col + row) % 2 ? CREAM : INK} />;
+      })}
+      <path d="M31,99 H121 M31,117 H120" stroke={GOLD} strokeWidth="2" />
+    </g>
+  );
+}
+
+/** The hero: a molten chocolate mug cake on a checkered mug, with chunks, a gold spoon and curly steam. */
 export function MugCake({ size = 160, steam = false, className = "" }: { size?: number; steam?: boolean; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 160 160" className={className} role="img" aria-label="A chocolate mug cake">
@@ -53,18 +67,17 @@ export function MugCake({ size = 160, steam = false, className = "" }: { size?: 
       <path d="M104,52 L138,14" stroke={INK} strokeWidth="11" strokeLinecap="round" />
       <path d="M104,52 L138,14" stroke={GOLD} strokeWidth="5" strokeLinecap="round" />
       <MugShell>
-        {/* lava pouring down the front */}
+        <MugBand />
+        {/* lava pouring down the front, over the band */}
         <path d="M34,66 H118 V74 C114,74 114,96 108,96 C102,96 103,74 96,74 C90,74 90,84 85,84 C80,84 81,74 70,74 C64,74 65,104 58,104 C51,104 53,74 46,74 C41,74 41,86 37,86 C33,86 33,74 30,74 Z" fill={CAKE_DARK} />
         <path d="M58,80 v16 M108,80 v8" stroke={CAKE_HI} strokeWidth="2.5" strokeLinecap="round" />
       </MugShell>
       {/* domed cake rising out of the mug */}
       <path d="M26,68 C24,40 54,28 80,28 C106,28 136,40 134,68 Z" fill={CAKE} stroke={INK} strokeWidth="5" strokeLinejoin="round" />
       <path d="M44,46 C56,36 72,34 86,35" fill="none" stroke={CAKE_HI} strokeWidth="4" strokeLinecap="round" />
-      {/* crumb texture */}
       <g fill={CAKE_DARK}>
         <circle cx="52" cy="58" r="2" /><circle cx="66" cy="52" r="1.6" /><circle cx="98" cy="56" r="2" /><circle cx="114" cy="60" r="1.6" /><circle cx="80" cy="60" r="1.8" />
       </g>
-      {/* chunks and chips */}
       <g stroke={INK} strokeWidth="3" strokeLinejoin="round">
         <path d="M60,30 l14,-6 l6,12 l-14,6 z" fill={CAKE_DARK} />
         <path d="M60,30 l14,-6 l2,4 l-14,6 z" fill={CAKE_HI} />
@@ -93,40 +106,72 @@ export function MugLevel({ level, size = 44, className = "" }: { level: number; 
   );
 }
 
-/** Retro sticker wordmark: cream letters, chocolate outline, chunky 3D drop. Drawn as SVG text so the outline renders everywhere. */
-export function Wordmark({ height = 56, className = "" }: { height?: number; className?: string }) {
-  // textLength pins the word to a known width, so the outline and 3D drop always fit inside the canvas.
-  const text = { x: 220, y: 92, textAnchor: "middle" as const, fontSize: 92, textLength: 392, lengthAdjust: "spacingAndGlyphs" as const, style: { fontFamily: "var(--font-modak)" } };
+function CrownShape() {
   return (
-    <svg viewBox="0 0 440 128" height={height} className={className} role="img" aria-label="muggoozz">
-      <text {...text} dx="3" dy="7" fill="#2b140a" stroke="#2b140a" strokeWidth="10" strokeLinejoin="round">muggoozz</text>
-      <text {...text} fill="#fff6ea" stroke="#3b1d0e" strokeWidth="9" strokeLinejoin="round" paintOrder="stroke">muggoozz</text>
+    <g strokeLinejoin="round">
+      <path d="M16,46 L9,14 L32,31 L50,5 L68,31 L91,14 L84,46 Z" fill={GOLD} stroke={INK} strokeWidth="3.5" />
+      <path d="M22,40 L18,24 L32,35 L50,16 L68,35 L82,24 L78,40" fill="none" stroke={GOLD_DARK} strokeWidth="1.5" />
+      <rect x="15" y="45" width="70" height="13" rx="2.5" fill={GOLD} stroke={INK} strokeWidth="3.5" />
+      <circle cx="9" cy="13" r="5" fill={CREAM} stroke={INK} strokeWidth="2.5" />
+      <circle cx="50" cy="5" r="5" fill={CREAM} stroke={INK} strokeWidth="2.5" />
+      <circle cx="91" cy="13" r="5" fill={CREAM} stroke={INK} strokeWidth="2.5" />
+      <circle cx="33" cy="51.5" r="3" fill={INK} />
+      <path d="M50,47.5 l4,4 l-4,4 l-4,-4 z" fill="#8c1d2b" stroke={INK} strokeWidth="1.5" />
+      <circle cx="67" cy="51.5" r="3" fill={INK} />
+    </g>
+  );
+}
+
+/** A small gold crown. */
+export function Crown({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 100 62" className={className} aria-hidden>
+      <g transform="translate(0 2)"><CrownShape /></g>
     </svg>
   );
 }
 
-/** Chocolate poured over the top edge of the page. */
-export function TopDrip({ className = "" }: { className?: string }) {
+const sparkle = (x: number, y: number, s: number, c = GOLD) => (
+  <path key={`${x}-${y}`} transform={`translate(${x} ${y}) scale(${s})`} d="M0,-10 C1,-2 2,-1 10,0 C2,1 1,2 0,10 C-1,2 -2,1 -10,0 C-2,-1 -1,-2 0,-10 Z" fill={c} />
+);
+
+/** The crest: navy italic wordmark with a gold offset print, optionally under a crown flanked by sparkles. */
+export function Wordmark({ height = 56, crown = false, className = "" }: { height?: number; crown?: boolean; className?: string }) {
+  const lift = crown ? 40 : 0;
+  // textLength pins the word to a known width, so the italic and the gold offset always fit inside the canvas.
+  const text = {
+    x: 220, y: 90 + lift, textAnchor: "middle" as const, fontSize: 104, textLength: 384, lengthAdjust: "spacingAndGlyphs" as const,
+    style: { fontFamily: "var(--font-playfair), Georgia, serif", fontStyle: "italic", fontWeight: 900 },
+  };
   return (
-    <svg viewBox="0 0 400 46" preserveAspectRatio="none" className={className} aria-hidden>
-      <path d="M0,0 H400 V18 C390,18 392,40 380,40 C368,40 372,20 352,20 C338,20 342,32 330,32 C318,32 322,18 300,18 C286,18 290,44 274,44 C258,44 264,20 240,20 C226,20 230,30 218,30 C206,30 210,18 186,18 C172,18 176,38 160,38 C144,38 150,20 128,20 C114,20 118,28 106,28 C94,28 98,18 76,18 C62,18 66,42 50,42 C34,42 40,20 20,20 C10,20 8,26 0,26 Z" fill="#5b2d14" />
-      <path d="M14,8 h40 M120,9 h28 M250,8 h52 M340,9 h24" stroke="#8a4a26" strokeWidth="4" strokeLinecap="round" />
+    <svg viewBox={`0 0 440 ${128 + lift}`} height={height} className={className} role="img" aria-label={brand.name}>
+      {crown && (
+        <>
+          <g transform="translate(176 2) scale(0.88)"><CrownShape /></g>
+          {sparkle(146, 34, 1.1)}
+          {sparkle(294, 34, 1.1)}
+        </>
+      )}
+      <text {...text} dx="5" dy="6" fill={GOLD}>{brand.name}</text>
+      <text {...text} fill={INK}>{brand.name}</text>
     </svg>
   );
 }
 
-/** Cream starburst badge with purple text, like a sticker on the pack. */
-export function Starburst({ lines, rotate = 0, className = "" }: { lines: string[]; rotate?: number; className?: string }) {
-  const pts = Array.from({ length: 28 }, (_, i) => {
-    const r = i % 2 ? 44 : 52;
-    const a = (i / 28) * Math.PI * 2;
-    return `${(55 + r * Math.cos(a)).toFixed(1)},${(55 + r * Math.sin(a)).toFixed(1)}`;
-  }).join(" ");
+/** A gold seal with a scalloped edge, like a medal on an old label. */
+export function Seal({ lines, rotate = 0, className = "" }: { lines: string[]; rotate?: number; className?: string }) {
+  const scallops = Array.from({ length: 18 }, (_, i) => {
+    const a = (i / 18) * Math.PI * 2;
+    return <circle key={i} cx={(60 + 47 * Math.cos(a)).toFixed(1)} cy={(60 + 47 * Math.sin(a)).toFixed(1)} r="9" fill={GOLD} stroke={GOLD_DARK} strokeWidth="2" />;
+  });
   return (
-    <svg viewBox="0 0 110 110" className={className} style={{ transform: `rotate(${rotate}deg)` }} aria-hidden>
-      <polygon points={pts} fill="#fff6ea" stroke="#2b2170" strokeWidth="2.5" strokeLinejoin="round" />
+    <svg viewBox="0 0 120 120" className={className} style={{ transform: `rotate(${rotate}deg)` }} aria-hidden>
+      {scallops}
+      <circle cx="60" cy="60" r="47" fill={GOLD} />
+      <circle cx="60" cy="60" r="40" fill={CREAM} stroke={INK} strokeWidth="2.5" />
+      <circle cx="60" cy="60" r="35" fill="none" stroke={GOLD} strokeWidth="1.5" />
       {lines.map((l, i) => (
-        <text key={l} x="55" y={55 + (i - (lines.length - 1) / 2) * 15 + 5} textAnchor="middle" fontSize="13.5" fontWeight="700" fill="#2b2170" style={{ fontFamily: "var(--font-figtree)" }}>
+        <text key={l} x="60" y={60 + (i - (lines.length - 1) / 2) * 15 + 5} textAnchor="middle" fontSize={Math.max(...lines.map((x) => x.length)) > 10 ? 11.5 : 13} fontWeight="700" fill={INK} style={{ fontFamily: "var(--font-figtree)" }}>
           {l}
         </text>
       ))}
@@ -134,72 +179,40 @@ export function Starburst({ lines, rotate = 0, className = "" }: { lines: string
   );
 }
 
-/** Scattered chocolate chunks, chips, swirls and sparkles around the hero mascot. */
-export function Doodles({ className = "" }: { className?: string }) {
-  const chunk = (x: number, y: number, r: number, s = 1) => (
-    <g transform={`translate(${x} ${y}) rotate(${r}) scale(${s})`}>
-      <rect x="-14" y="-11" width="28" height="22" rx="4" fill={CAKE} stroke={INK} strokeWidth="2.5" />
-      <path d="M-9,-6 h18" stroke={CAKE_HI} strokeWidth="3" strokeLinecap="round" />
-    </g>
-  );
+/** Gold sparkles and a few chocolate chips around the hero medallion. */
+export function Ornaments({ className = "" }: { className?: string }) {
   const chip = (x: number, y: number, r: number) => (
-    <path transform={`translate(${x} ${y}) rotate(${r})`} d="M0,-9 C5,-3 8,4 0,7 C-8,4 -5,-3 0,-9 Z" fill={CHIP} stroke={INK} strokeWidth="2" />
-  );
-  const sparkle = (x: number, y: number, s: number, c: string) => (
-    <path transform={`translate(${x} ${y}) scale(${s})`} d="M0,-10 C1,-2 2,-1 10,0 C2,1 1,2 0,10 C-1,2 -2,1 -10,0 C-2,-1 -1,-2 0,-10 Z" fill={c} />
+    <path key={`c${x}`} transform={`translate(${x} ${y}) rotate(${r})`} d="M0,-9 C5,-3 8,4 0,7 C-8,4 -5,-3 0,-9 Z" fill={CHIP} stroke={INK} strokeWidth="2" />
   );
   return (
     <svg viewBox="0 0 360 260" className={className} aria-hidden>
-      <g fill="none" stroke="#5b2d14" strokeWidth="3.5" strokeLinecap="round" opacity="0.8">
-        <path d="M30,70 c10,-14 26,-6 18,6 c-6,9 -18,2 -10,-6" />
-        <path d="M318,190 c-10,14 -26,6 -18,-6 c6,-9 18,-2 10,6" />
-        <path d="M300,48 q12,8 4,18" />
-        <path d="M58,206 q-10,-10 -2,-20" />
-      </g>
-      {chunk(62, 128, -14)}
-      {chunk(300, 112, 18, 0.9)}
-      {chunk(36, 196, 10, 0.7)}
-      {chip(96, 48, 20)}
-      {chip(276, 64, -30)}
-      {chip(318, 150, 12)}
-      {chip(84, 236, -15)}
-      {chip(262, 232, 30)}
-      {sparkle(250, 26, 1, "#fff6ea")}
-      {sparkle(124, 222, 0.8, "#fff6ea")}
-      {sparkle(28, 30, 0.7, "#5b2d14")}
-      {sparkle(338, 236, 0.7, "#fff6ea")}
+      {[sparkle(40, 40, 1), sparkle(318, 92, 0.9), sparkle(60, 150, 0.7), sparkle(300, 206, 0.8), sparkle(126, 236, 0.6), sparkle(244, 22, 0.7)]}
+      {[chip(92, 52, 20), chip(270, 58, -30), chip(332, 150, 12), chip(30, 108, -15)]}
     </svg>
   );
 }
 
-/** Progress as a tray of brownie squares: answered ones are baked and frosted. */
-export function BrownieTray({ total, answered, current }: { total: number; answered: boolean[]; current: number }) {
+/** Progress as a row of checkerboard tiles: answered ones are navy with a gold star. */
+export function TileTray({ total, answered, current }: { total: number; answered: boolean[]; current: number }) {
   return (
-    <div className="flex gap-1 rounded-md border-2 border-milk bg-[#0d0704] p-1" aria-hidden>
+    <div className="flex gap-1 rounded-[6px] border-2 border-line bg-panel p-1" aria-hidden>
       {Array.from({ length: total }, (_, i) => (
         <span
           key={i}
           className={[
-            "relative h-4 flex-1 rounded-[3px] transition-colors duration-300",
-            answered[i] ? "bg-[#4a2a18]" : "bg-[#1c110b]",
-            i === current ? "outline-2 outline-accent" : "",
+            "grid h-4 flex-1 place-items-center rounded-[2px] text-[9px] leading-none transition-colors duration-300",
+            answered[i] ? "bg-accent text-gold" : "bg-gold-soft",
+            i === current ? "outline-2 outline-offset-1 outline-gold" : "",
           ].join(" ")}
         >
-          {answered[i] && <span className="absolute inset-x-0.5 top-0 h-1.5 rounded-b-full bg-frost" />}
+          {answered[i] ? "✦" : ""}
         </span>
       ))}
     </div>
   );
 }
 
-/** Chocolate goo strip for the top edge of a selected card. */
-export function Drip({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 120 14" preserveAspectRatio="none" className={`pointer-events-none absolute inset-x-0 -top-px h-3 w-full ${className}`} aria-hidden>
-      <path
-        d="M0,0 H120 V4 C116,4 115,12 111,12 C107,12 108,4 102,4 C96,4 97,9 93,9 C89,9 90,4 82,4 C76,4 77,13 72,13 C67,13 68,4 60,4 C54,4 55,8 51,8 C47,8 48,4 40,4 C34,4 35,12 30,12 C25,12 26,4 18,4 C13,4 14,9 10,9 C6,9 6,4 0,4 Z"
-        fill="#6b3418"
-      />
-    </svg>
-  );
+/** Checkerboard trim along the top edge of a selected card or the certificate. */
+export function CheckerStrip({ className = "" }: { className?: string }) {
+  return <span aria-hidden className={`checker pointer-events-none absolute inset-x-0 top-0 h-2 ${className}`} style={{ "--sq": "8px" } as React.CSSProperties} />;
 }

@@ -18,25 +18,89 @@
   --milk: #9c5f39;        /* milk-chocolate frame, the poster's outer colour */
   --frost: #f3e6d3;
   --pista: #a8d38f;        /* pistachio pop, used sparingly in doodles */
+  --gold: #e0b24f;
+  --gold-soft: #3a2416;
 }
 
-/* Public survey: playful lavender, cream stickers, chocolate. Admin keeps the dark tokens above. */
-.theme-lav {
+/* Public survey: vintage royal. A cream paper label with a gold double rule on a navy checkerboard,
+   checkered trim, crests and seals. Admin keeps the dark tokens above. */
+.theme-royal {
   color-scheme: light;
-  --bg: #b8b2f0;          /* lavender */
-  --panel: #fff6ea;       /* cream sticker */
-  --fg: #2b2170;          /* deep purple ink */
-  --muted: #4f4499;
-  --line: #2b2170;
-  --accent: #5b2d14;      /* chocolate */
-  --accent-fg: #fff6ea;
-  --accent-soft: #f6e2cc;
-  --bad: #a3221b;
-  --kesar: #e8892b;
-  --milk: #7a3d1c;
-  --frost: #fff6ea;
-  background: var(--bg);
+  --bg: #172062;          /* royal navy */
+  --bg-alt: #1f2c7a;      /* second checkerboard square */
+  --panel: #f7eedb;       /* cream paper */
+  --fg: #17205a;          /* navy ink */
+  --muted: #4a4f7d;
+  --line: #17205a;
+  --accent: #17205a;      /* navy buttons and checks */
+  --accent-fg: #f7eedb;
+  --accent-soft: #f2e0a6; /* gold leaf, selected answers */
+  --gold: #c9a23a;
+  --gold-dark: #8a6212;
+  --gold-soft: #f2e0a6;
+  --bad: #8c1d2b;         /* oxblood */
+  --kesar: #6e500c;       /* focus ring: dark gold, 6:1 on cream */
+  --milk: #17205a;
+  --frost: #f7eedb;
+  background-color: var(--bg);
+  background-image: repeating-conic-gradient(var(--bg-alt) 0 25%, transparent 0 50%);
+  background-size: 64px 64px;
   color: var(--fg);
+}
+
+/* Checkerboard trim: --sq is one 2x2 tile, so a square is half of it. */
+.checker {
+  background: repeating-conic-gradient(var(--line) 0 25%, var(--panel) 0 50%) 0 0 / var(--sq, 20px) var(--sq, 20px);
+}
+
+/* The paper label every screen sits on: navy edge, cream gap, gold hairline. */
+.royal-label {
+  background-color: var(--panel);
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgb(255 255 255 / 0.5), transparent 60%),
+    radial-gradient(ellipse at 50% 115%, rgb(138 98 18 / 0.12), transparent 60%);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 6px var(--panel), inset 0 0 0 7.5px var(--gold), 0 20px 50px rgb(5 8 30 / 0.45);
+}
+
+/* Smaller framed boxes: navy edge with a gold inner rule. */
+.royal-frame {
+  border: 2px solid var(--line);
+  box-shadow: inset 0 0 0 3px var(--panel), inset 0 0 0 4px var(--gold);
+}
+
+.royal-btn {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border-radius: 999px;
+  font-family: var(--font-cinzel), serif;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4.5px var(--gold), 0 4px 0 var(--gold-dark);
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+}
+.royal-btn:active { transform: translateY(3px); box-shadow: inset 0 0 0 3px var(--accent), inset 0 0 0 4.5px var(--gold), 0 1px 0 var(--gold-dark); }
+
+/* Ribbon banner with forked ends. */
+.ribbon {
+  background: var(--accent);
+  color: var(--accent-fg);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%);
+  padding: 0.4rem 2rem;
+}
+
+/* Section title between two gold rules. */
+.rule-ornament { display: flex; align-items: center; gap: 0.75rem; }
+.rule-ornament::before,
+.rule-ornament::after { content: ""; flex: 1; height: 1.5px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.rule-ornament::after { background: linear-gradient(270deg, transparent, var(--gold)); }
+
+/* Gold ring behind the hero mug. */
+.medallion {
+  border: 2px solid var(--line);
+  background: radial-gradient(circle, var(--panel) 0 62%, rgb(201 162 58 / 0.18) 63% 100%);
+  box-shadow: inset 0 0 0 5px var(--panel), inset 0 0 0 6.5px var(--gold);
 }
 
 @theme inline {
@@ -55,9 +119,12 @@
   --color-milk: var(--milk);
   --color-frost: var(--frost);
   --color-pista: var(--pista);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
   --font-display: var(--font-anton);
   --font-head: var(--font-oswald);
-  --font-brand: var(--font-modak);
+  --font-royal: var(--font-playfair);
+  --font-caps: var(--font-cinzel);
   --font-sans: var(--font-figtree);
   --radius-card: 14px;
 }
