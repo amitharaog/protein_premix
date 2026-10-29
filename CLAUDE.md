@@ -54,7 +54,7 @@ data/
   formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
 app/                Next.js launch site + research app from the build kit (its own CLAUDE.md applies inside app/)
-scripts/            keywords.py, reddit_pull.py, survey_analyze.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
+scripts/            keywords.py, reddit_pull.py, survey_analyze.py, agent_board.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
 ```
 
 ## Writing style for all outputs

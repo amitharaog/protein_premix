@@ -39,6 +39,7 @@ Ten subagents that answer one question in order: **do people actually want this?
 ## Scripts (usable on their own)
 - `scripts/keywords.py`: Google India, YouTube and Amazon.in autocomplete with a-z expansion, clustered into buy / make / problem / adjacent.
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
+- `scripts/agent_board.py`: one row per agent with its status (Ran, Ready, Waiting, Locked) worked out from the data files, plus the gate metrics counted from them. Feeds the agent board.
 - `scripts/survey_analyze.py`: survey numbers from the Google Sheet (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
 - `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.
