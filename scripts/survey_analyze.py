@@ -19,7 +19,10 @@ founder's own tests, friends and family) and rows whose utm_source is "test".
 
 Grades: a survey answer is prompted, so E3; a respondent who joined the waitlist is E1.
 
-Usage: python3 scripts/survey_analyze.py data/survey/responses.csv [--out data/survey/] [--date YYYY-MM-DD]
+--no-text leaves comment text out of every output (summary.json comments, coded_survey.csv reply_excerpt): for runs
+whose outputs may end up somewhere public, such as /gate started from the agent board.
+
+Usage: python3 scripts/survey_analyze.py data/survey/responses.csv [--out data/survey/] [--date YYYY-MM-DD] [--no-text]
 Data under data/survey/ stays out of git (see .gitignore): respondents were told nothing is shared.
 """
 import argparse, csv, json, os, re, sys
@@ -161,6 +164,7 @@ def main():
     ap.add_argument("csv")
     ap.add_argument("--out", default="data/survey/")
     ap.add_argument("--date", default=date.today().isoformat(), help="date_captured for coded rows")
+    ap.add_argument("--no-text", action="store_true", help="leave comment text out of every output")
     args = ap.parse_args()
 
     rows, qcols = read(args.csv)
@@ -217,7 +221,7 @@ def main():
     q10 = qcols.get("Q10", (None,))[0]
     comments = [{"text": scrub(r.get(q10).strip()), "likely": likely(r, qcols) or None, "source": (r.get("utm_source") or "direct"),
                  "joined_waitlist": (r.get("joined_waitlist") or "").lower() == "yes" if has_wl else None}
-                for r in rows if q10 and (r.get(q10) or "").strip()]
+                for r in rows if q10 and (r.get(q10) or "").strip() and not args.no_text]
 
     by_source = {}
     for s in src:
@@ -269,7 +273,7 @@ def main():
                 "date_captured": args.date, "platform": "survey",
                 "post_id": (r.get("utm_campaign") or r.get("utm_source") or "direct").strip(),
                 "url_or_manual": f"survey:{r.get('response_id', '')}",
-                "reply_excerpt": scrub((r.get(q10) or "").strip())[:200] if q10 else "",
+                "reply_excerpt": scrub((r.get(q10) or "").strip())[:200] if q10 and not args.no_text else "",
                 "has_problem": "no", "past_behaviour": "no",
                 "stated_interest": "yes" if likely(r, qcols) >= 4 else "no",
                 "asked_where_to_buy": "yes" if joined else "no",

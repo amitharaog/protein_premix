@@ -1,23 +1,29 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SubmitButton } from "@/components/submit-button";
 import { BAR, BarCard, Tile } from "@/components/stats";
-import agentsJson from "@/content/agent-board/agents.json";
-import gateJson from "@/content/agent-board/gate_files.json";
+import { blockedReason, RUNNABLE } from "@/lib/agents/commands";
+import { AGENTS_REPO, checkRepo } from "@/lib/agents/github";
+import { boardState } from "@/lib/agents/state";
+import { canStoreToken, savedGithubToken } from "@/lib/agents/token";
+import { activeRun, anyRunSucceeded, expireStaleRuns, recentRuns } from "@/lib/queries/runs";
 import { surveyResults } from "@/lib/queries/survey";
 import { keyMatches } from "@/lib/secret";
 import { aggregate, tally } from "@/lib/survey/aggregate";
-import { dailyCounts, gateProgress, headline, segments, type AgentRow, type GateFileRow, type GateRow } from "@/lib/survey/board";
+import { dailyCounts, gateProgress, headline, segments, type AgentRow, type GateRow } from "@/lib/survey/board";
+import { saveGithubToken } from "./actions";
+import { ActiveRun, Notice, RunButton, RunsTable } from "./run-ui";
 
-// The owner's agent board: research agents and their status (from the repo's data files, refreshed with `pnpm board`),
-// live survey totals and progress toward the demand gate. Read-only and aggregates only: no emails, phones or comments.
+// The owner's agent board: research agents and their status, Run buttons that start them on GitHub, live survey
+// totals and progress toward the demand gate. The page shows aggregates only; its Excel download (./export) has every
+// answer, with contact details removed. No emails or phones anywhere.
+// Statuses come from scripts/agent_board.py, deployed with the site or reported back by the latest run.
 // Guarded by BOARD_KEY in the link (/board?key=…); anything else is a plain 404.
 
 export const metadata: Metadata = { title: "Agent board", robots: { index: false, follow: false }, referrer: "no-referrer" };
 export const dynamic = "force-dynamic";
 
-const agents = agentsJson as AgentRow[];
-const gateFiles = gateJson as GateFileRow[];
 const PHASES = ["Demand", "Gate", "Economics", "Founder kitchen", "Outside this repo"];
 const STEPS: Record<string, string> = { Demand: "Step 1", Gate: "Step 2", Economics: "Step 3" };
 const MIN_N = 30; // scripts/survey_analyze.py: below this many responses, percentages are directional
@@ -31,12 +37,21 @@ const share = (v: number | null) => (v == null ? "—" : `${Math.round(v * 100)}
 const gateValue = (g: GateRow, v: number | null) =>
   v == null ? "—" : g.metric === "india_share_of_signals" ? share(v) : g.metric === "behaviour_to_interest_ratio" ? v.toFixed(2) : String(v);
 
-export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[] }> }) {
-  const { key } = await searchParams;
+const WORKFLOW_BRANCH = "claude/hopeful-sagan-gd3awd"; // where .github/workflows/research-agents.yml lives today
+const GITHUB = `https://github.com/${AGENTS_REPO}`;
+
+export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[]; notice?: string | string[] }> }) {
+  const { key, notice } = await searchParams;
   const k = typeof key === "string" ? key : undefined;
   if (!k || !keyMatches(k, process.env.BOARD_KEY)) notFound();
 
-  const { questions, responses, waitlistCount } = await surveyResults();
+  await expireStaleRuns();
+  const [{ questions, responses, waitlistCount }, { agents, gate_files: gateFiles }, active, runs, saved, setupDone] = await Promise.all([
+    surveyResults(), boardState(), activeRun(), recentRuns(6), savedGithubToken(), anyRunSucceeded(),
+  ]);
+  const repo = setupDone ? null : await checkRepo(saved?.token ?? null).catch(() => null);
+  const canRun = Boolean(saved?.token);
+  const noKeyLastRun = runs[0]?.status === "failed" && (runs[0].error ?? "").includes("ANTHROPIC_API_KEY");
   const now = new Date();
   const h = headline(responses, waitlistCount, now);
   const days = dailyCounts(responses, now);
@@ -66,11 +81,68 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         </p>
       </header>
 
+      {!setupDone && (
+        <section id="setup" aria-labelledby="setup-h" className="space-y-3 rounded-[14px] border border-gold/60 bg-panel p-4">
+          <div>
+            <h2 id="setup-h" className="font-head text-xl font-semibold uppercase text-frost">Setup, once</h2>
+            <p className="max-w-3xl text-sm text-muted">
+              The Run buttons start the agents on GitHub&apos;s computers (free for this public repo), the same as typing the command in Claude Code. Three things to do once; this box goes away after the first run that works.
+            </p>
+          </div>
+          <ol className="space-y-4 text-sm">
+            <SetupStep n={1} title="Make the agents' branch the default" state={repo == null ? "Could not check just now" : repo.ok && repo.workflowOnDefault ? "Done" : "To do"}>
+              GitHub only starts this kind of run from the repo&apos;s default branch{repo?.ok && !repo.workflowOnDefault ? <>, which is <code className="text-fg">{repo.defaultBranch}</code> today</> : null}.
+              Open <a href={`${GITHUB}/settings`} target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">the repo&apos;s settings ↗</a>,
+              find Default branch, press the two-arrows button, pick <code className="text-fg">{WORKFLOW_BRANCH}</code> and confirm.
+            </SetupStep>
+            <SetupStep n={2} title="Give GitHub a Claude key" state={noKeyLastRun ? "To do: the last run found no key" : "Checked on the first run"}>
+              Open <a href={`${GITHUB}/settings/secrets/actions/new`} target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">new repository secret ↗</a>.
+              Name: <code className="text-fg">ANTHROPIC_API_KEY</code>. Secret: an API key from <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">console.anthropic.com ↗</a>,
+              where you can also set a monthly spend limit. To use your Claude subscription instead, name it <code className="text-fg">CLAUDE_CODE_OAUTH_TOKEN</code> and paste what <code className="text-fg">claude setup-token</code> prints.
+            </SetupStep>
+            <SetupStep n={3} title="Let this board start runs" state={saved?.token ? `Done: token ending …${saved.hint}` : saved ? "Save it again: the server cannot read the saved one" : "To do"}>
+              Create a token at <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">GitHub, fine-grained tokens ↗</a>:
+              Repository access, Only select repositories, <code className="text-fg">protein_premix</code>; Permissions, Actions, Read and write. Generate it and paste it here.
+              <TokenForm k={k} disabled={!canStoreToken()} />
+            </SetupStep>
+          </ol>
+        </section>
+      )}
+
+      <section id="run" aria-labelledby="run-h" className="space-y-3">
+        <div>
+          <h2 id="run-h" className="font-head text-xl font-semibold uppercase text-frost">Run a step</h2>
+          <p className="max-w-3xl text-xs text-muted">
+            Each button runs the command on GitHub with Claude Code and brings the answer back here. Files the agents write are saved to the repo, except survey and recipe output, which stays on this board. One run at a time.
+          </p>
+        </div>
+        <Notice code={typeof notice === "string" ? notice : undefined} />
+        {active && <ActiveRun run={active} k={k} />}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {RUNNABLE.map((command) => (
+            <div key={command} className="rounded-[14px] border border-line bg-panel p-3">
+              <RunButton k={k} command={command} compact
+                why={!canRun ? "Finish the setup above first." : active ? "Wait for the run in progress to end." : blockedReason(command, agents)} />
+            </div>
+          ))}
+        </div>
+        <div className="rounded-[14px] border border-line bg-panel p-4">
+          <h3 className="font-head text-base font-semibold text-frost">Recent runs</h3>
+          <div className="mt-2"><RunsTable runs={runs} k={k} /></div>
+        </div>
+        {setupDone && (
+          <details className="text-sm">
+            <summary className="cursor-pointer text-xs text-muted">GitHub token{saved?.hint ? ` (ending …${saved.hint})` : ""}: replace it</summary>
+            <div className="mt-2 max-w-xl"><TokenForm k={k} disabled={!canStoreToken()} /></div>
+          </details>
+        )}
+      </section>
+
       <section aria-labelledby="agents-h" className="space-y-3">
         <div>
           <h2 id="agents-h" className="font-head text-xl font-semibold uppercase text-frost">Agents</h2>
           <p className="text-xs text-muted">
-            In the order the work runs; open one to see how to run it and what it does. A status comes from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"}; economics stays locked until /gate writes a pass.
+            In the order the work runs; open one for its latest output, its Run button and its full instructions. Statuses come from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"} and update after each run; economics stays locked until /gate writes a pass.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -80,7 +152,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             return (
               <div key={phase} className="space-y-2">
                 <p className="text-xs uppercase tracking-wide text-muted">{STEPS[phase] ?? "Alongside"} · <span className="text-fg">{phase}</span></p>
-                {items.map((a) => <AgentCard key={a.name} a={a} href={`/board/${a.slug}?key=${encodeURIComponent(k)}`} />)}
+                {items.map((a) => <AgentCard key={a.name} a={a} running={active?.command === a.command} href={`/board/${a.slug}?key=${encodeURIComponent(k)}`} />)}
               </div>
             );
           })}
@@ -88,9 +160,15 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
       </section>
 
       <section aria-labelledby="survey-h" className="space-y-3">
-        <div>
-          <h2 id="survey-h" className="font-head text-xl font-semibold uppercase text-frost">Survey, live</h2>
-          <p className="text-xs text-muted">Straight from the database on every visit. Answers are prompted (E3); joining the waitlist is behaviour (E1).</p>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 id="survey-h" className="font-head text-xl font-semibold uppercase text-frost">Survey, live</h2>
+            <p className="text-xs text-muted">Straight from the database on every visit. Answers are prompted (E3); joining the waitlist is behaviour (E1).</p>
+          </div>
+          <a href={`/board/export?key=${encodeURIComponent(k)}`} download
+            className="inline-flex h-11 items-center rounded-full border border-frost px-4 text-sm font-semibold text-frost hover:bg-frost hover:text-bg">
+            Download every answer (Excel)
+          </a>
         </div>
         {h.responses < MIN_N && (
           <p className="rounded-[14px] border border-warn/50 bg-panel p-3 text-sm text-warn">
@@ -202,19 +280,50 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <Link href="/survey" className="text-frost underline underline-offset-4">Open the survey</Link>
         <Link href="/admin" className="text-frost underline underline-offset-4">Results and CSV (admin sign-in)</Link>
         <p className="text-xs text-muted">
-          Feedback on the answers: run <code className="text-fg">/survey</code> in Claude Code. After an agent runs, refresh the statuses with <code className="text-fg">pnpm board</code>, then commit and deploy.
+          Runs started here update the statuses by themselves. After running an agent in Claude Code instead, refresh them with <code className="text-fg">pnpm board</code>, then commit and deploy.
         </p>
       </footer>
     </main>
   );
 }
 
-function AgentCard({ a, href }: { a: AgentRow; href: string }) {
+function SetupStep({ n, title, state, children }: { n: number; title: string; state: string; children: React.ReactNode }) {
+  const done = state.startsWith("Done");
+  return (
+    <li className="space-y-1">
+      <p className="flex flex-wrap items-center gap-2">
+        <span className="font-semibold text-frost">{n}. {title}</span>
+        <span className={`rounded-full border px-2 text-xs ${done ? "border-ok text-ok" : "border-line text-muted"}`}>{state}</span>
+      </p>
+      <div className="max-w-3xl space-y-2 text-muted">{children}</div>
+    </li>
+  );
+}
+
+function TokenForm({ k, disabled }: { k: string; disabled: boolean }) {
+  return (
+    <form action={saveGithubToken} className="flex flex-wrap items-end gap-2">
+      <input type="hidden" name="key" value={k} />
+      <label className="min-w-0 flex-1 basis-64 text-sm">
+        <span className="sr-only">GitHub token</span>
+        <input name="token" type="password" required maxLength={400} autoComplete="off" spellCheck={false} placeholder="github_pat_…"
+          className="h-11 w-full rounded-md border border-line bg-bg px-3 text-fg placeholder:text-muted/70 focus:border-frost focus:outline-none" />
+      </label>
+      <SubmitButton pending="Checking…" disabled={disabled}
+        className="h-11 rounded-full border border-frost px-4 text-sm font-semibold text-frost hover:bg-frost hover:text-bg disabled:cursor-not-allowed disabled:border-line disabled:text-muted">
+        Save token
+      </SubmitButton>
+      <p className="w-full text-xs text-muted">{disabled ? "The server has no BOARD_TOKEN_SECRET yet, so it cannot keep a token." : "Kept encrypted; only its last four characters are shown again."}</p>
+    </form>
+  );
+}
+
+function AgentCard({ a, href, running }: { a: AgentRow; href: string; running: boolean }) {
   return (
     <Link href={href} className={`group block rounded-[14px] border border-line bg-panel p-3 transition-colors hover:border-frost focus-visible:border-frost ${a.status === "Locked" ? "opacity-70 hover:opacity-100" : ""}`}>
       <div className="flex items-start justify-between gap-2">
         <h3 className="min-w-0 break-words text-sm font-semibold text-frost">{a.name}</h3>
-        <span className={`shrink-0 rounded-full border px-2 text-xs ${pillClass(a.status)}`}>{a.status}</span>
+        <span className={`shrink-0 rounded-full border px-2 text-xs ${running ? "border-gold text-gold" : pillClass(a.status)}`}>{running ? "Running" : a.status}</span>
       </div>
       <p className="mt-1 text-xs text-muted">{a.job}</p>
       <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted">

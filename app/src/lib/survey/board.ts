@@ -72,7 +72,7 @@ export type AgentRow = {
   order: number; name: string; slug: string; phase: string; command: string; job: string; model: string;
   status: string; waiting_on: string; output: string; rows: number | null; next_step: string;
   description: string; tools: string; command_hint: string; instructions: string;
-  output_exists: boolean; output_url: string; output_note: string;
+  output_exists: boolean; output_url: string; output_note: string; report: string;
 };
 export type GateFileRow = {
   order: number; metric: string; label: string; threshold: number; from_files: number | null; adds_survey: boolean;

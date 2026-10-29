@@ -1,0 +1,142 @@
+name: Research agents
+
+# Runs one research command (/demand, /survey, /gate, ...) with Claude Code when the founder presses Run on the agent
+# board (mugcake.vercel.app/board). The board sends only a run id: this workflow asks the board what to run and
+# reports back, proving who it is with a GitHub OIDC token, so the repo holds no board secret.
+#
+# This repo is public and so are these logs: nothing below prints what the agents read or write. Claude runs without
+# any GitHub token in reach; files are saved by a later step. Survey and recipe output goes to the board only.
+#
+# Needs, once: the repository secret ANTHROPIC_API_KEY (or CLAUDE_CODE_OAUTH_TOKEN), and this file on the default
+# branch (GitHub only starts workflow_dispatch workflows found there).
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Run id from the agent board
+        required: true
+      command:
+        description: Shown in the run name only; the board says what to run
+        required: false
+        default: ""
+      board_url:
+        description: Where the board lives
+        required: false
+        default: https://mugcake.vercel.app
+
+run-name: Agent run ${{ inputs.command }}
+
+permissions:
+  contents: write   # the save step pushes what the agents wrote
+  id-token: write   # proves to the board that calls come from this workflow
+
+concurrency:
+  group: research-agents
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      RUN_ID: ${{ inputs.run_id }}
+      BOARD_URL: ${{ inputs.board_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false   # no token on disk while the agents run
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Ask the board what to run
+        id: start
+        run: python3 scripts/board_report.py started
+
+      - name: Install Claude Code
+        run: npm install --global @anthropic-ai/claude-code@2 --no-fund --no-audit --loglevel=error
+
+      - name: Pull the survey
+        if: steps.start.outputs.needs_survey == 'true'
+        run: python3 scripts/board_report.py survey
+
+      - name: Run the agents
+        id: claude
+        timeout-minutes: 60
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          [ -n "$ANTHROPIC_API_KEY" ] || unset ANTHROPIC_API_KEY
+          [ -n "$CLAUDE_CODE_OAUTH_TOKEN" ] || unset CLAUDE_CODE_OAUTH_TOKEN
+          if [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -z "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then
+            echo no_key > "$RUNNER_TEMP/agent_error"
+            echo "::error::Add the repository secret ANTHROPIC_API_KEY (or CLAUDE_CODE_OAUTH_TOKEN)."
+            exit 1
+          fi
+          extra=()
+          if [ -s "$RUNNER_TEMP/disallowed" ]; then extra+=(--disallowedTools "$(cat "$RUNNER_TEMP/disallowed")"); fi
+          # The board's OIDC request env stays out of Claude's reach. Output goes to files, never to this public log.
+          set +e
+          env -u ACTIONS_ID_TOKEN_REQUEST_URL -u ACTIONS_ID_TOKEN_REQUEST_TOKEN -u ACTIONS_RUNTIME_TOKEN \
+            claude -p "$(cat "$RUNNER_TEMP/prompt")" \
+              --model sonnet \
+              --output-format json \
+              --permission-mode bypassPermissions \
+              --append-system-prompt "$(cat "$RUNNER_TEMP/system")" \
+              "${extra[@]}" > "$RUNNER_TEMP/claude.json" 2> "$RUNNER_TEMP/claude.err"
+          code=$?
+          echo "Claude Code finished with exit code $code."
+          exit $code
+
+      - name: Gather the reports
+        if: always() && steps.start.outcome == 'success'
+        run: python3 scripts/board_report.py collect
+
+      - name: Save to the repo
+        id: save
+        if: steps.claude.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          command="$(cat "$RUNNER_TEMP/command")"
+          # Only what agents are meant to write: data/ and reports/, never survey or formulation files.
+          # Survey and recipe runs save nothing but the refreshed agent statuses.
+          if [ "$(cat "$RUNNER_TEMP/mode")" = commit ]; then
+            paths=(); for p in data reports; do [ -e "$p" ] && paths+=("$p"); done
+            [ ${#paths[@]} -eq 0 ] || git add -A -- "${paths[@]}" ':(exclude)data/survey' ':(exclude)data/formulation'
+          fi
+          git checkout -- . && git clean -fdq   # drop anything else the run changed; staged files stay
+          python3 scripts/agent_board.py --out app/src/content/agent-board > /dev/null
+          git add app/src/content/agent-board
+          if git diff --cached --quiet; then echo "Nothing new to save."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Agent run from the board: $command" -m "$RUN_URL"
+          remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          for attempt in 1 2 3; do
+            if git push -q "$remote" "HEAD:refs/heads/${GITHUB_REF_NAME}"; then
+              echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$(git rev-parse HEAD)" > "$RUNNER_TEMP/commit_url"
+              echo "Saved."
+              exit 0
+            fi
+            git pull -q --rebase "$remote" "${GITHUB_REF_NAME}" || { git rebase --abort || true; break; }
+          done
+          echo "::error::Could not push the agents' files."
+          exit 1
+
+      - name: Report back to the board
+        if: always() && steps.start.outcome == 'success'
+        env:
+          CLAUDE_OUTCOME: ${{ steps.claude.outcome }}
+          SAVE_OUTCOME: ${{ steps.save.outcome }}
+        run: python3 scripts/board_report.py finished

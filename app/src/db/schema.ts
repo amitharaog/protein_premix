@@ -15,6 +15,7 @@ export const recipeStatus = pgEnum("recipe_status", ["idea", "testing", "approve
 export const appliance = pgEnum("appliance", ["microwave", "air_fryer", "otg", "pressure_cooker"]);
 export const questionType = pgEnum("question_type", ["single", "multi", "scale_1_5", "free_text"]);
 export const jobStatus = pgEnum("job_status", ["running", "ok", "partial", "failed"]);
+export const runStatus = pgEnum("run_status", ["requested", "running", "succeeded", "failed"]);
 
 const money = (name: string) => numeric(name, { precision: 10, scale: 2 });
 const grams = (name: string) => numeric(name, { precision: 10, scale: 3 });
@@ -355,6 +356,32 @@ export const jobRuns = pgTable("job_runs", {
   summary: jsonb("summary"),
   error: text("error"),
 }, (t) => [index().on(t.job, t.startedAt.desc())]);
+
+// Research agent runs started from the agent board (/board) and carried out by the GitHub workflow
+// .github/workflows/research-agents.yml, which reports back to /api/board/runs.
+export const agentRuns = pgTable("agent_runs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  command: text("command").notNull(),           // /demand, /survey, /gate, ...
+  args: text("args"),
+  status: runStatus("status").notNull().default("requested"),
+  requestedAt: tstz("requested_at").notNull().defaultNow(),
+  startedAt: tstz("started_at"),
+  finishedAt: tstz("finished_at"),
+  runUrl: text("run_url"),                      // the GitHub Actions run, for its logs
+  commitUrl: text("commit_url"),                // the commit holding what the run wrote, if it wrote to the repo
+  summary: text("summary"),                     // the agent's closing message to the founder
+  costUsd: numeric("cost_usd", { precision: 10, scale: 4 }),
+  reports: jsonb("reports").$type<Record<string, string>>(),   // path -> markdown written by the run
+  board: jsonb("board").$type<{ agents: unknown[]; gate_files: unknown[] }>(), // agent statuses after the run
+  error: text("error"),
+}, (t) => [index().on(t.requestedAt.desc())]);
+
+// Settings the agent board keeps, e.g. the GitHub token it starts runs with (encrypted; never shown again).
+export const boardSettings = pgTable("board_settings", {
+  key: text("key").primaryKey(),
+  value: jsonb("value").$type<Record<string, string>>().notNull(),
+  updatedAt: tstz("updated_at").notNull().defaultNow(),
+});
 
 // ───────────── Auth.js (Drizzle adapter, Postgres shape) ─────────────
 export const users = pgTable("user", {

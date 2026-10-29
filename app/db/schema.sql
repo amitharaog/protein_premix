@@ -314,3 +314,30 @@ create table job_runs (
   error        text
 );
 create index on job_runs (job, started_at desc);
+
+-- Research agent runs started from the agent board and carried out by .github/workflows/research-agents.yml
+create type run_status as enum ('requested', 'running', 'succeeded', 'failed');
+create table agent_runs (
+  id           uuid primary key default gen_random_uuid(),
+  command      text not null,                -- /demand, /survey, /gate, ...
+  args         text,
+  status       run_status not null default 'requested',
+  requested_at timestamptz not null default now(),
+  started_at   timestamptz,
+  finished_at  timestamptz,
+  run_url      text,                         -- the GitHub Actions run, for its logs
+  commit_url   text,                         -- the commit holding what the run wrote, if it wrote to the repo
+  summary      text,                         -- the agent's closing message to the founder
+  cost_usd     numeric(10,4),
+  reports      jsonb,                        -- path -> markdown written by the run
+  board        jsonb,                        -- agent statuses after the run
+  error        text
+);
+create index on agent_runs (requested_at desc);
+
+-- Settings the agent board keeps, e.g. the GitHub token it starts runs with (encrypted; never shown again)
+create table board_settings (
+  key        text primary key,
+  value      jsonb not null,
+  updated_at timestamptz not null default now()
+);

@@ -13,7 +13,7 @@ You turn survey answers into feedback the founder can act on this week. A survey
 - `CLAUDE.md` for the price and channel hypotheses. Reports 01 to 03, if they exist, to cross-check themes.
 
 ## Method
-1. Run `python3 scripts/survey_analyze.py data/survey/responses.csv --out data/survey/` (use the `.json` path if that is what exists). It writes `summary.json`, `tables.md`, `coded_survey.csv` and adds today's row to `history.csv`.
+1. Run `python3 scripts/survey_analyze.py data/survey/responses.csv --out data/survey/` (use the `.json` path if that is what exists). It writes `summary.json`, `tables.md`, `coded_survey.csv` and adds today's row to `history.csv`. In a run started from the agent board, Bash is off for privacy and the workflow has already run the script: read its outputs instead.
 2. Read `summary.json` and `tables.md`. Every number in your report comes from these files. Do not recompute, round differently or estimate. A value of `null` is `MISSING`.
 3. Grade everything: survey answers are E3 (prompted); a respondent who joined the waitlist is E1. Comments are E3 even when they sound certain.
 4. Check for fooling yourself before writing:

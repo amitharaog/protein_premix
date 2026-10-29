@@ -19,6 +19,8 @@
     "@auth/drizzle-adapter": "^1.11.3",
     "@neondatabase/serverless": "^1.2.0",
     "drizzle-orm": "^0.45.4",
+    "fflate": "0.8.2",
+    "jose": "6.2.13",
     "next": "15.5.28",
     "next-auth": "5.0.0-beta.29",
     "pg": "^8.23.1",

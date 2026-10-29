@@ -31,6 +31,14 @@ Ten subagents that answer one question in order: **do people actually want this?
 
 `/economics override gate` runs economics anyway and stamps every report as unvalidated.
 
+## Or press Run on the agent board
+The site's agent board (`/board?key=…`) has a Run button for each command. It starts `.github/workflows/research-agents.yml`, which runs the same command with Claude Code on GitHub's computers, saves what the agents wrote to this repo, and sends the agents' reply, their reports and the new statuses back to the board. Survey and recipe output stays on the board and never enters the repo. One-time setup, shown on the board until the first run works:
+1. Make `claude/hopeful-sagan-gd3awd` the repo's default branch (GitHub only starts this kind of workflow from there).
+2. Add the repository secret `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`). Set a monthly spend limit on the key.
+3. Paste a fine-grained GitHub token (this repo only, Actions read and write) into the board's Setup box.
+
+The board also has **Download every answer (Excel)**: the live survey as a workbook with a Summary tab, contact details removed.
+
 ## What the agents will not do
 - Post, comment or DM anywhere. You post.
 - Touch the formulation, except `recipe-builder` when you call `/recipe`. It only suggests, in `data/formulation/suggestions/`.
@@ -40,6 +48,7 @@ Ten subagents that answer one question in order: **do people actually want this?
 - `scripts/keywords.py`: Google India, YouTube and Amazon.in autocomplete with a-z expansion, clustered into buy / make / problem / adjacent.
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
 - `scripts/agent_board.py`: one row per agent with its status (Ran, Ready, Waiting, Locked) worked out from the data files, plus the gate metrics counted from them. Feeds the agent board.
+- `scripts/board_report.py`: the research-agents workflow's side of the board: asks what to run, pulls the survey for `/survey` and `/gate`, and reports the result back (GitHub OIDC, no stored secret).
 - `scripts/survey_analyze.py`: survey numbers from the Google Sheet (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
 - `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.

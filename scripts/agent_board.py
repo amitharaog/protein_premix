@@ -10,12 +10,21 @@ Status comes from what exists on disk, so re-running this after an agent runs mo
   On call   founder-only, runs when asked
 
 Usage: python3 scripts/agent_board.py [--out DIR] [--date YYYY-MM-DD]
-Writes DIR/agents.json and DIR/gate_files.json (default DIR: current folder).
+Writes DIR/agents.json and DIR/gate_files.json (default DIR: current folder), plus DIR/meta.json with the time
+they last changed. Unchanged output leaves all three files alone.
 """
 import argparse, csv, json, os, re, subprocess
-from datetime import date
+from datetime import date, datetime, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# The human-readable output each agent writes; the board shows its latest version. A folder means its newest .md file.
+REPORTS = {
+    "demand-scout": "reports/01_listening.md", "keyword-finder": "reports/02_keywords.md", "post-drafter": "data/posts/drafts.md",
+    "response-analyst": "reports/03_responses.md", "survey-analyst": "reports/04_survey.md", "demand-gate": "data/gate/decision.md",
+    "pricing-analyst": "reports/05_pricing.md", "channel-analyst": "reports/06_channels.md", "cac-modeler": "reports/07_cac.md",
+    "recipe-builder": "data/formulation/suggestions/",
+}
 
 # Pipeline order, phase, command and a one-line job. The agent files hold the full instructions.
 PLAN = [
@@ -34,7 +43,7 @@ EXTERNAL = {"name": "Protein mug cake weekly refresh", "slug": "cowork-weekly-re
             "command": "Cowork schedule", "job": "Scheduled task in Claude's desktop app; it made the build kit on 26 Oct 2026",
             "model": "", "status": "Scheduled", "waiting_on": "", "output": "Cowork", "rows": None,
             "next_step": "Runs on its own schedule in Cowork", "description": "", "tools": "", "command_hint": "",
-            "output_exists": False, "output_url": "", "output_note": "Lives in the Claude desktop app, not in this repo",
+            "output_exists": False, "output_url": "", "output_note": "Lives in the Claude desktop app, not in this repo", "report": "",
             "instructions": "This task lives in the Claude desktop app, not in this repo, so nothing here runs it.\n\n"
                             "## Where to find it\n- Open the Claude desktop app, then Cowork, then Scheduled.\n"
                             "- From there you can see its runs, change its schedule, or pause it.\n\n"
@@ -110,6 +119,15 @@ def gate_status():
     return json.load(open(f, encoding="utf-8")).get("status") if os.path.exists(f) else None
 
 
+def ran_before(out, name):
+    """Whether the last board said this agent ran. Its report stays out of git, so a fresh checkout cannot tell."""
+    f = os.path.join(out, "agents.json")
+    try:
+        return any(a.get("name") == name and a.get("status") == "Ran" for a in json.load(open(f, encoding="utf-8")))
+    except (OSError, ValueError):
+        return False
+
+
 def any_files(*p):
     d = path(*p)
     return os.path.isdir(d) and any(not n.startswith(".") for n in os.listdir(d))
@@ -138,7 +156,7 @@ def main():
         "response-analyst": ("Ran", "", "data/responses/coded.csv", coded) if coded else
                             ("Ready", "", "data/responses/coded.csv", None) if live_posts else
                             ("Waiting", "posts you publish, listed in data/posts/posted.csv", "data/responses/coded.csv", None),
-        "survey-analyst": ("Ran", "", "reports/04_survey.md", None) if os.path.exists(path("reports", "04_survey.md")) else
+        "survey-analyst": ("Ran", "", "reports/04_survey.md", None) if os.path.exists(path("reports", "04_survey.md")) or ran_before(args.out, "survey-analyst") else
                           ("Ready", "", "reports/04_survey.md", None),
         "demand-gate": (f"Ran: {gate}", "", "data/gate/gate.json", None) if gate else
                        ("Ready", "", "data/gate/gate.json", None) if evidence else
@@ -170,7 +188,7 @@ def main():
                        "description": meta.get("description", ""), "tools": meta.get("tools", ""),
                        "command_hint": command_hint(cmd) if cmd in ("/recipe", "/survey") else "",
                        "output_exists": exists, "output_url": url, "output_note": note,
-                       "instructions": instructions})
+                       "report": REPORTS.get(name, ""), "instructions": instructions})
     agents.append({"order": len(PLAN) + 1, **EXTERNAL})
 
     crit = json.load(open(path("data", "gate", "criteria.json"), encoding="utf-8"))["metrics"]
@@ -202,9 +220,16 @@ def main():
                            "captured": args.date})
 
     os.makedirs(args.out, exist_ok=True)
-    for name, data in (("agents.json", agents), ("gate_files.json", gate_files)):
-        with open(os.path.join(args.out, name), "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=1)
+    out = lambda name: os.path.join(args.out, name)
+    new = {"agents.json": json.dumps(agents, ensure_ascii=False, indent=1), "gate_files.json": json.dumps(gate_files, ensure_ascii=False, indent=1)}
+    old = {name: open(out(name), encoding="utf-8").read() if os.path.exists(out(name)) else None for name in new}
+    # meta.json says when the statuses last changed; the board uses it to tell whether a run's copy is newer than the deployed one.
+    if new != old or not os.path.exists(out("meta.json")):
+        for name, text in new.items():
+            with open(out(name), "w", encoding="utf-8") as f:
+                f.write(text)
+        with open(out("meta.json"), "w", encoding="utf-8") as f:
+            json.dump({"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}, f)
     for a in agents:
         print(f"{a['order']:>2} {a['name']:<32} {a['status']:<10} {a['next_step']}")
 
