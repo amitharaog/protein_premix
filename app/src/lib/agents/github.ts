@@ -3,6 +3,8 @@
 
 export const AGENTS_REPO = "amitharaog/protein_premix";
 export const AGENTS_WORKFLOW = "research-agents.yml";
+/** The branch runs happen on and save to: the one the site is built from. The default branch only has to carry the workflow file. */
+export const AGENTS_REF = process.env.AGENTS_REF || "claude/hopeful-sagan-gd3awd";
 const API = "https://api.github.com";
 
 type Fetch = typeof fetch;

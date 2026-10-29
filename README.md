@@ -33,7 +33,7 @@ Ten subagents that answer one question in order: **do people actually want this?
 
 ## Or press Run on the agent board
 The site's agent board (`/board?key=…`) has a Run button for each command. It starts `.github/workflows/research-agents.yml`, which runs the same command with Claude Code on GitHub's computers, saves what the agents wrote to this repo, and sends the agents' reply, their reports and the new statuses back to the board. Survey and recipe output stays on the board and never enters the repo. One-time setup, shown on the board until the first run works:
-1. Make `claude/hopeful-sagan-gd3awd` the repo's default branch (GitHub only starts this kind of workflow from there).
+1. The workflow file must be on the repo's default branch (GitHub only starts this kind of workflow from there). It is, since 29 Oct 2026. Runs happen on and save to `claude/hopeful-sagan-gd3awd` (`AGENTS_REF` on Vercel changes that).
 2. Add the repository secret `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`). Set a monthly spend limit on the key.
 3. Paste a fine-grained GitHub token (this repo only, Actions read and write) into the board's Setup box.
 

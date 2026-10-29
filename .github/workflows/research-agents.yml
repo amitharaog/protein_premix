@@ -8,7 +8,8 @@ name: Research agents
 # any GitHub token in reach; files are saved by a later step. Survey and recipe output goes to the board only.
 #
 # Needs, once: the repository secret ANTHROPIC_API_KEY (or CLAUDE_CODE_OAUTH_TOKEN), and this file on the default
-# branch (GitHub only starts workflow_dispatch workflows found there).
+# branch (GitHub only starts workflow_dispatch workflows found there). The board starts runs on the branch the site
+# is built from (AGENTS_REF), so what the agents write lands there.
 
 on:
   workflow_dispatch:

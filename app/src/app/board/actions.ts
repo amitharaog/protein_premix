@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { blockedReason, cleanArgs, RUNNABLE } from "@/lib/agents/commands";
-import { checkRepo, dispatchRun, githubProblem } from "@/lib/agents/github";
+import { AGENTS_REF, checkRepo, dispatchRun, githubProblem } from "@/lib/agents/github";
 import { boardState } from "@/lib/agents/state";
 import { canStoreToken, savedGithubToken, storeGithubToken } from "@/lib/agents/token";
 import { looksLikeGithubToken } from "@/lib/agents/vault";
@@ -49,7 +49,7 @@ export async function startRun(form: FormData) {
   if (!repo.ok) await failRun(id, githubProblem(repo.status));
   else if (!repo.workflowOnDefault) await failRun(id, githubProblem(404));
   else {
-    const sent = await dispatchRun(saved.token, repo.defaultBranch, { run_id: id, command, board_url: boardOrigin() })
+    const sent = await dispatchRun(saved.token, AGENTS_REF, { run_id: id, command, board_url: boardOrigin() })
       .catch(() => ({ ok: false as const, status: 0, message: "could not reach GitHub" }));
     if (!sent.ok) await failRun(id, githubProblem(sent.status, sent.message));
   }

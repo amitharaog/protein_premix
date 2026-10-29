@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { SubmitButton } from "@/components/submit-button";
 import { BAR, BarCard, Tile } from "@/components/stats";
 import { blockedReason, RUNNABLE } from "@/lib/agents/commands";
-import { AGENTS_REPO, checkRepo } from "@/lib/agents/github";
+import { AGENTS_REF, AGENTS_REPO, checkRepo } from "@/lib/agents/github";
 import { boardState } from "@/lib/agents/state";
 import { canStoreToken, savedGithubToken } from "@/lib/agents/token";
 import { activeRun, anyRunSucceeded, expireStaleRuns, recentRuns } from "@/lib/queries/runs";
@@ -37,7 +37,6 @@ const share = (v: number | null) => (v == null ? "—" : `${Math.round(v * 100)}
 const gateValue = (g: GateRow, v: number | null) =>
   v == null ? "—" : g.metric === "india_share_of_signals" ? share(v) : g.metric === "behaviour_to_interest_ratio" ? v.toFixed(2) : String(v);
 
-const WORKFLOW_BRANCH = "claude/hopeful-sagan-gd3awd"; // where .github/workflows/research-agents.yml lives today
 const GITHUB = `https://github.com/${AGENTS_REPO}`;
 
 export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[]; notice?: string | string[] }> }) {
@@ -93,7 +92,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             <SetupStep n={1} title="Make the agents' branch the default" state={repo == null ? "Could not check just now" : repo.ok && repo.workflowOnDefault ? "Done" : "To do"}>
               GitHub only starts this kind of run from the repo&apos;s default branch{repo?.ok && !repo.workflowOnDefault ? <>, which is <code className="text-fg">{repo.defaultBranch}</code> today</> : null}.
               Open <a href={`${GITHUB}/settings`} target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">the repo&apos;s settings ↗</a>,
-              find Default branch, press the two-arrows button, pick <code className="text-fg">{WORKFLOW_BRANCH}</code> and confirm.
+              find Default branch, press the two-arrows button, pick <code className="text-fg">{AGENTS_REF}</code> and confirm.
             </SetupStep>
             <SetupStep n={2} title="Give GitHub a Claude key" state={noKeyLastRun ? "To do: the last run found no key" : "Checked on the first run"}>
               Open <a href={`${GITHUB}/settings/secrets/actions/new`} target="_blank" rel="noopener noreferrer" className="text-frost underline underline-offset-4">new repository secret ↗</a>.
