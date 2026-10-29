@@ -1,11 +1,12 @@
 # Protein premix research agents (Claude Code)
 
-Eight subagents that answer one question in order: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled.
+Ten subagents that answer one question in order: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled.
 
 ```
 /demand ──► demand-scout  ┐
             keyword-finder ┘──► post-drafter ──► YOU POST BY HAND ──► (3 to 5 days)
 /demand replies ──► response-analyst
+/survey ──► survey-analyst   (website survey, any time it has new answers)
 /gate ──► demand-gate ──► pass? ──► /economics ──► pricing-analyst ┐
                                                    channel-analyst ┘──► cac-modeler
 ```
@@ -22,6 +23,7 @@ Eight subagents that answer one question in order: **do people actually want thi
 |---|---|---|---|
 | 1 | `/demand` | Reddit, marketplace reviews, YouTube listening; autocomplete keywords; post drafts | Read `data/posts/drafts.md`, post the ones you like, fill `posted.csv` |
 | 2 | `/demand replies` | Pulls Reddit replies, codes everything | Paste LinkedIn, Instagram, WhatsApp and form replies into `data/responses/manual/` first |
+| 2b | `/survey <Google Sheet link>` | Pulls the website survey answers, runs `scripts/survey_analyze.py`, writes feedback to `reports/04_survey.md` and survey rows for the gate | Share the survey link with `?utm_source=<place>` so sources can be told apart |
 | 3 | `/gate` | Pass, fail or insufficient against `data/gate/criteria.json` | Edit thresholds before running if you disagree |
 | 4 | `/economics` | Competitor shelf, Van Westendorp survey, channel scoring, CAC Monte Carlo | Run the survey form it writes, export to `data/economics/survey/responses.csv` |
 | any | `/status` | Where things stand, next action | |
@@ -37,6 +39,7 @@ Eight subagents that answer one question in order: **do people actually want thi
 ## Scripts (usable on their own)
 - `scripts/keywords.py`: Google India, YouTube and Amazon.in autocomplete with a-z expansion, clustered into buy / make / problem / adjacent.
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
+- `scripts/survey_analyze.py`: survey numbers from the Google Sheet (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
 - `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.
 - `scripts/cac_model.py`: `--template` prints an inputs file of E4 placeholders; running it gives CAC, LTV:CAC, break-even repeat rate and a tornado sensitivity per channel.

@@ -4,7 +4,7 @@
 A research workspace for a single-serve, high-protein baking premix (brownie, cake, cookie) for the Indian market, starting in Bengaluru. Buyers add their own liquid and bake at home. The product wedge is protein with real-dessert texture. Do not widen the wedge to "healthy" or "sugar-free" in any output.
 
 ## Order of work (hard rule)
-1. **Demand phase** (`/demand`): passive listening, keyword demand, post drafts, reply analysis.
+1. **Demand phase** (`/demand`, `/survey`): passive listening, keyword demand, post drafts, reply analysis, survey feedback.
 2. **Gate** (`/gate`): scores the demand evidence against `data/gate/criteria.json` and writes `data/gate/gate.json`.
 3. **Economics phase** (`/economics`): pricing, channels, CAC. Runs only when `data/gate/gate.json` has `"status": "pass"`, or the user explicitly types "override gate".
 
@@ -41,19 +41,20 @@ Drafts must not contain: brand name, prices, unit cost, the single-serve cup for
 
 ## File layout
 ```
-.claude/agents/     nine subagents (demand phase: 5, economics: 3, founder kitchen: recipe-builder)
-.claude/commands/   /demand, /gate, /economics, /status, /recipe
+.claude/agents/     ten subagents (demand phase: 6, economics: 3, founder kitchen: recipe-builder)
+.claude/commands/   /demand, /survey, /gate, /economics, /status, /recipe
 data/
   signals/          passive listening (signals.csv)
   keywords/         autocomplete + trends output
   posts/            drafts.md, posted.csv (user fills URLs after posting)
   responses/        pulled replies, manual/ pastes, coded.csv
+  survey/           website survey pulls and coded_survey.csv (gitignored: respondents were told nothing is shared)
   gate/             criteria.json, decision.md, gate.json
   economics/        competitors.csv, survey/, channels.csv, cac_inputs.json, cac outputs
   formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
 app/                Next.js launch site + research app from the build kit (its own CLAUDE.md applies inside app/)
-scripts/            keywords.py, reddit_pull.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
+scripts/            keywords.py, reddit_pull.py, survey_analyze.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
 ```
 
 ## Writing style for all outputs

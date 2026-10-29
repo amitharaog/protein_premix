@@ -56,7 +56,7 @@ export function tally(values: (string | null | undefined)[]): { value: string; c
   return [...m].map(([value, count]) => ({ value, count })).sort((a, b) => b.count - a.count);
 }
 
-const csvCell = (v: unknown) => {
+export const csvCell = (v: unknown) => {
   let s = Array.isArray(v) ? v.join("; ") : v == null ? "" : String(v);
   if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`; // stop spreadsheet formula injection from free-text answers
   return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;

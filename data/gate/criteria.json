@@ -17,18 +17,18 @@
       "threshold": 8
     },
     "replies_total": {
-      "description": "Coded replies across all posts, friends and family excluded",
-      "source": "data/responses/coded.csv",
+      "description": "Coded replies across all posts plus survey responses, friends and family excluded",
+      "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
       "threshold": 40
     },
     "behaviour_to_interest_ratio": {
-      "description": "(past_behaviour yes or grade E1) divided by stated_interest yes",
-      "source": "data/responses/coded.csv",
+      "description": "(past_behaviour yes or grade E1) divided by stated_interest yes; survey: waitlist joins over likely 4-5",
+      "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
       "threshold": 0.3
     },
     "e1_actions": {
-      "description": "Waitlist signups, where-to-buy asks, DMs asking for it, or preorders",
-      "source": "data/responses/coded.csv",
+      "description": "Waitlist signups (incl. from the survey), where-to-buy asks, DMs asking for it, or preorders",
+      "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
       "threshold": 15
     }
   },

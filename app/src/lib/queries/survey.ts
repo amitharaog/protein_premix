@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, isNull } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, isNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { surveyQuestions, surveyResponses, waitlist } from "@/db/schema";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
@@ -42,4 +42,13 @@ export async function surveyResults() {
     responses,
     waitlistCount: wl?.n ?? 0,
   };
+}
+
+/** Respondent ids that joined the waitlist from the thank-you screen. Ids only: never emails or phones. */
+export async function waitlistRespondentIds(): Promise<Set<string>> {
+  const rows = await db
+    .select({ rid: sql<string | null>`${waitlist.utm}->>'respondent_id'` })
+    .from(waitlist)
+    .where(isNull(waitlist.deletedAt));
+  return new Set(rows.map((r) => r.rid).filter((r): r is string => Boolean(r)));
 }

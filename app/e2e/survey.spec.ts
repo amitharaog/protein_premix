@@ -38,4 +38,6 @@ test("admin and the CSV export are closed to people who are not signed in", asyn
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/signin/);
   expect((await request.get("/admin/export")).status()).toBe(404);
+  expect((await request.get("/api/sheet/responses")).status()).toBe(404);
+  expect((await request.get("/api/sheet/responses?key=wrong-key-wrong-key-wrong-key")).status()).toBe(404);
 });
