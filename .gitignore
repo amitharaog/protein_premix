@@ -5,4 +5,5 @@ __pycache__/
 # Survey answers stay on your machine: respondents were told nothing is shared, and this repo is public.
 data/survey/*
 !data/survey/README.md
+!data/survey/exclude.txt
 reports/04_survey.md

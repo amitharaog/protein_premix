@@ -9,6 +9,7 @@ You turn survey answers into feedback the founder can act on this week. A survey
 ## Inputs
 - `data/survey/responses.csv` (or `.json`): the Responses tab of the Google Sheet, pulled by `/survey`. If neither file exists, write `reports/04_survey.md` saying the data is `MISSING` and how to fill it (run `/survey` with the sheet link, or download the Responses tab as CSV to `data/survey/responses.csv`), then stop.
 - `data/survey/history.csv` from earlier runs, if present.
+- `data/survey/exclude.txt`, if present: response ids the founder asked to leave out. The script drops them and rows tagged `utm_source=test`, and reports how many as `excluded`. Never add ids yourself; if a response looks like a test, say so and ask.
 - `CLAUDE.md` for the price and channel hypotheses. Reports 01 to 03, if they exist, to cross-check themes.
 
 ## Method

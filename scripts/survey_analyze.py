@@ -14,6 +14,9 @@ Writes to --out (default data/survey/):
   coded_survey.csv   one row per response in the data/responses/coded.csv schema, for the demand gate
   history.csv        one row per run date (headline numbers), so the next run can say what moved
 
+Left out before anything is counted: response ids listed in <out>/exclude.txt (one per line, # for notes; the
+founder's own tests, friends and family) and rows whose utm_source is "test".
+
 Grades: a survey answer is prompted, so E3; a respondent who joined the waitlist is E1.
 
 Usage: python3 scripts/survey_analyze.py data/survey/responses.csv [--out data/survey/] [--date YYYY-MM-DD]
@@ -128,8 +131,29 @@ def distribution(rows, col):
         picked = split_multi(r.get(col))
         if picked:
             answered += 1
-            counts.update(set(picked))
+            counts.update(dict.fromkeys(picked).keys())  # each option once per person, order kept
     return answered, counts
+
+
+def ranked(counts):
+    """Highest count first; ties in alphabetical order, so every run gives the same order."""
+    return sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+
+
+def top_worry_label(ranked_rows):
+    """The most picked worry, or every worry tied for most joined with ' = ' (a tie has no single top)."""
+    if not ranked_rows:
+        return ""
+    top = ranked_rows[0]["count"]
+    return " = ".join(x["worry"] for x in ranked_rows if x["count"] == top)
+
+
+def excluded_ids(out):
+    f = os.path.join(out, "exclude.txt")
+    if not os.path.exists(f):
+        return set()
+    with open(f, encoding="utf-8") as fh:
+        return {line.split("#")[0].strip() for line in fh if line.split("#")[0].strip()}
 
 
 def main():
@@ -141,10 +165,14 @@ def main():
 
     rows, qcols = read(args.csv)
     os.makedirs(args.out, exist_ok=True)
+    skip = excluded_ids(args.out)
+    kept = [r for r in rows if (r.get("response_id") or "") not in skip and (r.get("utm_source") or "").strip().lower() != "test"]
+    excluded = len(rows) - len(kept)
+    rows = kept
     n = len(rows)
     if not n:
         with open(os.path.join(args.out, "summary.json"), "w", encoding="utf-8") as f:
-            json.dump({"n": 0, "note": "no responses yet"}, f, indent=1)
+            json.dump({"n": 0, "excluded": excluded, "note": "no responses yet"}, f, indent=1)
         with open(os.path.join(args.out, "coded_survey.csv"), "w", newline="", encoding="utf-8") as f:
             csv.DictWriter(f, fieldnames=GATE_FIELDS).writeheader()
         with open(os.path.join(args.out, "tables.md"), "w", encoding="utf-8") as f:
@@ -165,12 +193,14 @@ def main():
         if qid == "Q10" or not answered and qid in ("Q4", "Q6", "Q7"):
             continue
         questions[qid] = {"question": text, "answered": answered,
-                          "options": {k: {"count": v, "pct_of_answered": pct(v, answered)} for k, v in counts.most_common()}}
+                          "options": {k: {"count": v, "pct_of_answered": pct(v, answered)} for k, v in ranked(counts)}}
 
     q2 = qcols.get("Q2", (None,))[0]
-    is_anchor = [bool(q2 and ANCHOR_OPTIONS & set(split_multi(r.get(q2)))) for r in rows]
-    anchor = [r for r, x in zip(rows, is_anchor) if x]
-    others = [r for r, x in zip(rows, is_anchor) if not x]
+    # Q2 is optional: people who skipped it are in neither group, so they cannot blur the comparison.
+    q2_picks = [set(split_multi(r.get(q2))) if q2 else set() for r in rows]
+    anchor = [r for r, p in zip(rows, q2_picks) if p & ANCHOR_OPTIONS]
+    others = [r for r, p in zip(rows, q2_picks) if p and not p & ANCHOR_OPTIONS]
+    skipped_q2 = sum(1 for p in q2_picks if not p)
     a, o = segment_stats(anchor, qcols), segment_stats(others, qcols)
     if a["n"] >= MIN_SEGMENT and o["n"] >= MIN_SEGMENT and a["pct_likely_4_5"] is not None and o["pct_likely_4_5"] is not None:
         gap = round(a["pct_likely_4_5"] - o["pct_likely_4_5"], 1)
@@ -203,22 +233,26 @@ def main():
         flags.append(f"{round(100 * top_n / n)}% of responses came from one source ({top_src}); treat as one community, not the market.")
     if src.get("direct", 0) / n > 0.5:
         flags.append("Over half the responses have no utm_source; they may be friends and family. Tag every shared link.")
+    if excluded:
+        flags.append(f"{excluded} response(s) left out: listed in exclude.txt or tagged utm_source=test.")
+    if skipped_q2:
+        flags.append(f"{skipped_q2} response(s) skipped Q2, so they are in neither segment of the anchor comparison.")
     if not has_wl:
         flags.append("This CSV has no joined_waitlist column (admin download); E1 waitlist actions are MISSING here. Use the sheet feed.")
 
     summary = {
-        "n": n, "first": first, "last": last, "time_zone": "IST" if stamp_col.endswith("ist") else "UTC",
+        "n": n, "excluded": excluded, "first": first, "last": last, "time_zone": "IST" if stamp_col.endswith("ist") else "UTC",
         "waitlist_joins": wl, "waitlist_rate_pct": pct(wl, n) if wl is not None else None,
         "sources": dict(src.most_common()), "by_source": by_source,
         "overall": segment_stats(rows, qcols),
-        "segments": {"definition": f"anchor = Q2 includes one of {sorted(ANCHOR_OPTIONS)}", "anchor": a, "others": o,
+        "segments": {"definition": f"anchor = Q2 includes one of {sorted(ANCHOR_OPTIONS)}; others = answered Q2 with neither; skipped Q2 = in neither", "anchor": a, "others": o, "skipped_q2": skipped_q2,
                      "likely_gap_points": gap, "icp_read": icp},
         "appliances": {"answered": len(kit),
                        "pct_microwave_or_air_fryer": pct(sum(1 for k in kit if k & FAST_APPLIANCES), len(kit)),
                        "pct_cooker_or_otg_only": pct(sum(1 for k in kit if not k & FAST_APPLIANCES and k - {"None of these"}), len(kit)),
                        "pct_none": pct(sum(1 for k in kit if k == {"None of these"}), len(kit))},
         "craving": {"answered": len(crave), "pct_daily_or_3_5_week": pct(sum(1 for c in crave if c in FREQUENT_CRAVING), len(crave))},
-        "worries": {"answered": w_answered, "ranked": [{"worry": k, "count": v, "pct_of_answered": pct(v, w_answered)} for k, v in worries.most_common()]},
+        "worries": {"answered": w_answered, "ranked": [{"worry": k, "count": v, "pct_of_answered": pct(v, w_answered)} for k, v in ranked(worries)]},
         "questions": questions, "comments": comments, "flags": flags,
         "grades": {"survey_answers": "E3", "waitlist_joins": "E1"},
     }
@@ -257,6 +291,7 @@ def main():
               "| Segment | n | Avg likely | Likely 4-5 | Pay ₹80+ | Pay ₹100+ |", "|---|---|---|---|---|---|"]
     for name, st in (("Anchor (buys protein)", a), ("Others", o)):
         lines.append(f"| {name} | {st['n']} | {st['avg_likely']} | {st['pct_likely_4_5']}% | {st['pct_pay_80_plus']}% | {st['pct_pay_100_plus']}% |")
+    lines += ["", f"Skipped Q2 (in neither group): {skipped_q2}"]
     lines += ["", f"ICP read: **{icp}**" + (f" (gap {gap} points)" if gap is not None else ""), "",
               "## Worries", "", "| Worry | Count | % of answered |", "|---|---|---|"]
     lines += [f"| {x['worry']} | {x['count']} | {x['pct_of_answered']}% |" for x in summary["worries"]["ranked"]]
@@ -270,7 +305,7 @@ def main():
     write_history(os.path.join(args.out, "history.csv"), {
         "date": args.date, "n": n, "waitlist_joins": "" if wl is None else wl, "avg_likely": ov["avg_likely"],
         "pct_likely_4_5": ov["pct_likely_4_5"], "pct_pay_100_plus": ov["pct_pay_100_plus"], "pct_wouldnt_pay": ov["pct_wouldnt_pay"],
-        "anchor_n": a["n"], "icp_read": icp, "top_worry": summary["worries"]["ranked"][0]["worry"] if summary["worries"]["ranked"] else "",
+        "anchor_n": a["n"], "icp_read": icp, "top_worry": top_worry_label(summary["worries"]["ranked"]),
     })
 
     print("\n".join(lines))
