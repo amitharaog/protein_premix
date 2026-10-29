@@ -35,7 +35,7 @@ Example: a 50 g sachet with 10 g protein has 20 g of protein per 100 g dry, whic
   - FSSAI sent notices over protein and "muscle strength" claims in June and October 2026. The October notices went to Dr Reddy's, Nestlé Health Science, Amazon, Flipkart, Netmeds and Tirupati Wellness.
 - No health or disease claims. Banned words, checked by lint and a unit test over `src/content/**`: muscle, recovery, immunity, diabetic, weight loss, burn, detox, cure, doctor-recommended.
 - Position the product as a general food (a proprietary food or bakery premix), not a health supplement. **VERIFY** the licence category.
-- "Gluten-free" needs lab testing. **VERIFY** the threshold. Until then the site says "made with gluten-free ingredients".
+- "Gluten-free" needs lab testing. **VERIFY** the threshold. The site does not mention gluten-free at all (founder request, 29 Oct 2026).
 - "Eggless" and the green veg dot are fine for a recipe with no egg. Dairy whey is vegetarian, not vegan.
 - Front-of-pack warnings: FSSAI plans red-hexagon "high in" warnings in a single phase (affidavit to the Supreme Court, 23 Sep 2026). Solid-food thresholds are roughly:
   - added sugar at about 5 % of energy, total sugar 10 %

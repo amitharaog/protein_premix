@@ -2,8 +2,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-// docs/COMPLIANCE.md banned words, plus the research wedge rule (no "healthy"/"sugar-free" positioning).
-const BANNED = ["muscle", "recovery", "immunity", "diabetic", "weight loss", "burn", "detox", "cure", "doctor-recommended", "healthy", "sugar-free", "guilt-free"];
+// docs/COMPLIANCE.md banned words, the research wedge rule (no "healthy"/"sugar-free" positioning) and founder requests (no gluten-free).
+const BANNED = ["muscle", "recovery", "immunity", "diabetic", "weight loss", "burn", "detox", "cure", "doctor-recommended", "healthy", "sugar-free", "guilt-free", "gluten"];
 
 const files = (dir: string): string[] =>
   readdirSync(dir).flatMap((f) => {

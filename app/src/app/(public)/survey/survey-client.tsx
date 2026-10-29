@@ -218,7 +218,6 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
         </div>
         <Seal lines={intro.badges[0]} rotate={-8} className="absolute -left-2 bottom-0 w-[96px]" />
         <Seal lines={intro.badges[1]} rotate={8} className="absolute -right-2 top-0 w-[96px]" />
-        <Seal lines={intro.badges[2]} rotate={-5} className="absolute -right-3 bottom-0 w-[90px]" />
       </div>
       <h1 className="mt-4 text-center font-royal text-[36px] leading-none font-black italic text-fg">{intro.headline}</h1>
       <p className="mt-2 text-center font-medium text-muted">{intro.sub}</p>

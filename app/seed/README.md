@@ -26,6 +26,6 @@ Shapes, briefly:
   - `protein_g` and `total_g` are estimates from the recipe agent, not lab values.
 - **Competitors**: `price` is free text (e.g. `"214 / 428 (new flavours 225/450)"`). Only parse it to a number when it's a single plain number.
 
-**Edited 28 Oct 2026 at the founder's request:** `survey_questions.json` Q5 now says 25–32 g protein and made with gluten-free ingredients (was about 10 g), and the old ₹100+ band is split into ₹100-150 and ₹150+. No responses existed, so nothing became incomparable. Later the same day the founder replaced the gram target with "protein-based" in public copy.
+**Edited 28 Oct 2026 at the founder's request:** `survey_questions.json` Q5 now says 25–32 g protein and made with gluten-free ingredients (was about 10 g), and the old ₹100+ band is split into ₹100-150 and ₹150+. No responses existed, so nothing became incomparable. Later the same day the founder replaced the gram target with "protein-based" in public copy. On 29 Oct 2026 the founder asked to drop "made with gluten-free ingredients" from the survey, so Q5 now reads "What would you pay for one sachet (protein-based)?" (1 response existed, the founder's own test).
 
 **Edited 28 Oct 2026 at the founder's request:** the survey is cut to 7 questions. The array order is the display order (Q3, Q2, Q1, Q8, Q5, Q9, Q10). Q4 (eggless), Q6 (flavours) and Q7 (where to buy) stay in the file with `active: false`, so they can be switched back on.
