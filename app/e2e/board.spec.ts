@@ -12,3 +12,15 @@ test("the agent board opens only with its key", async ({ page, request }) => {
   await expect(page.getByRole("heading", { name: "demand-scout" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Road to the demand gate" })).toBeVisible();
 });
+
+test("an agent card opens its page with how to run it", async ({ page }) => {
+  test.skip(key.length < 24, "BOARD_KEY is not set for this run");
+  await page.goto(`/board?key=${encodeURIComponent(key)}`);
+  await page.getByRole("link", { name: /^demand-scout/ }).click();
+  await expect(page.getByRole("heading", { name: "demand-scout", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "How to run it" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Copy" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Full instructions" })).toBeVisible();
+  expect((await page.request.get("/board/demand-scout")).status()).toBe(404);
+  expect((await page.request.get(`/board/not-an-agent?key=${encodeURIComponent(key)}`)).status()).toBe(404);
+});

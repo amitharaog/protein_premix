@@ -33,7 +33,8 @@ const gateValue = (g: GateRow, v: number | null) =>
 
 export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[] }> }) {
   const { key } = await searchParams;
-  if (!keyMatches(typeof key === "string" ? key : undefined, process.env.BOARD_KEY)) notFound();
+  const k = typeof key === "string" ? key : undefined;
+  if (!k || !keyMatches(k, process.env.BOARD_KEY)) notFound();
 
   const { questions, responses, waitlistCount } = await surveyResults();
   const now = new Date();
@@ -69,7 +70,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <div>
           <h2 id="agents-h" className="font-head text-xl font-semibold uppercase text-frost">Agents</h2>
           <p className="text-xs text-muted">
-            In the order the work runs. A status comes from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"}; economics stays locked until /gate writes a pass.
+            In the order the work runs; open one to see how to run it and what it does. A status comes from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"}; economics stays locked until /gate writes a pass.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -79,7 +80,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             return (
               <div key={phase} className="space-y-2">
                 <p className="text-xs uppercase tracking-wide text-muted">{STEPS[phase] ?? "Alongside"} · <span className="text-fg">{phase}</span></p>
-                {items.map((a) => <AgentCard key={a.name} a={a} />)}
+                {items.map((a) => <AgentCard key={a.name} a={a} href={`/board/${a.slug}?key=${encodeURIComponent(k)}`} />)}
               </div>
             );
           })}
@@ -208,9 +209,9 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
   );
 }
 
-function AgentCard({ a }: { a: AgentRow }) {
+function AgentCard({ a, href }: { a: AgentRow; href: string }) {
   return (
-    <article className={`rounded-[14px] border border-line bg-panel p-3 ${a.status === "Locked" ? "opacity-70" : ""}`}>
+    <Link href={href} className={`group block rounded-[14px] border border-line bg-panel p-3 transition-colors hover:border-frost focus-visible:border-frost ${a.status === "Locked" ? "opacity-70 hover:opacity-100" : ""}`}>
       <div className="flex items-start justify-between gap-2">
         <h3 className="min-w-0 break-words text-sm font-semibold text-frost">{a.name}</h3>
         <span className={`shrink-0 rounded-full border px-2 text-xs ${pillClass(a.status)}`}>{a.status}</span>
@@ -222,6 +223,7 @@ function AgentCard({ a }: { a: AgentRow }) {
       </p>
       <p className="mt-2 text-xs text-fg">{a.next_step}</p>
       <p className="mt-1 break-all text-[11px] text-muted">{a.output}{a.rows != null ? ` · ${a.rows} rows` : ""}</p>
-    </article>
+      <p className="mt-2 text-xs font-semibold text-frost group-hover:underline">Open →</p>
+    </Link>
   );
 }

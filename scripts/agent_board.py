@@ -12,7 +12,7 @@ Status comes from what exists on disk, so re-running this after an agent runs mo
 Usage: python3 scripts/agent_board.py [--out DIR] [--date YYYY-MM-DD]
 Writes DIR/agents.json and DIR/gate_files.json (default DIR: current folder).
 """
-import argparse, csv, json, os, re
+import argparse, csv, json, os, re, subprocess
 from datetime import date
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,10 +30,15 @@ PLAN = [
     ("cac-modeler", "Economics", "/economics", "Models CAC, margin, payback and LTV per channel with ranges"),
     ("recipe-builder", "Founder kitchen", "/recipe", "Finds recipes for the ingredients you have, with grams per serving and batch"),
 ]
-EXTERNAL = {"name": "Protein mug cake weekly refresh", "phase": "Outside this repo", "command": "Cowork schedule",
-            "job": "Scheduled task in Claude's desktop app; it made the build kit on 26 Oct 2026",
+EXTERNAL = {"name": "Protein mug cake weekly refresh", "slug": "cowork-weekly-refresh", "phase": "Outside this repo",
+            "command": "Cowork schedule", "job": "Scheduled task in Claude's desktop app; it made the build kit on 26 Oct 2026",
             "model": "", "status": "Scheduled", "waiting_on": "", "output": "Cowork", "rows": None,
-            "next_step": "Runs on its own schedule in Cowork"}
+            "next_step": "Runs on its own schedule in Cowork", "description": "", "tools": "", "command_hint": "",
+            "output_exists": False, "output_url": "", "output_note": "Lives in the Claude desktop app, not in this repo",
+            "instructions": "This task lives in the Claude desktop app, not in this repo, so nothing here runs it.\n\n"
+                            "## Where to find it\n- Open the Claude desktop app, then Cowork, then Scheduled.\n"
+                            "- From there you can see its runs, change its schedule, or pause it.\n\n"
+                            "## What it did\n- Made the build kit (the starting code for the site and research app) on 26 Oct 2026."}
 
 
 def path(*p):
@@ -53,13 +58,51 @@ def count(*p):
     return None if rows is None else len(rows)
 
 
-def frontmatter(name):
+def agent_doc(name):
+    """The agent file's frontmatter fields and its instructions (the markdown after the frontmatter)."""
     f = path(".claude", "agents", f"{name}.md")
     if not os.path.exists(f):
-        return {}
+        return {}, ""
     text = open(f, encoding="utf-8").read()
-    m = re.match(r"^---\n(.*?)\n---", text, re.S)
-    return dict(re.findall(r"^(\w+):\s*(.*)$", m.group(1), re.M)) if m else {}
+    m = re.match(r"^---\n(.*?)\n---\n?(.*)$", text, re.S)
+    if not m:
+        return {}, text
+    return dict(re.findall(r"^(\w+):\s*(.*)$", m.group(1), re.M)), m.group(2).strip()
+
+
+def command_hint(cmd):
+    """The argument hint from .claude/commands/<name>.md, e.g. '[replies]' for /demand."""
+    f = path(".claude", "commands", cmd.lstrip("/").split()[0] + ".md")
+    if not os.path.exists(f):
+        return ""
+    m = re.search(r'^argument-hint:\s*"?(.*?)"?\s*$', open(f, encoding="utf-8").read(), re.M)
+    return m.group(1) if m else ""
+
+
+def git(*a):
+    try:
+        return subprocess.run(["git", *a], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        return ""
+
+
+def output_link(output):
+    """(exists, GitHub link, note) for an agent's main output. Ignored files stay local, so they get a note, not a link."""
+    exists = os.path.exists(path(output))
+    try:
+        ignored = subprocess.run(["git", "check-ignore", "-q", output], cwd=ROOT).returncode == 0
+    except OSError:
+        ignored = False
+    if ignored:
+        return exists, "", "Stays on your computer: kept out of git so survey answers are never shared"
+    if not exists:
+        return False, "", "Not created yet: appears after the agent's first run"
+    remote = re.sub(r"\.git$", "", git("remote", "get-url", "origin"))
+    branch = git("rev-parse", "--abbrev-ref", "HEAD") or "main"
+    if not remote.startswith("https://github.com/") or not git("ls-files", output.rstrip("/")):
+        return True, "", "Created; commit and push it to see it on GitHub"
+    kind = "tree" if output.endswith("/") else "blob"
+    return True, f"{remote}/{kind}/{branch}/{output.rstrip('/')}", ""
 
 
 def gate_status():
@@ -119,9 +162,15 @@ def main():
     for order, (name, phase, cmd, job) in enumerate(PLAN, 1):
         status, wait, output, rows = state[name]
         tmpl = next_step.get(status.split(":")[0], "Re-run {cmd} when there is new data")
-        agents.append({"order": order, "name": name, "phase": phase, "command": cmd, "job": job,
-                       "model": frontmatter(name).get("model", ""), "status": status, "waiting_on": wait,
-                       "output": output, "rows": rows, "next_step": tmpl.format(cmd=cmd, wait=wait)})
+        meta, instructions = agent_doc(name)
+        exists, url, note = output_link(output)
+        agents.append({"order": order, "name": name, "slug": name, "phase": phase, "command": cmd, "job": job,
+                       "model": meta.get("model", ""), "status": status, "waiting_on": wait,
+                       "output": output, "rows": rows, "next_step": tmpl.format(cmd=cmd, wait=wait),
+                       "description": meta.get("description", ""), "tools": meta.get("tools", ""),
+                       "command_hint": command_hint(cmd) if cmd in ("/recipe", "/survey") else "",
+                       "output_exists": exists, "output_url": url, "output_note": note,
+                       "instructions": instructions})
     agents.append({"order": len(PLAN) + 1, **EXTERNAL})
 
     crit = json.load(open(path("data", "gate", "criteria.json"), encoding="utf-8"))["metrics"]
