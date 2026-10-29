@@ -6,7 +6,8 @@ updates by itself (about hourly) and right away when the founder changes the num
 Summary tab is a formula over the Responses tab. This prints the cells to write as JSON:
 
   responses_a1   the IMPORTDATA formula for Responses!A1 (holds the feed key: never commit or print it)
-  summary        rows for the Summary tab, from A1 (headline, one block per question, anchor buyers against others)
+  summary        rows for the Summary tab, from A1 (headline, one block per question, anchor buyers against others,
+                 where responses came from)
   segments       rows for the Segments tab, from A1 (one ARRAYFORMULA per column; Summary counts over it)
   notes          rows for the Notes tab, from A1
   format         which Summary cells are headers, notes, percentages and decimals
@@ -32,6 +33,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ORDER = ["Q3", "Q2", "Q1", "Q8", "Q5", "Q9"]  # the survey's order; Q10 is free text and stays on Responses
 ANCHOR = "Whey / protein powder|Protein bars or snacks"  # as in scripts/survey_analyze.py
 SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"]
+SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder shares links with
 
 
 def build(key, site):
@@ -96,6 +98,19 @@ def build(key, site):
         fmt["pct"].append(f"D{r}")
         fmt["dec1"].append(f"E{r}")
     rows.append(["The idea holds if anchor buyers are clearly more likely to buy, with 10 or more people in each group.",
+                 None, None, None, None])
+    fmt["notes"].append(len(rows))
+
+    rows += [blank, ["Where responses came from (utm_source on the link)", "Responses", "% of all", None, None]]
+    fmt["heads"].append(len(rows))
+    src = "Responses!$D$2:$D"
+    for label in SOURCES + ["No tag (link shared without utm_source)", "Other tags"]:
+        r = len(rows) + 1
+        count = (f"=COUNTIF({src},$A{r})" if label in SOURCES
+                 else f"=$B${n}-COUNTA({src})" if label.startswith("No tag") else f"=$B${n}-SUM(B{r - len(SOURCES) - 1}:B{r - 1})")
+        rows.append([label, count, f"=IF($B${n}=0,0,B{r}/$B${n})", None, None])
+        fmt["pct"].append(f"C{r}")
+    rows.append([f"A tagged link lands in its own row, for example {site}/survey?utm_source=linkedin&utm_campaign=post1",
                  None, None, None, None])
     fmt["notes"].append(len(rows))
 
