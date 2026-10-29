@@ -1,12 +1,11 @@
 import { headers } from "next/headers";
 import { surveyResults } from "@/lib/queries/survey";
 import { aggregate, avgLikelihood, modeOf, tally, type ResultRow } from "@/lib/survey/aggregate";
+import { BAR, BarCard, Tile } from "@/components/stats";
 
-// Survey results (SPEC §2.1 survey signals + §2.2 basics). Bars: one series, so one hue and no legend.
-const BAR = "#c98048"; // caramel, validated against the dark panel (lightness band + 3:1 contrast)
+// Survey results (SPEC §2.1 survey signals + §2.2 basics).
 
 const fmtDate = new Intl.DateTimeFormat("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit" });
-const pct = (n: number, d: number) => (d ? Math.round((n / d) * 100) : 0);
 const show = (v: unknown) => (Array.isArray(v) ? v.join(", ") : v == null || v === "" ? "—" : String(v));
 
 export default async function AdminHome() {
@@ -98,16 +97,6 @@ export default async function AdminHome() {
   );
 }
 
-function Tile({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="rounded-[14px] border border-line bg-panel p-4">
-      <p className="text-xs uppercase tracking-wide text-muted">{label}</p>
-      <p className="tabular mt-1 font-display text-4xl text-frost">{value}</p>
-      {sub && <p className="tabular text-xs text-muted">{sub}</p>}
-    </div>
-  );
-}
-
 function QuestionCard({ rows, multi }: { rows: ResultRow[]; multi: boolean }) {
   const first = rows[0];
   if (!first) return null;
@@ -118,44 +107,5 @@ function QuestionCard({ rows, multi }: { rows: ResultRow[]; multi: boolean }) {
       items={rows.map((r) => ({ label: r.option, count: r.count }))}
       denom={first.answered}
     />
-  );
-}
-
-/** Horizontal bars, % of people who answered. Value at the tip, hover title, table view underneath. */
-function BarCard({ title, note, items, denom }: { title: string; note: string; items: { label: string; count: number }[]; denom: number }) {
-  return (
-    <figure className="rounded-[14px] border border-line bg-panel p-4">
-      <figcaption>
-        <h2 className="font-head text-base font-semibold leading-snug text-frost">{title}</h2>
-        <p className="text-xs text-muted">{note}</p>
-      </figcaption>
-      <ul className="mt-3 space-y-2.5">
-        {items.map((it) => {
-          const p = pct(it.count, denom);
-          return (
-            <li key={it.label} className="group" title={`${it.label}: ${it.count} (${p}%)`}>
-              <div className="flex items-baseline justify-between gap-2 text-sm">
-                <span className="text-fg">{it.label}</span>
-                <span className="tabular shrink-0 text-muted group-hover:text-fg">{it.count} · {p}%</span>
-              </div>
-              <div className="mt-1 h-3 w-full bg-line/60">
-                <div className="h-full rounded-r-[4px]" style={{ width: `${p}%`, background: BAR, minWidth: it.count ? 4 : 0 }} />
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-      <details className="mt-3 text-sm">
-        <summary className="cursor-pointer text-xs text-muted">Table view</summary>
-        <table className="mt-2 w-full text-left">
-          <thead className="text-xs text-muted"><tr><th className="py-1">Option</th><th className="py-1 text-right">Count</th><th className="py-1 text-right">%</th></tr></thead>
-          <tbody>
-            {items.map((it) => (
-              <tr key={it.label} className="border-t border-line"><td className="py-1">{it.label}</td><td className="tabular py-1 text-right">{it.count}</td><td className="tabular py-1 text-right">{pct(it.count, denom)}%</td></tr>
-            ))}
-          </tbody>
-        </table>
-      </details>
-    </figure>
   );
 }

@@ -1,0 +1,74 @@
+[
+ {
+  "order": 1,
+  "metric": "unprompted_problem_signals",
+  "label": "Unprompted problem signals",
+  "threshold": 25,
+  "from_files": null,
+  "adds_survey": false,
+  "source": "data/signals/signals.csv",
+  "behaviour_count": null,
+  "interest_count": null,
+  "captured": "2026-10-29"
+ },
+ {
+  "order": 2,
+  "metric": "india_share_of_signals",
+  "label": "Share of signals from India",
+  "threshold": 0.4,
+  "from_files": null,
+  "adds_survey": false,
+  "source": "data/signals/signals.csv",
+  "behaviour_count": null,
+  "interest_count": null,
+  "captured": "2026-10-29"
+ },
+ {
+  "order": 3,
+  "metric": "buy_intent_keywords",
+  "label": "Buy-intent keywords",
+  "threshold": 8,
+  "from_files": null,
+  "adds_survey": false,
+  "source": "data/keywords/suggestions.csv",
+  "behaviour_count": null,
+  "interest_count": null,
+  "captured": "2026-10-29"
+ },
+ {
+  "order": 4,
+  "metric": "replies_total",
+  "label": "Replies and survey responses",
+  "threshold": 40,
+  "from_files": 0,
+  "adds_survey": true,
+  "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
+  "behaviour_count": null,
+  "interest_count": null,
+  "captured": "2026-10-29"
+ },
+ {
+  "order": 5,
+  "metric": "behaviour_to_interest_ratio",
+  "label": "Behaviour to interest ratio",
+  "threshold": 0.3,
+  "from_files": null,
+  "adds_survey": true,
+  "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
+  "behaviour_count": 0,
+  "interest_count": 0,
+  "captured": "2026-10-29"
+ },
+ {
+  "order": 6,
+  "metric": "e1_actions",
+  "label": "E1 actions (waitlist, where-to-buy asks)",
+  "threshold": 15,
+  "from_files": 0,
+  "adds_survey": true,
+  "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
+  "behaviour_count": null,
+  "interest_count": null,
+  "captured": "2026-10-29"
+ }
+]

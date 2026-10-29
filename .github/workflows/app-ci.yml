@@ -29,6 +29,7 @@ jobs:
       ADMIN_EMAILS: admin@example.com
       NEXT_PUBLIC_SITE_URL: http://localhost:3100
       SURVEY_MIN_SECONDS: "1"
+      BOARD_KEY: ci-board-key-0123456789abcdef
       ENV_FILE: /dev/null
     steps:
       - uses: actions/checkout@v4

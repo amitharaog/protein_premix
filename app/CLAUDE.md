@@ -48,6 +48,7 @@ pnpm db:migrate          # apply migrations to DATABASE_URL
 pnpm db:seed             # load /seed/*.json (idempotent upserts)
 pnpm job:prices          # run price check locally (same code as cron)
 pnpm job:survey-report   # run weekly report locally
+pnpm board               # refresh agent statuses for /board from the repo's data files (then commit)
 ```
 
 ## Folder layout
@@ -57,6 +58,7 @@ src/
   app/
     (public)/            # launch site: page.tsx, survey/, waitlist/, flavours/, faq/, legal/
     admin/               # research app (server-side auth gate in layout.tsx)
+    board/               # owner's agent board: key-guarded (BOARD_KEY), read-only, aggregates only
     api/cron/            # prices, news, report — POST/GET with Bearer CRON_SECRET
     api/                 # survey submit, waitlist, razorpay webhook (phase 5)
   components/ui/         # shadcn

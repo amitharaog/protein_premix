@@ -12,7 +12,8 @@
     "e2e": "playwright test",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "NODE_USE_ENV_PROXY=1 tsx scripts/migrate.mts",
-    "db:seed": "NODE_USE_ENV_PROXY=1 tsx scripts/seed.mts"
+    "db:seed": "NODE_USE_ENV_PROXY=1 tsx scripts/seed.mts",
+    "board": "python3 ../scripts/agent_board.py --out src/content/agent-board"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",
