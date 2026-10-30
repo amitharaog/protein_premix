@@ -1,3 +1,6 @@
+# Rerun note (2026-10-30)
+Reddit script rerun: 403 on all 13 subreddits and site-wide; 0 posts pulled. WebSearch with site:reddit.com returned no Reddit URLs (3 queries). Amazon.in/Flipkart and YouTube: no listings or videos surfaced. No new signals added; count stays 6 of 60. No subreddit skipped for rules (block is access, not rules; rules were not checked because no page was reachable). Recommendation: add Reddit OAuth keys (REDDIT_CLIENT_ID/SECRET) or paste threads and marketplace reviews into data/responses/manual/. Biggest risk: deciding the gate on 6 near-duplicate rows.
+
 # 01 Listening report (captured 2026-10-29)
 
 ## Status: TARGET NOT MET. Real signal count: 6 (target 60). Stopped rather than pad.

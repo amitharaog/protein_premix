@@ -1,13 +1,13 @@
 draft_id,platform,community,url,date_posted,reach_or_views,notes
-R1,reddit,r/IndianFitness,,,,rules unchecked
-R2,reddit,r/proteinbaking,,,,rules unchecked
+R1,reddit,r/proteinbaking,,,,rules unchecked
+R2,reddit,r/IndianFitness,,,,rules unchecked
 R3,reddit,r/bangalore,,,,rules unchecked
-L1,linkedin,,,,,
-I1,instagram,story poll,,,,
-I2,instagram,story question sticker,,,,
-I3,instagram,story poll,,,,
-I4,instagram,carousel,,,,
-W1,whatsapp_telegram,,,,,note which group type per post
-Q1,quora,,,,,
-Q2,quora,,,,,
-WL1,waitlist,,,,,needs founder line-by-line approval
+LI1,linkedin,,,,,
+IG-S1,instagram,story poll,,,,
+IG-S2,instagram,story question sticker,,,,
+IG-S3,instagram,story poll,,,,
+IG-C1,instagram,carousel,,,,
+WA1,whatsapp_telegram,,,,,add group names per post
+Q1,quora,How do I make a chocolate mug protein cake,,,,
+Q2,quora,What are some eggless brownie recipes,,,,
+WL1,waitlist,,,,,DRAFT not approved; E1 if live

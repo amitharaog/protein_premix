@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-29",
+  "date": "2026-10-30",
   "total": 4280,
   "errors": {
     "amazon_in": 5
@@ -10,16 +10,16 @@
     "google_in|adjacent|protein=True": 165,
     "google_in|buy|protein=True": 118,
     "google_in|problem|protein=True": 72,
-    "youtube_in|other|protein=True": 744,
+    "youtube_in|other|protein=True": 743,
     "youtube_in|make|protein=True": 306,
-    "youtube_in|adjacent|protein=True": 128,
-    "youtube_in|problem|protein=True": 36,
-    "youtube_in|buy|protein=True": 38,
+    "youtube_in|adjacent|protein=True": 130,
+    "youtube_in|problem|protein=True": 34,
+    "youtube_in|buy|protein=True": 37,
     "google_in|buy|protein=False": 462,
     "google_in|make|protein=False": 17,
     "google_in|other|protein=False": 3,
     "google_in|adjacent|protein=False": 1,
-    "youtube_in|buy|protein=False": 271,
+    "youtube_in|buy|protein=False": 273,
     "youtube_in|make|protein=False": 116,
     "youtube_in|other|protein=False": 23
   }
