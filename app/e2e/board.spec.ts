@@ -44,6 +44,27 @@ test("the Excel download needs the key and is a real workbook", async ({ request
   expect((await res.body()).subarray(0, 2).toString()).toBe("PK");
 });
 
+test("the daily schedule gets a run from the board, one at a time", async ({ request }) => {
+  test.skip(key.length < 24 || !process.env.DATABASE_URL, "BOARD_KEY or DATABASE_URL is not set for this run");
+  const auth = { authorization: `Bearer ${key}` };
+  const ask = (command: string) => request.post("/api/board/runs", { headers: auth, data: { event: "scheduled", command, run_url: "https://github.com/amitharaog/protein_premix/actions/runs/7" } });
+  expect((await ask("/demand")).status()).toBe(400); // only /trends runs on a schedule
+  const first = await ask("/trends");
+  expect(first.status()).toBe(200);
+  const { id, command } = await first.json();
+  expect(command).toBe("/trends");
+  try {
+    expect((await ask("/trends")).status()).toBe(409); // one run at a time
+    const done = await request.post("/api/board/runs", { headers: auth, data: { event: "finished", run_id: id, ok: true, summary: "Trends checked." } });
+    expect(done.status()).toBe(200);
+  } finally {
+    const db = new Client({ connectionString: process.env.DATABASE_URL });
+    await db.connect();
+    await db.query("delete from agent_runs where id = $1", [id]);
+    await db.end();
+  }
+});
+
 test("a run reported by the workflow shows up on the board", async ({ page, request }) => {
   test.skip(key.length < 24 || !process.env.DATABASE_URL, "BOARD_KEY or DATABASE_URL is not set for this run");
   const auth = { authorization: `Bearer ${key}` };

@@ -7,6 +7,7 @@ const agents = (statuses: Record<string, string>) => Object.entries(statuses).ma
 describe("agent commands", () => {
   it("knows which commands the board may start", () => {
     expect(isRunnable("/gate")).toBe(true);
+    expect(isRunnable("/trends")).toBe(true);
     expect(isRunnable("/status")).toBe(false);
     expect(isRunnable("Cowork schedule")).toBe(false);
   });
@@ -22,6 +23,7 @@ describe("agent commands", () => {
     expect(blockedReason("/demand replies", agents({ "response-analyst": "Ready" }))).toBeNull();
     expect(blockedReason("/demand", agents({}))).toBeNull();
     expect(blockedReason("/survey", agents({}))).toBeNull();
+    expect(blockedReason("/trends", agents({}))).toBeNull();
   });
 
   it("takes text for /recipe only", () => {

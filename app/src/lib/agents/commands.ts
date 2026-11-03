@@ -1,16 +1,20 @@
 // The commands the agent board can start, and when each may run. Same rules as .claude/commands/*.md, which the run follows.
 import type { AgentRow } from "@/lib/survey/board";
 
-export const RUNNABLE = ["/demand", "/demand replies", "/survey", "/gate", "/economics", "/recipe"] as const;
+export const RUNNABLE = ["/demand", "/demand replies", "/survey", "/trends", "/gate", "/economics", "/recipe"] as const;
 export type RunnableCommand = (typeof RUNNABLE)[number];
 
 export const isRunnable = (c: string): c is RunnableCommand => (RUNNABLE as readonly string[]).includes(c);
+
+/** Commands the workflow also starts on its own schedule (research-agents.yml); the board creates their run then. */
+export const SCHEDULED = ["/trends"] as const;
 
 /** Who runs and roughly how long it takes on GitHub, for the Run buttons. */
 export const COMMAND_INFO: Record<RunnableCommand, { agents: string; takes: string }> = {
   "/demand": { agents: "demand-scout and keyword-finder, then post-drafter", takes: "20 to 40 minutes" },
   "/demand replies": { agents: "response-analyst", takes: "10 to 20 minutes" },
   "/survey": { agents: "survey-analyst", takes: "5 to 10 minutes" },
+  "/trends": { agents: "trend-watcher (it also runs every morning)", takes: "5 to 15 minutes" },
   "/gate": { agents: "demand-gate", takes: "5 to 10 minutes" },
   "/economics": { agents: "pricing-analyst and channel-analyst, then cac-modeler", takes: "30 to 60 minutes" },
   "/recipe": { agents: "recipe-builder", takes: "5 to 15 minutes" },

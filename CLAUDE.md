@@ -4,7 +4,7 @@
 A research workspace for a single-serve, high-protein baking premix (brownie, cake, cookie) for the Indian market, starting in Bengaluru. Buyers add their own liquid and bake at home. The product wedge is protein with real-dessert texture. Do not widen the wedge to "healthy" or "sugar-free" in any output.
 
 ## Order of work (hard rule)
-1. **Demand phase** (`/demand`, `/survey`): passive listening, keyword demand, post drafts, reply analysis, survey feedback.
+1. **Demand phase** (`/demand`, `/survey`, `/trends`): passive listening, keyword demand, post drafts, reply analysis, survey feedback, daily social trends.
 2. **Gate** (`/gate`): scores the demand evidence against `data/gate/criteria.json` and writes `data/gate/gate.json`.
 3. **Economics phase** (`/economics`): pricing, channels, CAC. Runs only when `data/gate/gate.json` has `"status": "pass"`, or the user explicitly types "override gate".
 
@@ -41,21 +41,22 @@ Drafts must not contain: brand name, prices, unit cost, the single-serve cup for
 
 ## File layout
 ```
-.claude/agents/     ten subagents (demand phase: 6, economics: 3, founder kitchen: recipe-builder)
-.claude/commands/   /demand, /survey, /gate, /economics, /status, /recipe
+.claude/agents/     eleven subagents (demand phase: 7, economics: 3, founder kitchen: recipe-builder)
+.claude/commands/   /demand, /survey, /trends, /gate, /economics, /status, /recipe
 data/
   signals/          passive listening (signals.csv)
   keywords/         autocomplete + trends output
   posts/            drafts.md, posted.csv (user fills URLs after posting)
   responses/        pulled replies, manual/ pastes, coded.csv
   survey/           website survey pulls and coded_survey.csv (gitignored: respondents were told nothing is shared)
+  trends/           daily social trends (trend-watcher): queries.txt, youtube_today.json, posts.csv, history.csv
   gate/             criteria.json, decision.md, gate.json
   economics/        competitors.csv, survey/, channels.csv, cac_inputs.json, cac outputs
   formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
 app/                Next.js launch site + research app from the build kit (its own CLAUDE.md applies inside app/)
-scripts/            keywords.py, reddit_pull.py, survey_analyze.py, live_sheet.py, agent_board.py, board_report.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
-.github/workflows/  app-ci.yml; research-agents.yml runs a command from the agent board's Run button (Claude Code, headless)
+scripts/            keywords.py, reddit_pull.py, survey_analyze.py, youtube_trends.py, live_sheet.py, agent_board.py, board_report.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
+.github/workflows/  app-ci.yml; research-agents.yml runs a command from the agent board's Run button, and /trends every morning (Claude Code, headless)
 ```
 
 ## Writing style for all outputs

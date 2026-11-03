@@ -1,12 +1,13 @@
 # Protein premix research agents (Claude Code)
 
-Ten subagents that answer one question in order: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled.
+Eleven subagents that answer one question in order: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled.
 
 ```
 /demand ──► demand-scout  ┐
             keyword-finder ┘──► post-drafter ──► YOU POST BY HAND ──► (3 to 5 days)
 /demand replies ──► response-analyst
 /survey ──► survey-analyst   (website survey, any time it has new answers)
+/trends ──► trend-watcher    (every morning by itself: YouTube, Instagram, Facebook)
 /gate ──► demand-gate ──► pass? ──► /economics ──► pricing-analyst ┐
                                                    channel-analyst ┘──► cac-modeler
 ```
@@ -24,6 +25,7 @@ Ten subagents that answer one question in order: **do people actually want this?
 | 1 | `/demand` | Reddit, marketplace reviews, YouTube listening; autocomplete keywords; post drafts | Read `data/posts/drafts.md`, post the ones you like, fill `posted.csv` |
 | 2 | `/demand replies` | Pulls Reddit replies, codes everything | Paste LinkedIn, Instagram, WhatsApp and form replies into `data/responses/manual/` first |
 | 2b | `/survey <Google Sheet link>` | Pulls the website survey answers, runs `scripts/survey_analyze.py`, writes feedback to `reports/04_survey.md` and survey rows for the gate | Share the survey link with `?utm_source=<place>` so sources can be told apart |
+| daily | `/trends` | Protein dessert trends in India: new and fast-growing YouTube videos (official YouTube Data API), Google Trends interest, and public Instagram and Facebook posts as search engines show them. Writes `reports/08_trends.md` and `data/trends/` | Optional: a free `YOUTUBE_API_KEY` for YouTube numbers; edit `data/trends/queries.txt` to change the search terms |
 | 3 | `/gate` | Pass, fail or insufficient against `data/gate/criteria.json` | Edit thresholds before running if you disagree |
 | 4 | `/economics` | Competitor shelf, Van Westendorp survey, channel scoring, CAC Monte Carlo | Run the survey form it writes, export to `data/economics/survey/responses.csv` |
 | any | `/status` | Where things stand, next action | |
@@ -37,6 +39,8 @@ The site's agent board (`/board?key=…`) has a Run button for each command. It 
 2. Add the repository secret `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`). Set a monthly spend limit on the key.
 3. Paste a fine-grained GitHub token (this repo only, Actions read and write) into the board's Setup box.
 
+The workflow also runs `/trends` by itself every day at 8:17 India time. For YouTube numbers, add the repository secret `YOUTUBE_API_KEY` (Google Cloud, YouTube Data API v3, free); without it the agent works from web search and says so. Instagram and Facebook are read only through what search engines show: both forbid automated collection, so nothing logs in to them or fetches their pages.
+
 The board also has **Download every answer (Excel)**: the live survey as a workbook with a Summary tab, contact details removed.
 
 ## What the agents will not do
@@ -49,6 +53,7 @@ The board also has **Download every answer (Excel)**: the live survey as a workb
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
 - `scripts/agent_board.py`: one row per agent with its status (Ran, Ready, Waiting, Locked) worked out from the data files, plus the gate metrics counted from them. Feeds the agent board.
 - `scripts/board_report.py`: the research-agents workflow's side of the board: asks what to run, pulls the survey for `/survey` and `/gate`, and reports the result back (GitHub OIDC, no stored secret).
+- `scripts/youtube_trends.py`: today's YouTube videos for the terms in `data/trends/queries.txt` (India, last 7 days) with views, likes, comments and views per day, from the official YouTube Data API; `--trends` adds Google Trends interest.
 - `scripts/survey_analyze.py`: survey numbers from the Google Sheet (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
 - `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.

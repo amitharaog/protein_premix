@@ -23,7 +23,7 @@ REPORTS = {
     "demand-scout": "reports/01_listening.md", "keyword-finder": "reports/02_keywords.md", "post-drafter": "data/posts/drafts.md",
     "response-analyst": "reports/03_responses.md", "survey-analyst": "reports/04_survey.md", "demand-gate": "data/gate/decision.md",
     "pricing-analyst": "reports/05_pricing.md", "channel-analyst": "reports/06_channels.md", "cac-modeler": "reports/07_cac.md",
-    "recipe-builder": "data/formulation/suggestions/",
+    "recipe-builder": "data/formulation/suggestions/", "trend-watcher": "reports/08_trends.md",
 }
 
 # Pipeline order, phase, command and a one-line job. The agent files hold the full instructions.
@@ -33,12 +33,15 @@ PLAN = [
     ("post-drafter", "Demand", "/demand", "Drafts discovery posts that ask about the problem; you post them by hand"),
     ("response-analyst", "Demand", "/demand replies", "Codes replies to your posts and separates behaviour from polite interest"),
     ("survey-analyst", "Demand", "/survey", "Reads the website survey answers and writes feedback with next steps"),
+    ("trend-watcher", "Demand", "/trends", "Every morning: protein dessert trends on YouTube, Instagram and Facebook"),
     ("demand-gate", "Gate", "/gate", "Scores all demand evidence against the thresholds: pass, fail or insufficient"),
     ("pricing-analyst", "Economics", "/economics", "Tests the price hypotheses against shelf prices and a price survey"),
     ("channel-analyst", "Economics", "/economics", "Scores sales channels for Bengaluru and prepares the CAC inputs"),
     ("cac-modeler", "Economics", "/economics", "Models CAC, margin, payback and LTV per channel with ranges"),
     ("recipe-builder", "Founder kitchen", "/recipe", "Finds recipes for the ingredients you have, with grams per serving and batch"),
 ]
+# Agents the research-agents workflow also runs on a schedule (.github/workflows/research-agents.yml).
+DAILY = {"trend-watcher": "Runs by itself every morning at 8:17 India time; {cmd} for a fresh one"}
 EXTERNAL = {"name": "Protein mug cake weekly refresh", "slug": "cowork-weekly-refresh", "phase": "Outside this repo",
             "command": "Cowork schedule", "job": "Scheduled task in Claude's desktop app; it made the build kit on 26 Oct 2026",
             "model": "", "status": "Scheduled", "waiting_on": "", "output": "Cowork", "rows": None,
@@ -140,6 +143,7 @@ def main():
     args = ap.parse_args()
 
     signals, keywords, coded = count("data", "signals", "signals.csv"), count("data", "keywords", "suggestions.csv"), count("data", "responses", "coded.csv")
+    trend_days = count("data", "trends", "history.csv")
     posted = csv_rows("data", "posts", "posted.csv") or []
     live_posts = sum(1 for r in posted if (r.get("url") or "").startswith("http"))
     drafts = os.path.exists(path("data", "posts", "drafts.md"))
@@ -158,6 +162,7 @@ def main():
                             ("Waiting", "posts you publish, listed in data/posts/posted.csv", "data/responses/coded.csv", None),
         "survey-analyst": ("Ran", "", "reports/04_survey.md", None) if os.path.exists(path("reports", "04_survey.md")) or ran_before(args.out, "survey-analyst") else
                           ("Ready", "", "reports/04_survey.md", None),
+        "trend-watcher": ("Ran", "", "data/trends/history.csv", trend_days) if trend_days else ("Ready", "", "data/trends/history.csv", None),
         "demand-gate": (f"Ran: {gate}", "", "data/gate/gate.json", None) if gate else
                        ("Ready", "", "data/gate/gate.json", None) if evidence else
                        ("Waiting", "evidence from the demand agents or the survey", "data/gate/gate.json", None),
@@ -179,7 +184,7 @@ def main():
     agents = []
     for order, (name, phase, cmd, job) in enumerate(PLAN, 1):
         status, wait, output, rows = state[name]
-        tmpl = next_step.get(status.split(":")[0], "Re-run {cmd} when there is new data")
+        tmpl = DAILY.get(name) or next_step.get(status.split(":")[0], "Re-run {cmd} when there is new data")
         meta, instructions = agent_doc(name)
         exists, url, note = output_link(output)
         agents.append({"order": order, "name": name, "slug": name, "phase": phase, "command": cmd, "job": job,

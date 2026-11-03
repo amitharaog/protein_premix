@@ -19,8 +19,10 @@ const good = {
 };
 
 describe("isAgentWorkflowToken", () => {
-  it("accepts this repo's research-agents workflow started by hand or by the board", async () => {
+  it("accepts this repo's research-agents workflow started by the board or by its own schedule", async () => {
     expect(await isAgentWorkflowToken(await sign(good), keys)).toBe(true);
+    const daily = { ...good, event_name: "schedule", workflow_ref: "amitharaog/protein_premix/.github/workflows/research-agents.yml@refs/heads/claude/friendly-faraday-2jitqf" };
+    expect(await isAgentWorkflowToken(await sign(daily), keys)).toBe(true);
   });
 
   it("refuses other repos, other workflows, other events, audiences and issuers", async () => {
