@@ -1,62 +1,28 @@
-# Protein premix research agents (Claude Code)
+# Protein premix research (Claude Code)
 
-Eleven subagents that answer one question in order: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled.
+The research question: **do people actually want this?** Only if the answer is yes do pricing, channels and CAC get modelled (see `CLAUDE.md` for the rules every piece of work follows).
 
-```
-/demand ──► demand-scout  ┐
-            keyword-finder ┘──► post-drafter ──► YOU POST BY HAND ──► (3 to 5 days)
-/demand replies ──► response-analyst
-/survey ──► survey-analyst   (website survey, any time it has new answers)
-/trends ──► trend-watcher    (every morning by itself: YouTube, Instagram, Facebook)
-/gate ──► demand-gate ──► pass? ──► /economics ──► pricing-analyst ┐
-                                                   channel-analyst ┘──► cac-modeler
-```
+## Where things stand (4 Nov 2026)
+Every research agent, its commands and everything the agents produced were removed so the process can restart. Git history keeps them if anything is needed again. What stays:
+- The website survey at mugcake.vercel.app/survey, its answers in the database, and the live Google Sheet that pulls them (`scripts/live_sheet.py` has the recipe).
+- The agent board (`/board?key=…`): live survey numbers, the road to the demand gate (`data/gate/criteria.json`), the Excel download, the run history, and Run buttons for agents once new ones exist.
+- `.github/workflows/research-agents.yml`, which runs an agent's command with Claude Code when you press Run on the board. It has nothing to run until new agents are added, and no daily schedule.
+- The founder's formulation files in `data/formulation/`, untouched.
 
-## Setup (5 minutes)
-1. Unzip, `cd protein-premix-research`, run `claude`.
-2. Python 3.9+. Scripts use the standard library only. Optional: `pip install pytrends` for Google Trends.
-3. Optional but recommended: a Reddit read-only app at https://www.reddit.com/prefs/apps (type "script"), then
-   `export REDDIT_CLIENT_ID=... REDDIT_CLIENT_SECRET=...`. Without it the Reddit script falls back to public endpoints, which often get blocked; the agent then uses web search instead.
-4. Optional: export Google Keyword Planner results for your phrases (free with a Google Ads account, location India) to `data/keywords/keyword_planner.csv`. This is the only source of real search volume.
-
-## Run order
-| Step | You type | What happens | Your manual part |
-|---|---|---|---|
-| 1 | `/demand` | Reddit, marketplace reviews, YouTube listening; autocomplete keywords; post drafts | Read `data/posts/drafts.md`, post the ones you like, fill `posted.csv` |
-| 2 | `/demand replies` | Pulls Reddit replies, codes everything | Paste LinkedIn, Instagram, WhatsApp and form replies into `data/responses/manual/` first |
-| 2b | `/survey <Google Sheet link>` | Pulls the website survey answers, runs `scripts/survey_analyze.py`, writes feedback to `reports/04_survey.md` and survey rows for the gate | Share the survey link with `?utm_source=<place>` so sources can be told apart |
-| daily | `/trends` | Protein dessert trends in India: new and fast-growing YouTube videos (official YouTube Data API), Google Trends interest, and public Instagram and Facebook posts as search engines show them. Writes `reports/08_trends.md` and `data/trends/` | Optional: a free `YOUTUBE_API_KEY` for YouTube numbers; edit `data/trends/queries.txt` to change the search terms |
-| 3 | `/gate` | Pass, fail or insufficient against `data/gate/criteria.json` | Edit thresholds before running if you disagree |
-| 4 | `/economics` | Competitor shelf, Van Westendorp survey, channel scoring, CAC Monte Carlo | Run the survey form it writes, export to `data/economics/survey/responses.csv` |
-| any | `/status` | Where things stand, next action | |
-| any | `/recipe whey, cocoa, almond flour, ...` | Founder-only: which recipes you can bake with what you have, with grams per serving and per batch | Optional: fill `data/formulation/pantry.csv` with what you have and how many grams |
-
-`/economics override gate` runs economics anyway and stamps every report as unvalidated.
-
-## Or press Run on the agent board
-The site's agent board (`/board?key=…`) has a Run button for each command. It starts `.github/workflows/research-agents.yml`, which runs the same command with Claude Code on GitHub's computers, saves what the agents wrote to this repo, and sends the agents' reply, their reports and the new statuses back to the board. Survey and recipe output stays on the board and never enters the repo. One-time setup, shown on the board until the first run works:
-1. The workflow file must be on the repo's default branch (GitHub only starts this kind of workflow from there). It is, since 29 Oct 2026. Runs happen on and save to `claude/hopeful-sagan-gd3awd` (`AGENTS_REF` on Vercel changes that).
-2. Add the repository secret `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN` from `claude setup-token`). Set a monthly spend limit on the key.
-3. Paste a fine-grained GitHub token (this repo only, Actions read and write) into the board's Setup box.
-
-The workflow also runs `/trends` by itself every day at 8:17 India time. For YouTube numbers, add the repository secret `YOUTUBE_API_KEY` (Google Cloud, YouTube Data API v3, free); without it the agent works from web search and says so. Instagram and Facebook are read only through what search engines show: both forbid automated collection, so nothing logs in to them or fetches their pages.
-
-The board also has **Download every answer (Excel)**: the live survey as a workbook with a Summary tab, contact details removed.
-
-## What the agents will not do
-- Post, comment or DM anywhere. You post.
-- Touch the formulation, except `recipe-builder` when you call `/recipe`. It only suggests, in `data/formulation/suggestions/`.
-- Invent customers, quotes or numbers. Gaps show as `MISSING`.
+## Adding an agent again
+1. Write `.claude/agents/<name>.md` (frontmatter: name, description, tools, model) and its command in `.claude/commands/`.
+2. To show it on the board, add it to `PLAN`, `OUTPUTS` and `REPORTS` in `scripts/agent_board.py`, then run `pnpm board` in `app/`.
+3. To give it a Run button, add its command to `RUNNABLE` (and `COMMAND_INFO`) in `app/src/lib/agents/commands.ts` and to `COMMANDS` in `scripts/board_report.py`.
 
 ## Scripts (usable on their own)
+- `scripts/survey_analyze.py`: survey numbers from the sheet feed (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
+- `scripts/live_sheet.py`: the cells of the live Google Sheet (Responses via IMPORTDATA, Summary formulas, Notes).
 - `scripts/keywords.py`: Google India, YouTube and Amazon.in autocomplete with a-z expansion, clustered into buy / make / problem / adjacent.
 - `scripts/reddit_pull.py`: read-only search across `scripts/subreddits.txt` and thread pulls.
-- `scripts/agent_board.py`: one row per agent with its status (Ran, Ready, Waiting, Locked) worked out from the data files, plus the gate metrics counted from them. Feeds the agent board.
-- `scripts/board_report.py`: the research-agents workflow's side of the board: asks what to run, pulls the survey for `/survey` and `/gate`, and reports the result back (GitHub OIDC, no stored secret).
-- `scripts/youtube_trends.py`: today's YouTube videos for the terms in `data/trends/queries.txt` (India, last 7 days) with views, likes, comments and views per day, from the official YouTube Data API; `--trends` adds Google Trends interest.
-- `scripts/survey_analyze.py`: survey numbers from the Google Sheet (CSV or JSON): segments, price bands, worries, flags, gate-ready rows and a run history. Removes emails and phone numbers from comments.
+- `scripts/youtube_trends.py --terms FILE`: recent YouTube videos for India per search term, with views, likes, comments and views per day, from the official YouTube Data API (needs `YOUTUBE_API_KEY`); `--trends` adds Google Trends interest.
 - `scripts/van_westendorp.py`: price sensitivity from a Google Form export; finds columns by header text.
-- `scripts/recipe_calc.py`: `match` ranks your recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost, and checks the mix against your formulation notes.
+- `scripts/recipe_calc.py`: `match` ranks recipes by what is in your pantry; `calc` gives grams per serving and per batch, estimated protein, kcal and cost.
 - `scripts/cac_model.py`: `--template` prints an inputs file of E4 placeholders; running it gives CAC, LTV:CAC, break-even repeat rate and a tornado sensitivity per channel.
+- `scripts/agent_board.py` and `scripts/board_report.py`: the board's agent statuses, and the workflow's side of a run (GitHub OIDC, no stored secret).
 
-Every number in `cac_model.py --template` is a placeholder to be replaced. The model's main job before launch is to show which unknown matters most, so you know what to test first.
+Python 3.9+, standard library only (optional: `pip install pytrends` for Google Trends).

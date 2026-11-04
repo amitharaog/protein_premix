@@ -1,17 +1,16 @@
 name: Research agents
 
-# Runs one research command (/demand, /survey, /trends, /gate, ...) with Claude Code when the founder presses Run on the
-# agent board (mugcake.vercel.app/board), and /trends by itself every morning. The board sends only a run id (a
-# scheduled run asks the board for one): this workflow asks the board what to run and reports back, proving who it is
-# with a GitHub OIDC token, so the repo holds no board secret.
+# Runs one research command with Claude Code when the founder presses Run on the agent board
+# (mugcake.vercel.app/board). The board sends only a run id: this workflow asks the board what to run and reports
+# back, proving who it is with a GitHub OIDC token, so the repo holds no board secret. There are no agents since
+# 4 Nov 2026 (the founder is restarting the research process), so nothing runs until new ones are added.
 #
 # This repo is public and so are these logs: nothing below prints what the agents read or write. Claude runs without
-# any GitHub token or the YouTube key in reach; files are saved by a later step. Survey and recipe output goes to the
-# board only.
+# any GitHub token in reach; files are saved by a later step.
 #
-# Needs, once: the repository secret CLAUDE_CODE_OAUTH_TOKEN (or ANTHROPIC_API_KEY), optionally YOUTUBE_API_KEY for
-# /trends, and this file on the default branch (GitHub only starts workflow_dispatch and schedule workflows found
-# there). Runs work on and save to the branch the site is built from (claude/hopeful-sagan-gd3awd).
+# Needs, once: the repository secret CLAUDE_CODE_OAUTH_TOKEN (or ANTHROPIC_API_KEY), and this file on the default
+# branch (GitHub only starts workflow_dispatch workflows found there). The board starts runs on the branch the site
+# is built from (AGENTS_REF), so what the agents write lands there.
 
 on:
   workflow_dispatch:
@@ -27,10 +26,8 @@ on:
         description: Where the board lives
         required: false
         default: https://mugcake.vercel.app
-  schedule:
-    - cron: "47 2 * * *"   # /trends every day at 8:17 India time
 
-run-name: Agent run ${{ inputs.command || 'daily /trends' }}
+run-name: Agent run ${{ inputs.command }}
 
 permissions:
   contents: write   # the save step pushes what the agents wrote
@@ -46,13 +43,10 @@ jobs:
     timeout-minutes: 75
     env:
       RUN_ID: ${{ inputs.run_id }}
-      BOARD_URL: ${{ inputs.board_url || 'https://mugcake.vercel.app' }}
-      # A scheduled run starts from the default branch's copy of this file; it still works on the site's branch.
-      WORK_BRANCH: ${{ github.event_name == 'schedule' && 'claude/hopeful-sagan-gd3awd' || github.ref_name }}
+      BOARD_URL: ${{ inputs.board_url }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.WORK_BRANCH }}
           fetch-depth: 0
           persist-credentials: false   # no token on disk while the agents run
 
@@ -75,15 +69,6 @@ jobs:
       - name: Pull the survey
         if: steps.start.outputs.go == 'true' && steps.start.outputs.needs_survey == 'true'
         run: python3 scripts/board_report.py survey
-
-      - name: Pull today's YouTube numbers
-        if: steps.start.outputs.go == 'true' && steps.start.outputs.needs_youtube == 'true'
-        continue-on-error: true   # without numbers the agent still works from web search and says what is missing
-        env:
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: |
-          pip install --quiet --disable-pip-version-check pytrends==4.9.2 > /dev/null 2>&1 || echo "pytrends not installed; Google Trends left out."
-          python3 scripts/youtube_trends.py --trends
 
       - name: Run the agents
         id: claude
@@ -125,7 +110,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          WHO: ${{ github.event_name == 'schedule' && 'Daily agent run' || 'Agent run from the board' }}
         run: |
           set -euo pipefail
           command="$(cat "$RUNNER_TEMP/command")"
@@ -141,15 +125,15 @@ jobs:
           if git diff --cached --quiet; then echo "Nothing new to save."; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -q -m "$WHO: $command" -m "$RUN_URL"
+          git commit -q -m "Agent run from the board: $command" -m "$RUN_URL"
           remote="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           for attempt in 1 2 3; do
-            if git push -q "$remote" "HEAD:refs/heads/${WORK_BRANCH}"; then
+            if git push -q "$remote" "HEAD:refs/heads/${GITHUB_REF_NAME}"; then
               echo "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$(git rev-parse HEAD)" > "$RUNNER_TEMP/commit_url"
               echo "Saved."
               exit 0
             fi
-            git pull -q --rebase "$remote" "${WORK_BRANCH}" || { git rebase --abort || true; break; }
+            git pull -q --rebase "$remote" "${GITHUB_REF_NAME}" || { git rebase --abort || true; break; }
           done
           echo "::error::Could not push the agents' files."
           exit 1

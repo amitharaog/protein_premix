@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gram maths for the recipe-builder agent: match a pantry to known recipes, then weigh, scale and check one.
+"""Recipe gram maths: match a pantry to known recipes, then weigh, scale and check one.
 
 All nutrition is an estimate (E4) from data/formulation/nutrition.csv, never a lab value.
 Costs use retail prices from data/formulation/seed/ingredients_catalog.json; unknown prices show as MISSING.

@@ -12,26 +12,20 @@ test("the agent board opens only with its key", async ({ page, request }) => {
 
   await page.goto(`/board?key=${k}`);
   await expect(page.getByRole("heading", { name: "Agent board" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "demand-scout" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Road to the demand gate" })).toBeVisible();
-  // No GitHub token saved here, so setup shows and the Run buttons wait for it.
+  // Every agent was removed to restart the research process: the board says so and offers nothing to run.
+  await expect(page.getByText(/No agents yet: they were removed/)).toBeVisible();
+  await expect(page.getByText("Nothing to run: there are no agents yet.")).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Run \// })).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Setup, once" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Run /gate" })).toBeDisabled();
-  await expect(page.getByText("Finish the setup above first.").first()).toBeVisible();
 });
 
-test("an agent card opens its page with its Run button and instructions", async ({ page }) => {
+test("the removed agents have no pages and no commands", async ({ request }) => {
   test.skip(key.length < 24, "BOARD_KEY is not set for this run");
-  await page.goto(`/board?key=${k}`);
-  await page.getByRole("link", { name: /^demand-scout/ }).click();
-  await expect(page.getByRole("heading", { name: "demand-scout", level: 1 })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Run it" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Run /demand" })).toBeDisabled();
-  await page.getByText("Or run it yourself in Claude Code").click();
-  await expect(page.getByRole("button", { name: "Copy" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Full instructions" })).toBeVisible();
-  expect((await page.request.get("/board/demand-scout")).status()).toBe(404);
-  expect((await page.request.get(`/board/not-an-agent?key=${k}`)).status()).toBe(404);
+  for (const slug of ["demand-scout", "trend-watcher", "recipe-builder"]) expect((await request.get(`/board/${slug}?key=${k}`)).status()).toBe(404);
+  const auth = { authorization: `Bearer ${key}` };
+  const scheduled = await request.post("/api/board/runs", { headers: auth, data: { event: "scheduled", command: "/trends", run_url: "https://github.com/amitharaog/protein_premix/actions/runs/7" } });
+  expect(scheduled.status()).toBe(400); // no daily runs any more
 });
 
 test("the Excel download needs the key and is a real workbook", async ({ request }) => {
@@ -42,27 +36,6 @@ test("the Excel download needs the key and is a real workbook", async ({ request
   expect(res.headers()["content-type"]).toContain("spreadsheetml");
   expect(res.headers()["content-disposition"]).toMatch(/muggoozz_survey_\d{4}-\d\d-\d\d\.xlsx/);
   expect((await res.body()).subarray(0, 2).toString()).toBe("PK");
-});
-
-test("the daily schedule gets a run from the board, one at a time", async ({ request }) => {
-  test.skip(key.length < 24 || !process.env.DATABASE_URL, "BOARD_KEY or DATABASE_URL is not set for this run");
-  const auth = { authorization: `Bearer ${key}` };
-  const ask = (command: string) => request.post("/api/board/runs", { headers: auth, data: { event: "scheduled", command, run_url: "https://github.com/amitharaog/protein_premix/actions/runs/7" } });
-  expect((await ask("/demand")).status()).toBe(400); // only /trends runs on a schedule
-  const first = await ask("/trends");
-  expect(first.status()).toBe(200);
-  const { id, command } = await first.json();
-  expect(command).toBe("/trends");
-  try {
-    expect((await ask("/trends")).status()).toBe(409); // one run at a time
-    const done = await request.post("/api/board/runs", { headers: auth, data: { event: "finished", run_id: id, ok: true, summary: "Trends checked." } });
-    expect(done.status()).toBe(200);
-  } finally {
-    const db = new Client({ connectionString: process.env.DATABASE_URL });
-    await db.connect();
-    await db.query("delete from agent_runs where id = $1", [id]);
-    await db.end();
-  }
 });
 
 test("a run reported by the workflow shows up on the board", async ({ page, request }) => {
@@ -83,10 +56,10 @@ test("a run reported by the workflow shows up on the board", async ({ page, requ
     await page.goto(`/board/runs/${id}?key=${k}`);
     await expect(page.getByText(/Running on GitHub for/)).toBeVisible();
 
-    const agents = JSON.parse(readFileSync("src/content/agent-board/agents.json", "utf8")) as { slug: string; status: string }[];
+    const agents = JSON.parse(readFileSync("src/content/agent-board/agents.json", "utf8"));
     const gateFiles = JSON.parse(readFileSync("src/content/agent-board/gate_files.json", "utf8"));
     const board = {
-      agents: agents.map((a) => (a.slug === "demand-gate" ? { ...a, status: "Ran: insufficient" } : a)),
+      agents,
       gate_files: gateFiles,
       generated_at: new Date(Date.now() + 60_000).toISOString().slice(0, 19) + "Z",
     };
@@ -106,10 +79,6 @@ test("a run reported by the workflow shows up on the board", async ({ page, requ
     await expect(page.getByText("Weakest link: buy-intent keywords.")).toBeVisible();
     await expect(page.getByText("Insufficient: 7 survey responses, no signals yet.")).toBeVisible();
     await expect(page.getByText("$0.42")).toBeVisible();
-
-    await page.goto(`/board/demand-gate?key=${k}`);
-    await expect(page.getByText("Ran: insufficient").first()).toBeVisible();
-    await expect(page.getByText("Insufficient: 7 survey responses, no signals yet.")).toBeVisible();
 
     await page.goto(`/board?key=${k}`);
     await expect(page.getByRole("heading", { name: "Setup, once" })).toHaveCount(0); // a run came back, so setup is done

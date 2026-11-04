@@ -1,6 +1,6 @@
 # data/survey
 
-Filled by `/survey` (survey-analyst). Everything here except this file and `exclude.txt` is gitignored: respondents were told nothing is shared.
+Filled when survey answers are pulled and run through `scripts/survey_analyze.py`. Everything here except this file and `exclude.txt` is gitignored: respondents were told nothing is shared.
 
 | File | What it is |
 |---|---|

@@ -4,9 +4,11 @@
 A research workspace for a single-serve, high-protein baking premix (brownie, cake, cookie) for the Indian market, starting in Bengaluru. Buyers add their own liquid and bake at home. The product wedge is protein with real-dessert texture. Do not widen the wedge to "healthy" or "sugar-free" in any output.
 
 ## Order of work (hard rule)
-1. **Demand phase** (`/demand`, `/survey`, `/trends`): passive listening, keyword demand, post drafts, reply analysis, survey feedback, daily social trends.
-2. **Gate** (`/gate`): scores the demand evidence against `data/gate/criteria.json` and writes `data/gate/gate.json`.
-3. **Economics phase** (`/economics`): pricing, channels, CAC. Runs only when `data/gate/gate.json` has `"status": "pass"`, or the user explicitly types "override gate".
+1. **Demand phase**: passive listening, keyword demand, post drafts, reply analysis, survey feedback, social trends.
+2. **Gate**: scores the demand evidence against `data/gate/criteria.json` and writes `data/gate/gate.json`.
+3. **Economics phase**: pricing, channels, CAC. Runs only when `data/gate/gate.json` has `"status": "pass"`, or the user explicitly types "override gate".
+
+The agents and commands that did this were removed on 4 Nov 2026: the founder is restarting the process. New ones follow these rules.
 
 Never start economics work because demand "seems likely". The gate exists so we do not model CAC for a product nobody wants.
 
@@ -20,7 +22,7 @@ Never start economics work because demand "seems likely". The gate exists so we 
 Agents may challenge any of these with evidence. They may not silently replace them.
 
 ## Off limits
-- Product formulation, ingredients, ratios, baking method. That is the founder's domain. Do not suggest changes. One exception: the `recipe-builder` agent, which runs only when the founder calls `/recipe`. It writes only to `data/formulation/suggestions/`, never edits `data/formulation/seed/`, and its output never goes into drafts or anything public.
+- Product formulation, ingredients, ratios, baking method. That is the founder's domain. Do not suggest changes unless the founder asks. Anything that does write recipes writes only to `data/formulation/suggestions/`, never edits `data/formulation/seed/`, and its output never goes into drafts or anything public.
 - Posting, commenting, DMing or emailing anywhere on the user's behalf. Agents draft; the user posts.
 - Fake accounts, personas or "a friend of mine" framing in drafts. If asked who is behind a post, the honest answer is someone exploring making this product.
 - Fabricated customers, quotes, numbers or survey results. If data is missing, write `MISSING` and say what would fill it.
@@ -41,22 +43,21 @@ Drafts must not contain: brand name, prices, unit cost, the single-serve cup for
 
 ## File layout
 ```
-.claude/agents/     eleven subagents (demand phase: 7, economics: 3, founder kitchen: recipe-builder)
-.claude/commands/   /demand, /survey, /trends, /gate, /economics, /status, /recipe
+.claude/agents/     subagents: none since 4 Nov 2026 (the process is restarting)
+.claude/commands/   slash commands: none since 4 Nov 2026
 data/
   signals/          passive listening (signals.csv)
   keywords/         autocomplete + trends output
   posts/            drafts.md, posted.csv (user fills URLs after posting)
   responses/        pulled replies, manual/ pastes, coded.csv
   survey/           website survey pulls and coded_survey.csv (gitignored: respondents were told nothing is shared)
-  trends/           daily social trends (trend-watcher): queries.txt, youtube_today.json, posts.csv, history.csv
   gate/             criteria.json, decision.md, gate.json
   economics/        competitors.csv, survey/, channels.csv, cac_inputs.json, cac outputs
   formulation/      seed/ (read-only kit export, 28 Oct 2026), nutrition.csv, pantry.csv, suggestions/
 reports/            human-readable summaries, numbered by step
 app/                Next.js launch site + research app from the build kit (its own CLAUDE.md applies inside app/)
 scripts/            keywords.py, reddit_pull.py, survey_analyze.py, youtube_trends.py, live_sheet.py, agent_board.py, board_report.py, van_westendorp.py, cac_model.py, recipe_calc.py, subreddits.txt
-.github/workflows/  app-ci.yml; research-agents.yml runs a command from the agent board's Run button, and /trends every morning (Claude Code, headless)
+.github/workflows/  app-ci.yml; research-agents.yml runs a command from the agent board's Run button (Claude Code, headless)
 ```
 
 ## Writing style for all outputs

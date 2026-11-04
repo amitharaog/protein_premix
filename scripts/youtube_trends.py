@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Today's YouTube numbers for the trend-watcher agent, from the official YouTube Data API v3. Standard library only.
+"""Today's YouTube numbers for protein dessert search terms, from the official YouTube Data API v3. Standard library only.
 
-For each search term in data/trends/queries.txt: videos published in the last --days days that YouTube shows for
+For each search term in --terms (a file, one term per line, # for notes): videos published in the last --days days that YouTube shows for
 India, ordered by views, then each video's views, likes, comments and views per day since it went up. Videos found by
 several terms are listed once, with every term that found them.
 
@@ -12,18 +12,18 @@ Needs YOUTUBE_API_KEY (Google Cloud, YouTube Data API v3; free quota 10,000 unit
 Without it, or when YouTube refuses, the output says MISSING and why, and the agent works from web search instead.
 The key is never printed.
 
-Writes to --out (default data/trends/):
+Writes to --out (default data/trends/; created if missing):
   youtube_today.json   {"date", "missing"?, "terms", "videos": [...], "per_term": {...}, "quota_used"}
   interest.csv         date,keyword,property,interest   (with --trends, when Google answers)
 
-Usage: python3 scripts/youtube_trends.py [--out data/trends/] [--days 7] [--per-term 25] [--trends]
+Usage: python3 scripts/youtube_trends.py --terms FILE [--out data/trends/] [--days 7] [--per-term 25] [--trends]
 """
 import argparse, csv, json, os, sys, time, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API = "https://www.googleapis.com/youtube/v3"
-UA = "muggoozz-research trend-watcher"
+UA = "muggoozz-research"
 
 
 def terms_from(path):
@@ -116,13 +116,16 @@ def google_trends(terms, out):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default=os.path.join(ROOT, "data", "trends"))
-    ap.add_argument("--terms", default=None, help="file of search terms (default: <out>/queries.txt)")
+    ap.add_argument("--terms", default=None, help="file of search terms, one per line (default: <out>/queries.txt)")
     ap.add_argument("--days", type=int, default=7)
     ap.add_argument("--per-term", type=int, default=25)
     ap.add_argument("--trends", action="store_true")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    terms = terms_from(a.terms or os.path.join(a.out, "queries.txt"))
+    terms_file = a.terms or os.path.join(a.out, "queries.txt")
+    if not os.path.exists(terms_file):
+        sys.exit(f"No search terms: {terms_file} does not exist. Pass --terms FILE, one term per line.")
+    terms = terms_from(terms_file)
     result = {"date": datetime.now(timezone(timedelta(hours=5, minutes=30))).date().isoformat(), "terms": terms,
               "window_days": a.days, "videos": [], "per_term": {}, "quota_used": 0}
 

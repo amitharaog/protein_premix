@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AutoRefresh } from "@/components/auto-refresh";
 import { SubmitButton } from "@/components/submit-button";
-import { COMMAND_INFO, type RunnableCommand } from "@/lib/agents/commands";
+import { COMMAND_INFO } from "@/lib/agents/commands";
 import type { RunRow } from "@/lib/queries/runs";
 import { startRun } from "./actions";
 
@@ -49,12 +49,9 @@ export function Notice({ code }: { code?: string }) {
   );
 }
 
-/**
- * One command's Run button. `why` explains a disabled button. /recipe takes the founder's ingredients;
- * `from` is the agent page the button sits on, so notices come back there.
- */
+/** One command's Run button. `why` explains a disabled button; `from` is the agent page it sits on, so notices come back there. */
 export function RunButton({ k, command, from = "", why, compact = false }: {
-  k: string; command: RunnableCommand; from?: string; why?: string | null; compact?: boolean;
+  k: string; command: string; from?: string; why?: string | null; compact?: boolean;
 }) {
   const info = COMMAND_INFO[command];
   const off = Boolean(why);
@@ -63,18 +60,11 @@ export function RunButton({ k, command, from = "", why, compact = false }: {
       <input type="hidden" name="key" value={k} />
       <input type="hidden" name="command" value={command} />
       <input type="hidden" name="from" value={from} />
-      {command === "/recipe" && !off && (
-        <label className="block text-sm">
-          <span className="text-muted">Ingredients you have, comma-separated (empty means your pantry list)</span>
-          <input name="args" maxLength={300} placeholder="whey, cocoa, almond flour, jaggery" autoComplete="off"
-            className="mt-1 h-11 w-full rounded-md border border-line bg-bg px-3 text-fg placeholder:text-muted/70 focus:border-frost focus:outline-none" />
-        </label>
-      )}
       <SubmitButton pending="Starting…" disabled={off}
         className="h-11 rounded-full border border-frost bg-frost px-4 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:border-line disabled:bg-transparent disabled:text-muted">
         Run {command}
       </SubmitButton>
-      <p className="text-xs text-muted">{why ?? `Runs ${info.agents}. Usually ${info.takes}; you can close this page meanwhile.`}</p>
+      <p className="text-xs text-muted">{why ?? (info ? `Runs ${info.agents}. Usually ${info.takes}; you can close this page meanwhile.` : "Runs on GitHub; you can close this page meanwhile.")}</p>
     </form>
   );
 }

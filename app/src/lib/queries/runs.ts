@@ -57,13 +57,6 @@ export async function createRun(command: string, args: string | null): Promise<s
   return row.id;
 }
 
-/** A run the workflow started on its schedule: it is already running when the board hears of it. */
-export async function createScheduledRun(command: string, runUrl: string) {
-  const [row] = await db.insert(agentRuns).values({ command, status: "running", startedAt: new Date(), runUrl })
-    .returning({ id: agentRuns.id, command: agentRuns.command, args: agentRuns.args });
-  return row;
-}
-
 export async function failRun(id: string, error: string) {
   await db.update(agentRuns).set({ status: "failed", finishedAt: new Date(), error }).where(eq(agentRuns.id, id));
 }

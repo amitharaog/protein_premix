@@ -4,12 +4,12 @@
   "metric": "unprompted_problem_signals",
   "label": "Unprompted problem signals",
   "threshold": 25,
-  "from_files": 5,
+  "from_files": null,
   "adds_survey": false,
   "source": "data/signals/signals.csv",
   "behaviour_count": null,
   "interest_count": null,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  },
  {
   "order": 2,
@@ -21,19 +21,19 @@
   "source": "data/signals/signals.csv",
   "behaviour_count": null,
   "interest_count": null,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  },
  {
   "order": 3,
   "metric": "buy_intent_keywords",
   "label": "Buy-intent keywords",
   "threshold": 8,
-  "from_files": 118,
+  "from_files": null,
   "adds_survey": false,
   "source": "data/keywords/suggestions.csv",
   "behaviour_count": null,
   "interest_count": null,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  },
  {
   "order": 4,
@@ -45,7 +45,7 @@
   "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
   "behaviour_count": null,
   "interest_count": null,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  },
  {
   "order": 5,
@@ -57,7 +57,7 @@
   "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
   "behaviour_count": 0,
   "interest_count": 0,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  },
  {
   "order": 6,
@@ -69,6 +69,6 @@
   "source": "data/responses/coded.csv + data/survey/coded_survey.csv",
   "behaviour_count": null,
   "interest_count": null,
-  "captured": "2026-11-03"
+  "captured": "2026-11-04"
  }
 ]

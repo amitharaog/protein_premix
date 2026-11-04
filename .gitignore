@@ -8,6 +8,3 @@ data/survey/*
 !data/survey/README.md
 !data/survey/exclude.txt
 reports/04_survey.md
-
-# Rewritten on every /trends run; posts.csv and history.csv keep what matters.
-data/trends/youtube_today.json

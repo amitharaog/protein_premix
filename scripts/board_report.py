@@ -3,52 +3,37 @@
 
 Steps, in workflow order:
   started    tell the board the run started; get back what to run, and write the prompt files for Claude Code
-  survey     pull the live survey from the board and run survey_analyze.py (for /survey and /gate)
+  survey     pull the live survey from the board and run survey_analyze.py (for the commands in NEEDS_SURVEY)
   collect    gather the reports the run wrote or changed, before the workflow tidies the checkout
   finished   send the board the agents' closing message, the reports, the cost and the agent statuses
 
 The board knows the workflow by its GitHub OIDC token (audience muggoozz-agent-board), so the repo holds no board
 secret. For a local test, set BOARD_AUTH to the BOARD_KEY instead. This repo is public and so are its Actions logs:
-nothing here prints survey answers, reports, recipe ingredients or the agents' messages.
+nothing here prints survey answers, reports, the text sent with a command or the agents' messages.
 
-A run the workflow starts on its own schedule has no run id: `started` asks the board to create one ("scheduled") and
-stops quietly (go=false) when the board says another run is going.
+COMMANDS is empty since 4 Nov 2026, when the founder removed every agent to restart the research process; a new
+agent's command goes here (and in app/src/lib/agents/commands.ts) when it is added.
 
-Env: RUN_ID, BOARD_URL, RUNNER_TEMP (scratch files), and from GitHub: GITHUB_SERVER_URL, GITHUB_REPOSITORY, GITHUB_RUN_ID,
-GITHUB_EVENT_NAME.
+Env: RUN_ID, BOARD_URL, RUNNER_TEMP (scratch files), and from GitHub: GITHUB_SERVER_URL, GITHUB_REPOSITORY, GITHUB_RUN_ID.
 """
 import hashlib, json, os, re, subprocess, sys, time, urllib.error, urllib.request
 
 from agent_board import REPORTS, ROOT
 
 AUDIENCE = "muggoozz-agent-board"
-COMMANDS = ("/demand", "/demand replies", "/survey", "/trends", "/gate", "/economics", "/recipe")
-SCHEDULED = "/trends"                  # what the daily schedule runs
-PRIVATE = ("/survey", "/recipe")      # their output stays on the board, never in the repo
-NEEDS_SURVEY = ("/survey", "/gate")
+COMMANDS = ()                          # commands this workflow runs
+PRIVATE = ()                           # commands whose output stays on the board, never in the repo
+NEEDS_SURVEY = ()                      # commands that get the live survey pulled before they run
 MAX_REPORT = 190_000                   # characters per report; the board takes up to 200k
 TMP = os.environ.get("RUNNER_TEMP") or os.path.join(ROOT, ".board-run")
 
-SYSTEM = ("You are running unattended in GitHub Actions, started from the founder's agent board (a Run button or its daily schedule). "
+SYSTEM = ("You are running unattended in GitHub Actions because the founder pressed Run on the agent board. "
           "Nobody can answer questions until the run ends: where a step says to ask the user, take the documented default, "
           "or write MISSING and say what would fill it, then carry on. Follow CLAUDE.md. Agents draft; never post, comment, "
           "message or email anywhere. Do not commit or push: the workflow saves the files after you finish. "
           "Your final message is shown on the board as the run's result, so make it the reply the command asks for: "
           "short and plain, no em dashes.")
-EXTRA = {
-    "/survey": ("This is a /survey run. data/survey/responses.csv was pulled from the live survey when the run started, and "
-                "scripts/survey_analyze.py has already run on it: summary.json, tables.md and coded_survey.csv are in data/survey/. "
-                "Bash and web tools are off for privacy, so tell survey-analyst to read those files instead of running the script. "
-                "history.csv starts fresh on every board run, so there is no earlier run to compare with; say so. "
-                "Survey answers stay private: they go only into reports/04_survey.md, which is kept out of git."),
-    "/gate": ("This is a /gate run. data/survey/coded_survey.csv was made from the live survey at the start of the run with comment "
-              "text removed for privacy, so survey rows are counts only. data/gate/decision.md and gate.json are saved to a public "
-              "repo: cite survey numbers, never survey wording."),
-    "/recipe": "This is a /recipe run for the founder. Its output stays on the private board and is not saved to the repo.",
-    "/trends": ("This is a /trends run. The workflow has already run scripts/youtube_trends.py: data/trends/youtube_today.json "
-                "(and interest.csv if Google Trends answered) hold today's numbers. Do not run the script again; it needs a key "
-                "this run does not have. Everything trend-watcher writes is saved to a public repo: no commenter names."),
-}
+EXTRA = {}                             # command -> extra note for the run
 
 
 def tmp(name):
@@ -74,7 +59,7 @@ def board_url():
 
 
 def run_id():
-    rid = os.environ.get("RUN_ID", "") or read("run_id").strip()
+    rid = os.environ.get("RUN_ID", "")
     if not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", rid):
         sys.exit("RUN_ID is not a run id from the board.")
     return rid
@@ -137,45 +122,23 @@ def output(**kv):
             f.writelines(f"{k}={v}\n" for k, v in kv.items())
 
 
-def scheduled(run_url):
-    """Ask the board for a run for today's scheduled command; None when it says not now (another run is going)."""
-    req = urllib.request.Request(board_url() + "/api/board/runs", method="POST",
-                                 data=json.dumps({"event": "scheduled", "command": SCHEDULED, "run_url": run_url}).encode("utf-8"),
-                                 headers={"Authorization": f"Bearer {bearer()}", "Content-Type": "application/json",
-                                          "User-Agent": "research-agents-workflow"})
-    try:
-        with urllib.request.urlopen(req, timeout=120) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        if e.code == 409:
-            return None
-        sys.exit(f"The board answered {e.code} to the scheduled run.")
-
-
 def started():
     server, repo, gh_run = (os.environ.get(k, "") for k in ("GITHUB_SERVER_URL", "GITHUB_REPOSITORY", "GITHUB_RUN_ID"))
     run_url = f"{server or 'https://github.com'}/{repo}/actions/runs/{gh_run}"
-    if os.environ.get("GITHUB_EVENT_NAME") == "schedule" and not os.environ.get("RUN_ID"):
-        answer = scheduled(run_url)
-        if answer is None:
-            output(go="false")
-            print(f"Skipped today's {SCHEDULED}: another run is going, or the day's runs are used up.")
-            return
-        write("run_id", answer["id"])
-    else:
-        answer = json.loads(call("POST", "/api/board/runs", {"event": "started", "run_id": run_id(), "run_url": run_url}))
+    answer = json.loads(call("POST", "/api/board/runs", {"event": "started", "run_id": run_id(), "run_url": run_url}))
     command, args = answer.get("command"), answer.get("args") or ""
     if command not in COMMANDS:
         sys.exit("The board asked for a command this workflow does not run.")
-    # The prompt is the command itself, as if typed in Claude Code; only /recipe carries text (the founder's ingredients).
-    prompt = "/recipe " + (re.sub(r"\s+", " ", args).strip()[:300] or "pantry") if command == "/recipe" else command
+    # The prompt is the command itself, as if typed in Claude Code, plus any text the board sent with it.
+    extra = re.sub(r"\s+", " ", args).strip()[:300]
+    prompt = f"{command} {extra}".strip()
     write("command", command)
     write("prompt", prompt)
     write("system", SYSTEM + (" " + EXTRA[command] if command in EXTRA else ""))
-    write("disallowed", "Bash,WebFetch,WebSearch" if command == "/survey" else "")
+    write("disallowed", "Bash,WebFetch,WebSearch" if command in PRIVATE and command in NEEDS_SURVEY else "")
     write("mode", "private" if command in PRIVATE else "commit")
     write("before.json", json.dumps(snapshot()))
-    output(go="true", command=command, needs_survey=str(command in NEEDS_SURVEY).lower(), needs_youtube=str(command == "/trends").lower())
+    output(go="true", command=command, needs_survey=str(command in NEEDS_SURVEY).lower())
     print(f"The board asked for {command}.")
 
 
@@ -186,11 +149,11 @@ def survey():
     with open(csv_path, "wb") as f:
         f.write(call("GET", "/api/sheet/responses"))
     cmd = [sys.executable, os.path.join(ROOT, "scripts", "survey_analyze.py"), csv_path, "--out", os.path.join(ROOT, "data", "survey")]
-    if command != "/survey":
+    if command not in PRIVATE:
         cmd.append("--no-text")
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL)
-    if command != "/survey":
-        os.remove(csv_path)  # /gate needs the coded counts only; the answers themselves leave the runner
+    if command not in PRIVATE:
+        os.remove(csv_path)  # a run that saves to the public repo gets coded counts only; the answers leave the runner
     print("Survey answers pulled and counted.")
 
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Survey numbers for the survey-analyst agent: counts, segments and gate-ready coding. Standard library only.
+"""Survey numbers: counts, segments and gate-ready coding. Standard library only.
 
 Reads the live survey data in any of these shapes:
   - the Google Sheet feed (/api/sheet/responses) or a CSV download of the sheet's Responses tab:

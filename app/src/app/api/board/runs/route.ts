@@ -1,15 +1,12 @@
 import { z } from "zod";
-import { SCHEDULED } from "@/lib/agents/commands";
 import { isAgentCaller } from "@/lib/agents/caller";
-import { activeRun, createScheduledRun, expireStaleRuns, markFinished, markStarted, MAX_RUNS_PER_DAY, runsLastDay } from "@/lib/queries/runs";
+import { markFinished, markStarted } from "@/lib/queries/runs";
 
 export const dynamic = "force-dynamic";
 
 // The research-agents workflow reports here: "started" (and gets back what to run), then "finished" with the
-// agent's closing message, the reports it wrote and the agent statuses afterwards. A run the workflow starts on its
-// own schedule says "scheduled" instead of "started", and the board creates its run then (or answers 409 when another
-// run is going or the day's runs are used up). Callers prove who they are with a GitHub OIDC token from that workflow
-// (or BOARD_KEY); anything else gets a plain 404.
+// agent's closing message, the reports it wrote and the agent statuses afterwards. Callers prove who they are
+// with a GitHub OIDC token from that workflow (or BOARD_KEY); anything else gets a plain 404.
 
 const githubUrl = (kind: "actions/runs/\\d+" | "commit/[0-9a-f]{7,40}") =>
   z.string().max(300).regex(new RegExp(`^https://github\\.com/[\\w.-]+/[\\w.-]+/${kind}$`));
@@ -29,7 +26,6 @@ const gateFile = z.object({
 
 const body = z.discriminatedUnion("event", [
   z.object({ event: z.literal("started"), run_id: z.uuid(), run_url: githubUrl("actions/runs/\\d+") }),
-  z.object({ event: z.literal("scheduled"), command: z.enum(SCHEDULED), run_url: githubUrl("actions/runs/\\d+") }),
   z.object({
     event: z.literal("finished"),
     run_id: z.uuid(),
@@ -60,12 +56,6 @@ export async function POST(req: Request) {
   if (b.event === "started") {
     const run = await markStarted(b.run_id, b.run_url);
     return run ? json(run) : json({ error: "no such run waiting to start" }, 409);
-  }
-  if (b.event === "scheduled") {
-    await expireStaleRuns();
-    if (await activeRun()) return json({ error: "another run is going; skipping this one" }, 409);
-    if ((await runsLastDay()) >= MAX_RUNS_PER_DAY) return json({ error: "the day's runs are used up" }, 409);
-    return json(await createScheduledRun(b.command, b.run_url));
   }
   const done = await markFinished(b.run_id, {
     ok: b.ok, summary: b.summary, costUsd: b.cost_usd, error: b.error, commitUrl: b.commit_url, reports: b.reports, board: b.board,

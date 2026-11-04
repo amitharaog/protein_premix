@@ -69,13 +69,13 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <p className="text-xs uppercase tracking-wide text-muted">muggoozz research</p>
         <h1 className="font-head text-3xl font-semibold uppercase tracking-wide text-frost">Agent board</h1>
         <p className="max-w-3xl text-sm text-muted">
-          Ready to run now:{" "}
+          {agents.length === 0 ? "No agents yet" : <>Ready to run now:{" "}
           {readyBy.length === 0 ? "nothing, every agent is waiting on an earlier step" : readyBy.map((r, i) => (
             <span key={r.command}>
               {i > 0 && (i === readyBy.length - 1 ? " and " : ", ")}
               <code className="rounded border border-line px-1 text-fg">{r.command}</code> ({r.names.join(", ")})
             </span>
-          ))}
+          ))}</>}
           . Survey percentages stay directional until {MIN_N} responses; so far there are <span className="tabular text-frost">{h.responses}</span>.
         </p>
       </header>
@@ -112,11 +112,12 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <div>
           <h2 id="run-h" className="font-head text-xl font-semibold uppercase text-frost">Run a step</h2>
           <p className="max-w-3xl text-xs text-muted">
-            Each button runs the command on GitHub with Claude Code and brings the answer back here. Files the agents write are saved to the repo, except survey and recipe output, which stays on this board. One run at a time.
+            Each button runs the command on GitHub with Claude Code and brings the answer back here. Files the agents write are saved to the repo. One run at a time.
           </p>
         </div>
         <Notice code={typeof notice === "string" ? notice : undefined} />
         {active && <ActiveRun run={active} k={k} />}
+        {RUNNABLE.length === 0 && <p className="rounded-[14px] border border-line bg-panel p-3 text-sm text-muted">Nothing to run: there are no agents yet.</p>}
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {RUNNABLE.map((command) => (
             <div key={command} className="rounded-[14px] border border-line bg-panel p-3">
@@ -141,9 +142,10 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <div>
           <h2 id="agents-h" className="font-head text-xl font-semibold uppercase text-frost">Agents</h2>
           <p className="text-xs text-muted">
-            In the order the work runs; open one for its latest output, its Run button and its full instructions. Statuses come from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"} and update after each run; economics stays locked until /gate writes a pass.
+            In the order the work runs; open one for its latest output, its Run button and its full instructions. Statuses come from the repo&apos;s data files as of {gateFiles[0]?.captured ?? "—"} and update after each run; economics stays locked until the gate passes.
           </p>
         </div>
+        {agents.length === 0 && <p className="rounded-[14px] border border-line bg-panel p-4 text-sm text-muted">No agents yet: they were removed on 4 Nov 2026 to restart the research process. New ones will show here.</p>}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {PHASES.map((phase) => {
             const items = agents.filter((a) => a.phase === phase).sort((a, b) => a.order - b.order);
@@ -253,7 +255,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
         <div>
           <h2 id="gate-h" className="font-head text-xl font-semibold uppercase text-frost">Road to the demand gate</h2>
           <p className="max-w-3xl text-xs text-muted">
-            Raw counts before /gate runs its own checks (friends and family, one community, share from India). Survey answers count toward replies, the behaviour ratio and E1 actions, as data/gate/criteria.json says.
+            Raw counts against data/gate/criteria.json, before any checks for friends and family, one community or share from India. Survey answers count toward replies, the behaviour ratio and E1 actions.
           </p>
         </div>
         <div className="overflow-x-auto rounded-[14px] border border-line bg-panel p-4">

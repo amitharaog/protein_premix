@@ -19,16 +19,15 @@ const good = {
 };
 
 describe("isAgentWorkflowToken", () => {
-  it("accepts this repo's research-agents workflow started by the board or by its own schedule", async () => {
+  it("accepts this repo's research-agents workflow started from the board", async () => {
     expect(await isAgentWorkflowToken(await sign(good), keys)).toBe(true);
-    const daily = { ...good, event_name: "schedule", workflow_ref: "amitharaog/protein_premix/.github/workflows/research-agents.yml@refs/heads/claude/friendly-faraday-2jitqf" };
-    expect(await isAgentWorkflowToken(await sign(daily), keys)).toBe(true);
   });
 
   it("refuses other repos, other workflows, other events, audiences and issuers", async () => {
     expect(await isAgentWorkflowToken(await sign({ ...good, repository: "someone/protein_premix" }), keys)).toBe(false);
     expect(await isAgentWorkflowToken(await sign({ ...good, workflow_ref: "amitharaog/protein_premix/.github/workflows/app-ci.yml@refs/heads/x" }), keys)).toBe(false);
     expect(await isAgentWorkflowToken(await sign({ ...good, event_name: "pull_request" }), keys)).toBe(false);
+    expect(await isAgentWorkflowToken(await sign({ ...good, event_name: "schedule" }), keys)).toBe(false);
     expect(await isAgentWorkflowToken(await sign(good, { aud: "someone-else" }), keys)).toBe(false);
     expect(await isAgentWorkflowToken(await sign(good, { iss: "https://example.com" }), keys)).toBe(false);
   });
