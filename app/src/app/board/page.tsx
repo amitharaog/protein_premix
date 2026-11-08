@@ -38,12 +38,16 @@ const gateValue = (g: GateRow, v: number | null) =>
   v == null ? "—" : g.metric === "india_share_of_signals" ? share(v) : g.metric === "behaviour_to_interest_ratio" ? v.toFixed(2) : String(v);
 
 const GITHUB = `https://github.com/${AGENTS_REPO}`;
-// Questions added in survey v2 (8 Nov 2026), shown once someone has answered them.
-const NEW_IN_V2: [string, string][] = [
-  ["Q11", "The 10 pm dilemma: make it, buy it, or resist"],
+// Questions added on 8 Nov 2026 (survey v2 and v3), shown once someone has answered them.
+const NEW_QUESTIONS: [string, string][] = [
+  ["Q11", "The 10 pm craving: what they actually do"],
+  ["Q14", "What sets off their sweet tooth"],
+  ["Q15", "What they reach for today"],
+  ["Q16", "Last dessert they bought for themselves"],
+  ["Q17", "How they feel after dessert"],
   ["Q12", "Protein a dessert needs before they care"],
   ["Q13", "Gluten"],
-  ["Q4", "Eggs"],
+  ["Q18", "Effort they will put in at home"],
 ];
 
 export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[]; notice?: string | string[] }> }) {
@@ -228,7 +232,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             <BarCard title="What would worry them" note={`${worries[0].answered} answered · people could pick more than one`}
               items={worries.map((r) => ({ label: r.option, count: r.count }))} denom={worries[0].answered} />
           )}
-          {NEW_IN_V2.map(([qid, title]) => {
+          {NEW_QUESTIONS.map(([qid, title]) => {
             const items = rows.filter((r) => r.qid === qid);
             return items.length > 0 && items[0].answered > 0 ? (
               <BarCard key={qid} title={title} note={`${items[0].answered} answered · asked since 8 Nov 2026`}

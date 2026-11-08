@@ -5,6 +5,10 @@ export const brand = {
   name: "Ministry of Cravings",
   short: "Cravings", // the big word of the wordmark, for small spaces
   siteTitle: "Ministry of Cravings",
-  description: "The official dessert census. A slightly unserious 2-minute survey about cravings, desserts and protein. No login.",
+  // The public address (founder's pick, 8 Nov 2026). The old mugcake.vercel.app gave the product away: its public pages
+  // now send people here (src/middleware.ts), while its /api and /board keep working for the sheet and the workflow.
+  siteUrl: "https://ministryofcravings.vercel.app",
+  oldHosts: ["mugcake.vercel.app"],
+  description: "The official dessert census. A slightly unserious 3-minute survey about cravings, desserts and protein. No login.",
   instagram: null as string | null,
 };

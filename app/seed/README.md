@@ -2,7 +2,7 @@
 
 | File | Rows | From | Goes to table(s) |
 |---|---|---|---|
-| `survey_questions.json` | 13 | survey page | `survey_questions` |
+| `survey_questions.json` | 18 | survey page | `survey_questions` |
 | `ingredients_catalog.json` | 42 | planner `catalog` (prices checked 26 Oct 2026) | `ingredients`, `ingredient_options` |
 | `recipes.json` | 17 | planner `recipes` (items = ingredient id + grams) | `recipes`, `recipe_items` |
 | `recipe_estimates.json` | 10 | dashboard `recipes` (kcal, macros, cost estimates) | reference / `recipes.notes` |
@@ -31,3 +31,5 @@ Shapes, briefly:
 **Edited 28 Oct 2026 at the founder's request:** the survey is cut to 7 questions. The array order is the display order (Q3, Q2, Q1, Q8, Q5, Q9, Q10). Q4 (eggless), Q6 (flavours) and Q7 (where to buy) stay in the file with `active: false`, so they can be switched back on.
 
 **Edited 8 Nov 2026 at the founder's request (survey v2):** the survey asks more specific questions and no longer describes the product; it runs as the "Ministry of Cravings" dessert census. The array order is the display order: Q11 (new: the 10 pm dilemma, bake in a mug and indulge or buy and feel guilty), Q3, Q2, Q12 (new: how much protein a dessert needs, with everyday reference amounts), Q13 (new: gluten), Q4 (eggs, switched back on), Q1, Q8, Q9, Q5, Q10. Q6 and Q7 stay off. Answer options of the old questions are unchanged, so counts stay comparable; question wording changed: Q9 now describes the idea in one line (before, the intro screen described the product), and Q5 asks for "one serving" instead of "one sachet (protein-based)". Responses before 8 Nov 2026 have no Q11, Q12, Q13 or Q4 answers; compare Q9 and Q5 across the change with that in mind.
+
+**Edited 8 Nov 2026 at the founder's request (survey v3, "sharpest questions"):** each question now maps to a build decision. Order: Q11, Q14 (new: what triggers the sweet tooth, up to 3), Q3, Q15 (new: what they reach for today, up to 2), Q16 (new: what they spent on their last dessert), Q17 (new: how they feel after dessert), Q2, Q12, Q13, Q18 (new: effort they will put in at home), Q1, Q8, Q9, Q5, Q10. Q11 was split: it now asks only what people do at 10 pm (make, order in, eat what's at home, wait), and the guilt half moved to Q17, so no option mixes an action with a feeling. Q4 (eggs) is off again: the product is eggless either way. One response (the founder's own test) holds an answer to the old Q11 options.

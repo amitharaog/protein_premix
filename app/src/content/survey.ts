@@ -5,7 +5,7 @@
 // 8 Nov 2026 it is not anonymous: the last step asks for a name and contact, and the copy says so up front.
 
 export const intro = {
-  kicker: (n: number) => `${n} questions · 2 min · no login`,
+  kicker: (n: number) => `${n} questions · 3 min · no login`,
   ribbon: "Official dessert census",
   est: "Est. MMXXVI", // the made-up ministry was founded in 2026
   badges: [["Zero", "login"], ["Mildly", "official"]] as [string[], string[]],
@@ -13,7 +13,7 @@ export const intro = {
   headline: "Declare your cravings",
   sub: "No right answers. A few funny ones.",
   agendaTitle: "Today's agenda",
-  agenda: ["The 10 pm dilemma", "The protein question", "Your official dessert personality"],
+  agenda: ["The 10 pm dilemma", "Your sweet-tooth triggers", "Your official dessert personality"],
   contactNote: "At the end, the Minister asks your name and a WhatsApp number or email.",
   cta: "Let's go",
   purpose:
@@ -56,18 +56,89 @@ export const questionCopy: Record<string, QuestionCopy> = {
     host: "Order, order! First, a moral dilemma.",
     style: "cards",
     emoji: {
-      "Bake a warm cake in a mug in 2 minutes and indulge": "🧁",
-      "Order something sweet and feel a bit guilty": "😬",
-      "Order something sweet, zero guilt": "😎",
-      "Raid the kitchen: biscuits, chocolate, anything": "🍪",
-      "Fight it. I am a monk.": "🧘",
+      "Make something quick at home": "🥣",
+      "Order in (Swiggy, Zomato, Blinkit)": "🛵",
+      "Eat whatever sweet is already at home": "🍪",
+      "Nothing. I wait it out.": "🧘",
     },
     reactions: {
-      "Bake a warm cake in a mug in 2 minutes and indulge": "A home chef with a mug and a dream. The Ministry approves.",
-      "Order something sweet and feel a bit guilty": "Ah, the guilt. It always arrives right after the delivery.",
-      "Order something sweet, zero guilt": "No regrets. Honestly, iconic.",
-      "Raid the kitchen: biscuits, chocolate, anything": "Biscuits dunked in anything. Resourceful.",
-      "Fight it. I am a monk.": "Your willpower deserves its own documentary.",
+      "Make something quick at home": "A home chef with a spoon and a plan. Noted.",
+      "Order in (Swiggy, Zomato, Blinkit)": "The delivery app knows your order by heart, doesn't it?",
+      "Eat whatever sweet is already at home": "Biscuits dunked in anything. Resourceful.",
+      "Nothing. I wait it out.": "Your willpower deserves its own documentary.",
+    },
+  },
+  Q14: {
+    host: "Every craving has a trigger. Confess yours. Pick up to 3.",
+    emoji: {
+      "Right after lunch or dinner": "🍛",
+      "Late at night": "🌙",
+      "Stress or a rough day": "😤",
+      "Boredom or scrolling": "📱",
+      "Chai or coffee time": "☕",
+      "After a workout": "🏃",
+      "Celebrating or treating myself": "🎉",
+      "That time of the month": "🌸",
+    },
+    reactions: {
+      "Right after lunch or dinner": "A meal isn't over until something sweet says so.",
+      "Late at night": "The 11 pm fridge visit. A classic.",
+      "Stress or a rough day": "Dessert as therapy. Valid.",
+      "Boredom or scrolling": "Scroll, crave, repeat.",
+      "Chai or coffee time": "Chai without something sweet is just hot water.",
+      "After a workout": "Earned it. Obviously.",
+      "That time of the month": "Respect. Pass the chocolate.",
+    },
+  },
+  Q15: {
+    host: "Name your usual suspects. Pick up to 2.",
+    emoji: {
+      Chocolate: "🍫",
+      "Ice cream": "🍦",
+      Mithai: "🟠",
+      "Biscuits or cookies": "🍪",
+      "Bakery cake, brownie or pastry": "🍰",
+      "Protein bar": "🥜",
+      "Homemade dessert": "🏠",
+    },
+    reactions: {
+      Mithai: "Kaju katli supremacy, we assume.",
+      "Protein bar": "Chewy, chalky, convenient. We know.",
+      "Ice cream": "Brain freeze is a small price.",
+      "Homemade dessert": "Someone at home is a legend.",
+    },
+  },
+  Q16: {
+    host: "Receipts, please. Roughly is fine.",
+    emoji: { "Under ₹50": "🪙", "₹50-100": "💵", "₹100-200": "💸", "₹200 or more": "💎", "Can't remember": "🤷" },
+    reactions: {
+      "Under ₹50": "A thrifty sweet tooth. Smart.",
+      "₹200 or more": "Treat-yourself energy. Respect.",
+      "Can't remember": "Spent and forgotten. The best kind.",
+    },
+  },
+  Q17: {
+    host: "And afterwards? Be honest, the Ministry won't tell.",
+    style: "cards",
+    emoji: { "Happy. Zero regrets.": "😌", "A little guilty": "😬", "Guilty enough to skip it next time": "🙈" },
+    reactions: {
+      "Happy. Zero regrets.": "As it should be.",
+      "A little guilty": "The guilt shows up right after the last bite. Classic.",
+      "Guilty enough to skip it next time": "That's a lot of guilt for one brownie. We hear you.",
+    },
+  },
+  Q18: {
+    host: "Effort check. How much work is a dessert worth?",
+    emoji: {
+      "None. Ready to eat or nothing": "🛋️",
+      "2 minutes, one bowl, no mess": "⏱️",
+      "10-15 minutes is fine": "🍳",
+      "I enjoy proper baking": "🎂",
+    },
+    reactions: {
+      "None. Ready to eat or nothing": "Couch mode. Understood.",
+      "2 minutes, one bowl, no mess": "Fast and clean. A person of efficiency.",
+      "I enjoy proper baking": "A real baker! The oven salutes you.",
     },
   },
   Q1: {
@@ -292,6 +363,8 @@ export const personalities: Record<string, Personality> = {
   unbothered: { id: "unbothered", title: "The Unbothered Indulger", line: "Dessert happens. You don't explain yourself." },
   raider: { id: "raider", title: "The Pantry Raider", line: "Biscuits, chocolate, a spoon of something. You make it work." },
   monk: { id: "monk", title: "The Dessert Monk", line: "Cravings knock. You don't answer. Respect." },
+  comfort: { id: "comfort", title: "The Comfort Spooner", line: "Rough day? Spoon first, questions later." },
+  chai: { id: "chai", title: "The Chai-Time Dunker", line: "No cup of chai goes unaccompanied on your watch." },
   midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment." },
   macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front." },
   lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid." },

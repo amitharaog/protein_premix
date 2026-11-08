@@ -22,15 +22,15 @@ The feed key lives only in Vercel (sensitive). To get a value to put in the form
 Vercel and redeploy production; the old key stops working.
 
 Feed columns: A response_id, B submitted_at_ist, C source, D utm_source, E utm_medium, F utm_campaign, G ref,
-H joined_waitlist, then every question in number order (Q1 in I to Q13 in U); switched-off questions stay as empty
+H joined_waitlist, then every question in number order (Q1 in I to Q18 in Z); switched-off questions stay as empty
 columns, so these letters do not move.
 
-Usage: python3 scripts/live_sheet.py --key KEY [--site https://mugcake.vercel.app] > content.json
+Usage: python3 scripts/live_sheet.py --key KEY [--site https://ministryofcravings.vercel.app] > content.json
 """
 import argparse, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORDER = ["Q11", "Q3", "Q2", "Q12", "Q13", "Q4", "Q1", "Q8", "Q9", "Q5"]  # the survey's order; Q10 is free text and stays on Responses
+ORDER = ["Q11", "Q14", "Q3", "Q15", "Q16", "Q17", "Q2", "Q12", "Q13", "Q18", "Q1", "Q8", "Q9", "Q5"]  # survey order; Q10 is free text
 ANCHOR = "Whey / protein powder|Protein bars or snacks"  # as in scripts/survey_analyze.py
 SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"]
 SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder shares links with
@@ -38,7 +38,8 @@ SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder
 
 def build(key, site):
     qs = {q["id"]: q for q in json.load(open(os.path.join(ROOT, "app", "seed", "survey_questions.json"), encoding="utf-8"))}
-    col = {qid: chr(ord("I") + int(qid[1:]) - 1) for qid in qs}
+    letters = lambda n: (letters((n - 1) // 26) if n > 26 else "") + chr(65 + (n - 1) % 26)  # 1 -> A, 27 -> AA
+    col = {qid: letters(8 + int(qid[1:])) for qid in qs}  # Q1 is column 9 (I)
     rng = lambda qid: f"Responses!${col[qid]}$2:${col[qid]}"
     blank = [None] * 5
     rows = [
@@ -141,6 +142,6 @@ def build(key, site):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--key", required=True, help="SHEET_EXPORT_TOKEN, as set on Vercel")
-    ap.add_argument("--site", default="https://mugcake.vercel.app")
+    ap.add_argument("--site", default="https://ministryofcravings.vercel.app")
     a = ap.parse_args()
     print(json.dumps(build(a.key, a.site.rstrip("/")), ensure_ascii=False, indent=1))

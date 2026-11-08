@@ -8,7 +8,7 @@ const oswald = Oswald({ subsets: ["latin"], weight: ["500", "600"], variable: "-
 const figtree = Figtree({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-figtree" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(brand.siteUrl),
   title: { default: brand.siteTitle, template: `%s · ${brand.siteTitle}` },
   description: brand.description,
   alternates: { languages: { "en-IN": "/" } },

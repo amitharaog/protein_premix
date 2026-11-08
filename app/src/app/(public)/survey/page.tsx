@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { cookies, headers } from "next/headers";
+import { brand } from "@/config/brand";
 import { getAnswersFor, getContactFor, getSurveyQuestions } from "@/lib/queries/survey";
 import { RID_COOKIE, signStart } from "@/lib/survey/guard";
 import { SurveyClient } from "./survey-client";
@@ -10,7 +11,7 @@ export const viewport: Viewport = { themeColor: "#172062", colorScheme: "light" 
 
 export const metadata: Metadata = {
   title: "The dessert census",
-  description: "Declare your cravings: a 2-minute, slightly unserious survey about desserts, cravings and protein. No login.",
+  description: "Declare your cravings: a 3-minute, slightly unserious survey about desserts, cravings and protein. No login.",
 };
 
 export default async function SurveyPage() {
@@ -20,7 +21,7 @@ export default async function SurveyPage() {
   // Share links point at the host the visitor actually used (Vercel URL today, a custom domain later).
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host");
-  const siteUrl = host ? `${h.get("x-forwarded-proto") ?? "https"}://${host}` : (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+  const siteUrl = host ? `${h.get("x-forwarded-proto") ?? "https"}://${host}` : brand.siteUrl;
   return (
     <SurveyClient
       questions={questions}

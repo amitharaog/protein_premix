@@ -95,14 +95,21 @@ describe("personalityFor", () => {
   it("gives each answer to the 10 pm dilemma its own personality", () => {
     const q11 = seed.find((q) => q.id === "Q11")!;
     const ids = q11.options.map((o) => personalityFor({ Q9: "4", Q11: o }).id);
-    expect(ids).toEqual(["chef", "sheepish", "unbothered", "raider", "monk"]);
+    expect(ids).toEqual(["chef", "unbothered", "raider", "monk"]);
+  });
+  it("splits people who order in by how they feel afterwards", () => {
+    expect(personalityFor({ Q9: "4", Q11: "Order in (Swiggy, Zomato, Blinkit)", Q17: "A little guilty" }).id).toBe("sheepish");
+    expect(personalityFor({ Q9: "4", Q11: "Order in (Swiggy, Zomato, Blinkit)", Q17: "Happy. Zero regrets." }).id).toBe("unbothered");
+    expect(personalityFor({ Q9: "4", Q17: "Guilty enough to skip it next time" }).id).toBe("sheepish");
   });
   it("puts people who cannot have gluten with the label detectives", () => {
-    expect(personalityFor({ Q9: "5", Q13: "I can't have gluten (allergy or intolerance)", Q11: "Fight it. I am a monk." }).id).toBe("detective");
+    expect(personalityFor({ Q9: "5", Q13: "I can't have gluten (allergy or intolerance)", Q11: "Nothing. I wait it out." }).id).toBe("detective");
   });
-  it("lets a big protein ask beat the dilemma, and the dilemma beat the daily craving", () => {
-    expect(personalityFor({ Q9: "4", Q12: "Like a scoop of whey, 25 g or more", Q11: "Fight it. I am a monk." }).id).toBe("macro");
-    expect(personalityFor({ Q9: "4", Q3: "Daily", Q11: "Order something sweet and feel a bit guilty" }).id).toBe("sheepish");
+  it("lets a big protein ask beat the triggers, and the triggers beat the dilemma", () => {
+    expect(personalityFor({ Q9: "4", Q12: "Like a scoop of whey, 25 g or more", Q14: ["Stress or a rough day"] }).id).toBe("macro");
+    expect(personalityFor({ Q9: "4", Q14: ["Stress or a rough day"], Q11: "Make something quick at home" }).id).toBe("comfort");
+    expect(personalityFor({ Q9: "4", Q14: ["Chai or coffee time"] }).id).toBe("chai");
+    expect(personalityFor({ Q9: "4", Q14: ["Late at night"] }).id).toBe("midnight");
     expect(personalityFor({ Q9: "4", Q3: "Daily" }).id).toBe("midnight");
   });
 });

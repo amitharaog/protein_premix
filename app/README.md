@@ -4,7 +4,7 @@ The Next.js app built from the build kit. Rules: `CLAUDE.md`. Features: `docs/SP
 
 ## Live
 
-https://mugcake.vercel.app/survey (Vercel project `mugcake`, team amitharaog's projects, functions in Singapore `sin1`). Env vars are set in Vercel; Google sign-in keys are not yet.
+https://ministryofcravings.vercel.app/survey (Vercel project `mugcake`, team amitharaog's projects, functions in Singapore `sin1`). The old https://mugcake.vercel.app forwards its survey pages there (`src/middleware.ts`); its `/api` and `/board` keep working. Env vars are set in Vercel; Google sign-in keys are not yet.
 
 ## Status
 

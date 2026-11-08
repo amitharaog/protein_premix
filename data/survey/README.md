@@ -18,3 +18,6 @@ The founder's online sheet pulls every answer from the site's feed (`/api/sheet/
 
 ## Survey v2 (from 8 Nov 2026)
 The survey became the "Ministry of Cravings" dessert census: it no longer describes the product, and it asks more specific questions. New: Q11 (the 10 pm dilemma: bake in a mug and indulge, or buy and feel guilty), Q12 (how much protein a dessert needs, with reference amounts), Q13 (gluten); Q4 (eggs) is back on. The old questions keep their answer options, so counts add up across the change, but Q9 and Q5 are worded differently (before, the intro screen described the product and Q5 said "sachet"). Responses submitted before 8 Nov 2026 have no Q11, Q12, Q13 or Q4 answers: report those questions on newer responses only, and say so. In the feed and the sheet, Q11 is column S, Q12 T, Q13 U.
+
+## Survey v3 (also 8 Nov 2026)
+Sharper questions, each tied to a decision: Q14 triggers (positioning), Q15 what they reach for now (the competition), Q16 last dessert spend (a real price anchor next to Q5), Q17 guilt after dessert, Q18 effort they accept at home (format). Q11 now asks only what people do at 10 pm. Q4 is off. Feed and sheet columns: Q14 V, Q15 W, Q16 X, Q17 Y, Q18 Z. The public link is now https://ministryofcravings.vercel.app/survey; mugcake.vercel.app/survey forwards there with its tags, and its /api and /board keep working.

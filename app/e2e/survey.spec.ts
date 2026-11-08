@@ -5,14 +5,24 @@ test("completes the survey on a phone, logged out, and joins the waitlist", asyn
   await expect(page.getByRole("img", { name: "Ministry of Cravings" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Declare your cravings" })).toBeVisible();
   // The survey never names or describes the product, and says up front that it asks for a name and contact.
-  await expect(page.locator("body")).not.toContainText(/muggoozz|premix|sachet|anonymous/i);
+  await expect(page.locator("body")).not.toContainText(/muggoozz|premix|sachet|anonymous|mug cake/i);
   await expect(page.getByText(/the Minister asks your name/)).toBeVisible();
   await page.getByRole("button", { name: /^Let.s go/ }).click();
 
-  // Q11, the 10 pm dilemma: big cards, the Minister reacts, then it moves on by itself.
-  await page.getByText("Bake a warm cake in a mug in 2 minutes and indulge").click();
-  await expect(page.getByText(/A home chef with a mug and a dream/)).toBeVisible();
+  // Q11, the 10 pm craving: big cards, the Minister reacts, then it moves on by itself.
+  await page.getByText("Make something quick at home").click();
+  await expect(page.getByText(/A home chef with a spoon and a plan/)).toBeVisible();
+  await page.getByText("Late at night", { exact: true }).click(); // Q14 triggers, up to 3
+  await page.getByRole("button", { name: "Next →" }).click();
   await page.getByText("Daily", { exact: true }).click(); // Q3, auto-advances
+  // Q15 allows 2: a third pick is refused with a note.
+  await page.getByText("Chocolate", { exact: true }).click();
+  await page.getByText("Mithai", { exact: true }).click();
+  await page.getByText("Ice cream", { exact: true }).click();
+  await expect(page.getByText(/Max 2/)).toBeVisible();
+  await page.getByRole("button", { name: "Next →" }).click();
+  await page.getByText("₹100-200", { exact: true }).click(); // Q16 last spend
+  await page.getByText("A little guilty").click(); // Q17, how it feels afterwards
   await page.getByRole("button", { name: "Skip" }).click(); // Q2 optional
 
   // Q12 is a slider: arrow keys move along the stops, and the stops can be tapped.
@@ -26,7 +36,7 @@ test("completes the survey on a phone, logged out, and joins the waitlist", asyn
 
   await page.getByText("Wait, what's gluten?").click(); // Q13
   await expect(page.getByText(/stretchy protein in wheat dough/)).toBeVisible();
-  await page.getByRole("button", { name: "Skip" }).click(); // Q4 optional
+  await page.getByText("2 minutes, one bowl, no mess").click(); // Q18 effort
   await page.getByText("Microwave", { exact: true }).click(); // Q1 multi
   await page.getByRole("button", { name: "Next →" }).click();
   await page.getByText("Price", { exact: true }).click(); // Q8 multi
@@ -57,7 +67,7 @@ test("completes the survey on a phone, logged out, and joins the waitlist", asyn
   await page.getByRole("button", { name: "Stamp my answers" }).click();
 
   await expect(page.getByText("Your dessert personality is")).toBeVisible({ timeout: 15_000 });
-  await expect(page.getByRole("heading", { name: "The 2-Minute Chef" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "The 2-Minute Chef" })).toBeVisible(); // Q11: makes something at home
   await expect(page.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", /wa\.me\/\?text=The%20Ministry%20of%20Cravings/);
 
   await expect(page.getByLabel("Email")).toHaveValue(email); // the waitlist reuses the contact from the last step

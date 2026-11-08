@@ -1,3 +1,4 @@
+import { brand } from "@/config/brand";
 import { colName, type Cell, type Sheet, type Style, xlsx } from "@/lib/xlsx";
 import { scrubContact } from "./sheet";
 import type { SurveyQuestion } from "./validate";
@@ -183,8 +184,8 @@ export function surveyWorkbook(
       [{ v: "Under 30 responses, every percentage is directional, not a finding." }],
       [],
       [{ v: "Tag every link you share, so this file can tell Instagram from LinkedIn", s: "bold" }],
-      [{ v: "Instagram: https://mugcake.vercel.app/survey?utm_source=instagram&utm_campaign=<post name>" }],
-      [{ v: "LinkedIn: https://mugcake.vercel.app/survey?utm_source=linkedin&utm_campaign=<post name>" }],
+      [{ v: `Instagram: ${brand.siteUrl}/survey?utm_source=instagram&utm_campaign=<post name>` }],
+      [{ v: `LinkedIn: ${brand.siteUrl}/survey?utm_source=linkedin&utm_campaign=<post name>` }],
       [{ v: "Responses that came through an untagged link show as 'direct (no tag)' in the Source column." }],
       [],
       [{ v: "Keep this file private", s: "bold" }],

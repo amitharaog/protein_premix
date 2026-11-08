@@ -1,15 +1,33 @@
 [
  {
   "id": "Q11",
-  "question": "It's 10 pm and your sweet tooth won't shut up. What happens next?",
+  "question": "It's 10 pm and a sweet craving hits. What do you actually do?",
   "options": [
-   "Bake a warm cake in a mug in 2 minutes and indulge",
-   "Order something sweet and feel a bit guilty",
-   "Order something sweet, zero guilt",
-   "Raid the kitchen: biscuits, chocolate, anything",
-   "Fight it. I am a monk."
+   "Make something quick at home",
+   "Order in (Swiggy, Zomato, Blinkit)",
+   "Eat whatever sweet is already at home",
+   "Nothing. I wait it out."
   ],
   "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q14",
+  "question": "What sets off your sweet tooth?",
+  "options": [
+   "Right after lunch or dinner",
+   "Late at night",
+   "Stress or a rough day",
+   "Boredom or scrolling",
+   "Chai or coffee time",
+   "After a workout",
+   "Celebrating or treating myself",
+   "That time of the month"
+  ],
+  "type": "multi",
+  "hint": "Pick up to 3",
+  "max": 3,
   "required": false,
   "active": true
  },
@@ -21,6 +39,50 @@
    "3-5 times a week",
    "1-2 times a week",
    "Rarely"
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q15",
+  "question": "When it hits, what do you reach for most?",
+  "options": [
+   "Chocolate",
+   "Ice cream",
+   "Mithai",
+   "Biscuits or cookies",
+   "Bakery cake, brownie or pastry",
+   "Protein bar",
+   "Homemade dessert"
+  ],
+  "type": "multi",
+  "hint": "Pick up to 2",
+  "max": 2,
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q16",
+  "question": "What did you spend on the last dessert you bought just for yourself?",
+  "options": [
+   "Under ₹50",
+   "₹50-100",
+   "₹100-200",
+   "₹200 or more",
+   "Can't remember"
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q17",
+  "question": "After dessert, how do you usually feel?",
+  "options": [
+   "Happy. Zero regrets.",
+   "A little guilty",
+   "Guilty enough to skip it next time"
   ],
   "type": "single",
   "required": false,
@@ -69,12 +131,13 @@
   "active": true
  },
  {
-  "id": "Q4",
-  "question": "Eggs in your dessert: where do you stand?",
+  "id": "Q18",
+  "question": "How much effort will you put in for a dessert at home?",
   "options": [
-   "Must be eggless",
-   "Prefer eggless",
-   "Doesn't matter"
+   "None. Ready to eat or nothing",
+   "2 minutes, one bowl, no mess",
+   "10-15 minutes is fine",
+   "I enjoy proper baking"
   ],
   "type": "single",
   "required": false,
@@ -151,6 +214,18 @@
   "max_length": 1000,
   "required": false,
   "active": true
+ },
+ {
+  "id": "Q4",
+  "question": "Eggs in your dessert: where do you stand?",
+  "options": [
+   "Must be eggless",
+   "Prefer eggless",
+   "Doesn't matter"
+  ],
+  "type": "single",
+  "required": false,
+  "active": false
  },
  {
   "id": "Q6",
