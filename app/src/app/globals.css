@@ -96,7 +96,40 @@
 .rule-ornament::after { content: ""; flex: 1; height: 1.5px; background: linear-gradient(90deg, transparent, var(--gold)); }
 .rule-ornament::after { background: linear-gradient(270deg, transparent, var(--gold)); }
 
-/* Gold ring behind the hero mug. */
+/* A rubber stamp in oxblood ink, for the Ministry's verdicts. */
+.stamp {
+  display: inline-block;
+  border: 3px double var(--bad);
+  border-radius: 6px;
+  color: var(--bad);
+  font-family: var(--font-cinzel), serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  padding: 0.1rem 0.5rem;
+  text-transform: uppercase;
+  transform: rotate(-12deg);
+  opacity: 0.85;
+}
+.stamp-sm { font-size: 0.62rem; border-width: 2.5px; padding: 0.05rem 0.35rem; }
+
+/* Speech bubble that points up at the host above it. */
+.speech { position: relative; }
+.speech::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -9px;
+  width: 14px;
+  height: 14px;
+  background: var(--panel);
+  border-left: 2px solid var(--line);
+  border-top: 2px solid var(--line);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* Gold ring behind the host. */
 .medallion {
   border: 2px solid var(--line);
   background: radial-gradient(circle, var(--panel) 0 62%, rgb(201 162 58 / 0.18) 63% 100%);
@@ -178,8 +211,14 @@ body {
 .anim-steam { animation: steam 2.4s ease-out infinite; }
 .anim-drip { animation: drip-fall 2.6s ease-in infinite; transform-box: fill-box; }
 .anim-bob { animation: bob 3.2s ease-in-out infinite; }
+@keyframes stamp-in {
+  0% { transform: rotate(-12deg) scale(2.2); opacity: 0; }
+  60% { transform: rotate(-12deg) scale(0.92); opacity: 0.9; }
+  100% { transform: rotate(-12deg) scale(1); opacity: 0.85; }
+}
+.anim-stamp { animation: stamp-in 260ms ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob { animation: none !important; }
+  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob, .anim-stamp { animation: none !important; }
   * { transition-duration: 0ms !important; }
 }

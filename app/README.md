@@ -35,7 +35,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm e2e
 ## Before the survey goes public
 
 The repo's research rules say a public page must be approved line by line before it goes live. Copy lives in two places:
-- `src/content/survey.ts`: the mug's jokes, emoji, results and waitlist text
-- the `survey_questions` table: question wording, kept identical to the old survey so the results stay comparable
+- `src/content/survey.ts`: the Minister of Cravings' jokes, emoji, reactions, results and waitlist text
+- the `survey_questions` table (seeded from `seed/survey_questions.json`): question wording and answer options
 
-Q5 mentions "one sachet (about 10 g protein)". That reveals the format, which the disclosure rules normally keep out of public drafts. Decide whether to keep it.
+Since 8 Nov 2026 (survey v2) the survey runs as the "Ministry of Cravings" dessert census and never names or describes the product; Q5 asks for "one serving". `src/content/content.test.ts` fails if the copy around the questions mentions the product, gluten or a gram figure. A question added in the database before its copy exists still shows, with a plain host line.

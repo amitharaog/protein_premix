@@ -1,32 +1,52 @@
-// Playful copy around the survey. Question wording itself comes from the survey_questions table, so
-// results stay comparable with the old survey. Rules: no brand name, no health claims, no banned words
-// (see docs/COMPLIANCE.md; enforced by src/content/content.test.ts).
+// Playful copy around the survey. Question wording itself comes from the survey_questions table
+// (seed/survey_questions.json). Rules: no product name, no product description, no health claims and no
+// banned words (see docs/COMPLIANCE.md; enforced by src/content/content.test.ts). The host is a made-up
+// "Minister of Cravings", so the survey asks about people's habits and never pitches a product.
 
 export const intro = {
-  kicker: (n: number) => `${n} quick questions · no login`,
-  tagline: "Mug cake quiz",
-  est: "Est. MMXXVI", // the year the brand started, 2026
-  badges: [["Protein-", "based"], ["Ready in", "minutes"]] as [string[], string[]],
-  stepsTitle: "3-step premix",
-  steps: ["Tip the mix into a mug", "Add milk or water, stir", "Bake. Ready in minutes"],
-  headline: "Give us your cravings",
-  sub: "The quiz takes about a minute.",
-  spec: "We're making muggoozz: a protein-based mug cake premix you bake at home in 3 steps, ready in minutes.",
-  host: "Hi, I'm a mug cake. I ask people about dessert. It's my whole personality.",
+  kicker: (n: number) => `${n} questions · 2 min · no login`,
+  ribbon: "Official dessert census",
+  est: "Est. MMXXVI", // the made-up ministry was founded in 2026
+  badges: [["Zero", "login"], ["Mildly", "official"]] as [string[], string[]],
+  host: "Good evening. I'm the Minister of Cravings, and I have questions. Mostly about dessert.",
+  headline: "Declare your cravings",
+  sub: "No right answers. A few funny ones.",
+  agendaTitle: "Today's agenda",
+  agenda: ["The 10 pm dilemma", "The protein question", "Your official dessert personality"],
   cta: "Let's go",
   purpose:
-    "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: deciding what to make. Nothing is sold or shared.",
+    "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: research for a new dessert idea. Nothing is sold or shared.",
 };
 
-type QuestionCopy = {
-  host: string; // what the mug says while you read the question
+export type QuestionCopy = {
+  host: string; // what the Minister says while you read the question
   emoji: Record<string, string>; // option → emoji
-  reactions?: Record<string, string>; // option → what the mug says when you pick it
+  reactions?: Record<string, string>; // option → what the Minister says when you pick it
+  style?: "cards" | "slider"; // cards: big scenario cards; slider: drag along the options in order
+  short?: Record<string, string>; // option → short label under a slider stop
 };
 
 export const questionCopy: Record<string, QuestionCopy> = {
+  Q11: {
+    host: "Order, order! First, a moral dilemma.",
+    style: "cards",
+    emoji: {
+      "Bake a warm cake in a mug in 2 minutes and indulge": "🧁",
+      "Order something sweet and feel a bit guilty": "😬",
+      "Order something sweet, zero guilt": "😎",
+      "Raid the kitchen: biscuits, chocolate, anything": "🍪",
+      "Fight it. I am a monk.": "🧘",
+    },
+    reactions: {
+      "Bake a warm cake in a mug in 2 minutes and indulge": "A home chef with a mug and a dream. The Ministry approves.",
+      "Order something sweet and feel a bit guilty": "Ah, the guilt. It always arrives right after the delivery.",
+      "Order something sweet, zero guilt": "No regrets. Honestly, iconic.",
+      "Raid the kitchen: biscuits, chocolate, anything": "Biscuits dunked in anything. Resourceful.",
+      "Fight it. I am a monk.": "Your willpower deserves its own documentary.",
+    },
+  },
   Q1: {
-    host: "First, a kitchen audit. No judgement. Okay, mild judgement.",
+    host: "Quick kitchen audit. No judgement. Okay, mild judgement.",
     emoji: { Microwave: "🍿", "Air fryer": "🌪️", "OTG / oven": "🔥", "Pressure cooker": "🚂", "None of these": "🙈" },
     reactions: {
       "Pressure cooker": "Ah, the whistle. India's real alarm clock.",
@@ -51,7 +71,7 @@ export const questionCopy: Record<string, QuestionCopy> = {
     },
   },
   Q3: {
-    host: "Sweet tooth check. How often does it text you?",
+    host: "Next. How often does your sweet tooth text you?",
     emoji: { Daily: "🚨", "3-5 times a week": "🌙", "1-2 times a week": "📆", Rarely: "🧊" },
     reactions: {
       Daily: "Daily. Same. We're in this together.",
@@ -60,8 +80,48 @@ export const questionCopy: Record<string, QuestionCopy> = {
       Rarely: "Rarely? Blink twice if you need help.",
     },
   },
+  Q12: {
+    host: "Slide the spoon. How much protein makes a dessert worth it?",
+    style: "slider",
+    emoji: {
+      "Don't care, dessert is dessert": "🍰",
+      "A little, about 5 g": "🤏",
+      "Like 2 eggs, about 12 g": "🥚",
+      "Like a protein bar, about 20 g": "🍫",
+      "Like a scoop of whey, 25 g or more": "🥤",
+    },
+    short: {
+      "Don't care, dessert is dessert": "Don't care",
+      "A little, about 5 g": "~5 g",
+      "Like 2 eggs, about 12 g": "~12 g",
+      "Like a protein bar, about 20 g": "~20 g",
+      "Like a scoop of whey, 25 g or more": "25 g+",
+    },
+    reactions: {
+      "Don't care, dessert is dessert": "A purist. Dessert should taste like dessert, full stop.",
+      "A little, about 5 g": "A small bonus. Nice, not needy.",
+      "Like 2 eggs, about 12 g": "Two eggs' worth. Very sensible.",
+      "Like a protein bar, about 20 g": "Protein bar territory. Serious business.",
+      "Like a scoop of whey, 25 g or more": "A full scoop?! The shaker bottle just blushed.",
+    },
+  },
+  Q13: {
+    host: "Gluten time. The Ministry takes no sides.",
+    emoji: {
+      "I can't have gluten (allergy or intolerance)": "🚫",
+      "I'd pick gluten-free if I had the choice": "🌾",
+      "Don't mind either way": "🤷",
+      "Wait, what's gluten?": "🤔",
+    },
+    reactions: {
+      "I can't have gluten (allergy or intolerance)": "Noted in permanent ink. Your tummy makes the rules.",
+      "I'd pick gluten-free if I had the choice": "Choosy. We respect choosy.",
+      "Don't mind either way": "Easygoing. The Ministry approves.",
+      "Wait, what's gluten?": "It's the stretchy protein in wheat dough. You're welcome.",
+    },
+  },
   Q4: {
-    host: "Eggs. Where do you stand?",
+    host: "An eggs-istential question.",
     emoji: { "Must be eggless": "🌱", "Prefer eggless": "🙂", "Doesn't matter": "🤝" },
     reactions: {
       "Must be eggless": "Noted. In permanent ink.",
@@ -74,7 +134,7 @@ export const questionCopy: Record<string, QuestionCopy> = {
     reactions: {
       "Wouldn't pay for this": "Ouch. But thank you, honesty keeps us humble.",
       "₹100-150": "Royalty has entered the chat.",
-      "₹150+": "Big spender. The mug is blushing.",
+      "₹150+": "Big spender. The Minister is blushing.",
     },
   },
   Q6: {
@@ -128,7 +188,7 @@ export const questionCopy: Record<string, QuestionCopy> = {
     },
   },
   Q9: {
-    host: "If it tasted genuinely good, how likely would you buy it?",
+    host: "Now picture it. Really picture it.",
     emoji: { "1": "🙅", "2": "😐", "3": "🤔", "4": "😋", "5": "🤤" },
     reactions: {
       "1": "Tough crowd. We love you anyway.",
@@ -139,10 +199,13 @@ export const questionCopy: Record<string, QuestionCopy> = {
     },
   },
   Q10: {
-    host: "Last one. What would make it a must-buy or a no-go? Rants welcome.",
+    host: "Last one. Must-buy or hard no? Rants welcome.",
     emoji: {},
   },
 };
+
+/** Copy for a question that has none here (a new question added in the database first): it still shows. */
+export const fallbackCopy: QuestionCopy = { host: "The Ministry would like to know.", emoji: {} };
 
 export const scaleLabels: Record<string, string> = { "1": "Never", "2": "Meh", "3": "Maybe", "4": "Probably", "5": "Take my money" };
 
@@ -156,24 +219,26 @@ export const ui = {
   next: "Next",
   back: "Back",
   skip: "Skip",
-  submit: "Serve my answers",
-  submitting: "Plating…",
-  required: "This one's mandatory. The mug insists.",
+  submit: "Stamp my answers",
+  submitting: "Stamping…",
+  required: "This one's mandatory. The Minister insists.",
   maxReached: (n: number) => `Plate's full! Max ${n}. Unpick one to swap.`,
   charsLeft: (n: number) => `${n} crumbs of space left`,
   progress: (i: number, n: number) => `Question ${i} of ${n}`,
+  sliderPrompt: "Drag the spoon, or tap a stop",
   welcomeBack: "Welcome back! Your earlier answers are loaded. Change anything you like.",
-  error: "The mug dropped something. Try again in a moment?",
+  error: "The Ministry dropped a file. Try again in a moment?",
   tooFast: "Whoa, speedrun! Take a few more seconds so we know you're human.",
   rateLimited: "Lots of answers from your network this hour. Try again later?",
 };
 
 export const done = {
   title: "All done",
-  personalityLead: "By royal decree, your dessert personality is",
+  personalityLead: "By order of the Ministry, your dessert personality is",
+  stamp: "Official",
   shareLead: "Make your friends take it too. It's only fair.",
   shareText: (personality: string, url: string) =>
-    `Took the muggoozz mug cake quiz and apparently I'm "${personality}". Your turn: ${url}`,
+    `The Ministry of Cravings has ruled: I'm "${personality}". Declare your cravings and get yours: ${url}`,
   copy: "Copy link",
   copied: "Copied!",
   waitlistTitle: "Want first dibs when it exists?",
@@ -188,9 +253,14 @@ export const done = {
 export type Personality = { id: string; title: string; line: string };
 
 export const personalities: Record<string, Personality> = {
-  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every product needs one of you." },
-  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even a mug." },
+  critic: { id: "critic", title: "The Honest Critic", line: "Tough crowd. Every dessert needs one of you." },
+  detective: { id: "detective", title: "The Label Detective", line: "Nobody fools you. Not even dessert." },
   texture: { id: "texture", title: "The Texture Snob", line: "You can spot a rubbery brownie from across the room." },
+  chef: { id: "chef", title: "The 2-Minute Chef", line: "Why order when you can whip it up in your pyjamas?" },
+  sheepish: { id: "sheepish", title: "The Sheepish Snacker", line: "You order the dessert, then apologise to it. Relatable." },
+  unbothered: { id: "unbothered", title: "The Unbothered Indulger", line: "Dessert happens. You don't explain yourself." },
+  raider: { id: "raider", title: "The Pantry Raider", line: "Biscuits, chocolate, a spoon of something. You make it work." },
+  monk: { id: "monk", title: "The Dessert Monk", line: "Cravings knock. You don't answer. Respect." },
   midnight: { id: "midnight", title: "The Midnight Spoon", line: "You and dessert have a standing appointment." },
   macro: { id: "macro", title: "The Shaker Bottle Sage", line: "You read the back of the pack before the front." },
   lazy: { id: "lazy", title: "The Zero-Effort Legend", line: "You want dessert, not a project. Valid." },

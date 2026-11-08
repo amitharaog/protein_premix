@@ -100,7 +100,7 @@ export function surveyWorkbook(questions: SurveyQuestion[], responses: WorkbookR
   if (q5) {
     const prices = values("Q5").filter((v): v is string => typeof v === "string");
     const ans = at("Answered the price question (Q5)", `COUNTA(${q5})`, prices.length);
-    const hi = at("Would pay ₹100 or more per sachet", PAY_100_PLUS.map((p) => `COUNTIF(${q5},${q(p)})`).join("+"), prices.filter((p) => PAY_100_PLUS.includes(p)).length);
+    const hi = at("Would pay ₹100 or more per serving", PAY_100_PLUS.map((p) => `COUNTIF(${q5},${q(p)})`).join("+"), prices.filter((p) => PAY_100_PLUS.includes(p)).length);
     at("Share paying ₹100 or more (hypothesis: ₹99 single)", `IF(${ans}=0,0,${hi}/${ans})`, ratio(prices.filter((p) => PAY_100_PLUS.includes(p)).length, prices.length), "pct");
   }
 

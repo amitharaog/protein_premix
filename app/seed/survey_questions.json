@@ -1,7 +1,21 @@
 [
  {
+  "id": "Q11",
+  "question": "It's 10 pm and your sweet tooth won't shut up. What happens next?",
+  "options": [
+   "Bake a warm cake in a mug in 2 minutes and indulge",
+   "Order something sweet and feel a bit guilty",
+   "Order something sweet, zero guilt",
+   "Raid the kitchen: biscuits, chocolate, anything",
+   "Fight it. I am a monk."
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
   "id": "Q3",
-  "question": "How often do you crave something sweet?",
+  "question": "How often does your sweet tooth come calling?",
   "options": [
    "Daily",
    "3-5 times a week",
@@ -14,7 +28,7 @@
  },
  {
   "id": "Q2",
-  "question": "How do you currently get extra protein?",
+  "question": "Where does your extra protein come from right now?",
   "options": [
    "Whey / protein powder",
    "Protein bars or snacks",
@@ -28,8 +42,47 @@
   "active": true
  },
  {
+  "id": "Q12",
+  "question": "How much protein should a dessert have before you care?",
+  "options": [
+   "Don't care, dessert is dessert",
+   "A little, about 5 g",
+   "Like 2 eggs, about 12 g",
+   "Like a protein bar, about 20 g",
+   "Like a scoop of whey, 25 g or more"
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q13",
+  "question": "Gluten in your dessert: dealbreaker or don't care?",
+  "options": [
+   "I can't have gluten (allergy or intolerance)",
+   "I'd pick gluten-free if I had the choice",
+   "Don't mind either way",
+   "Wait, what's gluten?"
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
+  "id": "Q4",
+  "question": "Eggs in your dessert: where do you stand?",
+  "options": [
+   "Must be eggless",
+   "Prefer eggless",
+   "Doesn't matter"
+  ],
+  "type": "single",
+  "required": false,
+  "active": true
+ },
+ {
   "id": "Q1",
-  "question": "Which of these do you have regular access to?",
+  "question": "Which of these live in your kitchen?",
   "options": [
    "Microwave",
    "Air fryer",
@@ -44,7 +97,7 @@
  },
  {
   "id": "Q8",
-  "question": "What would worry you most?",
+  "question": "What would make you side-eye a dessert that says it has protein?",
   "options": [
    "Taste / protein aftertaste",
    "Dry or rubbery texture",
@@ -60,23 +113,8 @@
   "active": true
  },
  {
-  "id": "Q5",
-  "question": "What would you pay for one sachet (protein-based)?",
-  "options": [
-   "₹40-60",
-   "₹60-80",
-   "₹80-100",
-   "₹100-150",
-   "₹150+",
-   "Wouldn't pay for this"
-  ],
-  "type": "single",
-  "required": true,
-  "active": true
- },
- {
   "id": "Q9",
-  "question": "If it tasted good, how likely are you to buy it?",
+  "question": "A dessert that tastes like the real thing, with real protein, ready at home in minutes. How likely are you to buy it?",
   "options": [
    "1",
    "2",
@@ -90,26 +128,29 @@
   "active": true
  },
  {
+  "id": "Q5",
+  "question": "What would you happily pay for one serving of it?",
+  "options": [
+   "₹40-60",
+   "₹60-80",
+   "₹80-100",
+   "₹100-150",
+   "₹150+",
+   "Wouldn't pay for this"
+  ],
+  "type": "single",
+  "required": true,
+  "active": true
+ },
+ {
   "id": "Q10",
-  "question": "What would make this a must-buy or a no-go for you?",
+  "question": "What would make it a must-buy or a hard no for you?",
   "type": "free_text",
   "options": [],
   "hint": "Optional",
   "max_length": 1000,
   "required": false,
   "active": true
- },
- {
-  "id": "Q4",
-  "question": "How important is it that it's eggless?",
-  "options": [
-   "Must be eggless",
-   "Prefer eggless",
-   "Doesn't matter"
-  ],
-  "type": "single",
-  "required": false,
-  "active": false
  },
  {
   "id": "Q6",

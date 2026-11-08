@@ -22,7 +22,7 @@ The feed key lives only in Vercel (sensitive). To get a value to put in the form
 Vercel and redeploy production; the old key stops working.
 
 Feed columns: A response_id, B submitted_at_ist, C source, D utm_source, E utm_medium, F utm_campaign, G ref,
-H joined_waitlist, then every question in number order (Q1 in I to Q10 in R); switched-off questions stay as empty
+H joined_waitlist, then every question in number order (Q1 in I to Q13 in U); switched-off questions stay as empty
 columns, so these letters do not move.
 
 Usage: python3 scripts/live_sheet.py --key KEY [--site https://mugcake.vercel.app] > content.json
@@ -30,7 +30,7 @@ Usage: python3 scripts/live_sheet.py --key KEY [--site https://mugcake.vercel.ap
 import argparse, json, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-ORDER = ["Q3", "Q2", "Q1", "Q8", "Q5", "Q9"]  # the survey's order; Q10 is free text and stays on Responses
+ORDER = ["Q11", "Q3", "Q2", "Q12", "Q13", "Q4", "Q1", "Q8", "Q9", "Q5"]  # the survey's order; Q10 is free text and stays on Responses
 ANCHOR = "Whey / protein powder|Protein bars or snacks"  # as in scripts/survey_analyze.py
 SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"]
 SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder shares links with
@@ -42,7 +42,7 @@ def build(key, site):
     rng = lambda qid: f"Responses!${col[qid]}$2:${col[qid]}"
     blank = [None] * 5
     rows = [
-        ["muggoozz survey, live", None, None, None, None],
+        ["Dessert census (Ministry of Cravings), live", None, None, None, None],
         ["Every answer from the live survey lands in the Responses tab; every number below is a formula over it. "
          "Under 30 responses, percentages are directional only.", None, None, None, None],
         blank,
@@ -67,7 +67,7 @@ def build(key, site):
     add("Average likely, 1 to 5", f"=IF(B{ans}=0,0,AVERAGE({rng('Q9')}))", "dec1")
     add("Waitlist joins per 'likely 4 or 5' respondent (low means politeness)", f"=IF(B{l45}=0,0,B{wl}/B{l45})", "dec2")
     pans = add("Answered the price question (Q5)", f"=COUNTA({rng('Q5')})")
-    hi = add("Would pay ₹100 or more per sachet", f'=COUNTIF({rng("Q5")},"₹100-150")+COUNTIF({rng("Q5")},"₹150+")')
+    hi = add("Would pay ₹100 or more per serving", f'=COUNTIF({rng("Q5")},"₹100-150")+COUNTIF({rng("Q5")},"₹150+")')
     add("Share paying ₹100 or more (hypothesis: ₹99 single)", f"=IF(B{pans}=0,0,B{hi}/B{pans})", "pct")
     add("Latest response (India time)", f'=IF(B{n}=0,"",INDEX(Responses!$B$2:$B,B{n}))')
 

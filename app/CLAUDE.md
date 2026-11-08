@@ -87,6 +87,7 @@ docs/                    # SPEC, REFRESH_JOBS, COMPLIANCE, DESIGN
 5. **No health or medical claims on the public site.** No "builds muscle", "boosts immunity", "for diabetics", etc.
    "High protein" / "Source of protein" copy is only allowed when `lib/fssai.ts` says the recipe qualifies
    (see `docs/COMPLIANCE.md`) AND `products.lab_tested=true`. Until then public copy says "protein-based" only, with no gram figure (founder decision, 28 Oct 2026), and does not mention gluten-free (founder request, 29 Oct 2026).
+   Survey questions may ask people about gluten and how much protein they want, with everyday reference amounts such as "like 2 eggs, about 12 g" (founder request, 8 Nov 2026): those ask about the respondent and are never claims about the product. Since 8 Nov 2026 the survey runs under a made-up name (`brand.name`, "Ministry of Cravings") and does not name or describe the product: no product name, format, recipe or method (enforced by `src/content/content.test.ts`).
 6. **Public survey must work without login.** (The current Claude survey needs a Claude login — that is the main
    reason it has 0 responses.) Use a cookie `respondent_id` + rate limit + honeypot, not accounts.
 7. **Personal data:** store waitlist emails/phones only with explicit consent checkbox; never send them to the AI

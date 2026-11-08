@@ -1,8 +1,10 @@
 // Every brand string lives here, so a rename is a one-line change (SPEC header).
-// Name chosen by the founder on 28 Oct 2026 and approved for the public survey. Not yet trademark-searched.
+// The survey runs under a made-up, playful name: no product name on public pages (founder request, 8 Nov 2026).
+// The founder's working product name stays off the site until it is picked and trademark-searched.
 export const brand = {
-  name: "muggoozz",
-  siteTitle: "muggoozz",
-  description: "A 1-minute, slightly unserious survey about mug cakes, cravings and protein. No login.",
+  name: "Ministry of Cravings",
+  short: "Cravings", // the big word of the wordmark, for small spaces
+  siteTitle: "Ministry of Cravings",
+  description: "The official dessert census. A slightly unserious 2-minute survey about cravings, desserts and protein. No login.",
   instagram: null as string | null,
 };

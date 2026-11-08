@@ -38,6 +38,13 @@ const gateValue = (g: GateRow, v: number | null) =>
   v == null ? "—" : g.metric === "india_share_of_signals" ? share(v) : g.metric === "behaviour_to_interest_ratio" ? v.toFixed(2) : String(v);
 
 const GITHUB = `https://github.com/${AGENTS_REPO}`;
+// Questions added in survey v2 (8 Nov 2026), shown once someone has answered them.
+const NEW_IN_V2: [string, string][] = [
+  ["Q11", "The 10 pm dilemma: make it, buy it, or resist"],
+  ["Q12", "Protein a dessert needs before they care"],
+  ["Q13", "Gluten"],
+  ["Q4", "Eggs"],
+];
 
 export default async function AgentBoard({ searchParams }: { searchParams: Promise<{ key?: string | string[]; notice?: string | string[] }> }) {
   const { key, notice } = await searchParams;
@@ -181,7 +188,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
           <Tile label="New this week" value={String(h.last7)} sub="Last 7 days" />
           <Tile label="Waitlist joins" value={String(h.waitlistJoins)} sub="E1, behaviour" />
           <Tile label="Likely 4 or 5" value={share(h.likely45Share)} sub={`E3 · ${h.likely45} of ${h.likelyAnswered}`} />
-          <Tile label="Would pay ₹100+" value={share(h.pay100Share)} sub="E3 · per sachet" />
+          <Tile label="Would pay ₹100+" value={share(h.pay100Share)} sub="E3 · per serving" />
           <Tile label="Last new response" value={h.lastAt ? fmtWhen.format(h.lastAt) : "—"} sub="India time" small />
         </div>
 
@@ -213,13 +220,20 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             )}
           </figure>
           {price.length > 0 && (
-            <BarCard title="What they would pay for one sachet" note={`${price[0].answered} answered · working hypothesis ${HYPOTHESIS_SINGLE} a single`}
+            <BarCard title="What they would pay for one serving" note={`${price[0].answered} answered · working hypothesis ${HYPOTHESIS_SINGLE} a single`}
               items={price.map((r) => ({ label: r.option, count: r.count }))} denom={price[0].answered} />
           )}
           {worries.length > 0 && (
             <BarCard title="What would worry them" note={`${worries[0].answered} answered · people could pick more than one`}
               items={worries.map((r) => ({ label: r.option, count: r.count }))} denom={worries[0].answered} />
           )}
+          {NEW_IN_V2.map(([qid, title]) => {
+            const items = rows.filter((r) => r.qid === qid);
+            return items.length > 0 && items[0].answered > 0 ? (
+              <BarCard key={qid} title={title} note={`${items[0].answered} answered · asked since 8 Nov 2026`}
+                items={items.map((r) => ({ label: r.option, count: r.count }))} denom={items[0].answered} />
+            ) : null;
+          })}
           <BarCard title="Where responses came from" note="utm_source on the shared link; direct means the link had no tag"
             items={sources.map((s) => ({ label: s.value, count: s.count }))} denom={h.responses} />
         </div>

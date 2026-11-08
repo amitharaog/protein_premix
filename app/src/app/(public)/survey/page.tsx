@@ -9,8 +9,8 @@ export const dynamic = "force-dynamic";
 export const viewport: Viewport = { themeColor: "#172062", colorScheme: "light" };
 
 export const metadata: Metadata = {
-  title: "Take the survey",
-  description: "7 quick questions about desserts, cravings and protein. About a minute. No login.",
+  title: "The dessert census",
+  description: "Declare your cravings: a 2-minute, slightly unserious survey about desserts, cravings and protein. No login.",
 };
 
 export default async function SurveyPage() {

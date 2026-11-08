@@ -31,7 +31,7 @@ Sections, in order:
 Non-functional: LCP < 2.0 s on 4G Moto G, the page works without JS (forms are server actions), OG image per page, `hreflang en-IN`.
 
 ### 1.2 `/survey`
-- Questions come from the `survey_questions` table (seeded from `seed/survey_questions.json`, 10 questions, the same wording as the current Claude survey).
+- Questions come from the `survey_questions` table (seeded from `seed/survey_questions.json`; since 8 Nov 2026 survey v2: 11 active questions under the made-up name "Ministry of Cravings", see `seed/README.md`).
 - **No login.** Set an httpOnly cookie `rid` = random UUID on first visit. Submitting upserts `survey_responses` on `respondent_id`, so the respondent can edit later.
 - Validation (Zod, server side):
   - Single answers must be one of the options.

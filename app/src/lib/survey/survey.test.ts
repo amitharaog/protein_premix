@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { questionCopy } from "@/content/survey";
 import seed from "../../../seed/survey_questions.json";
 import { hashIp, secondsSinceStart, signStart } from "./guard";
 import { personalityFor } from "./personality";
@@ -90,5 +91,38 @@ describe("personalityFor", () => {
   });
   it("falls back to curious crumb", () => {
     expect(personalityFor({}).id).toBe("curious");
+  });
+  it("gives each answer to the 10 pm dilemma its own personality", () => {
+    const q11 = seed.find((q) => q.id === "Q11")!;
+    const ids = q11.options.map((o) => personalityFor({ Q9: "4", Q11: o }).id);
+    expect(ids).toEqual(["chef", "sheepish", "unbothered", "raider", "monk"]);
+  });
+  it("puts people who cannot have gluten with the label detectives", () => {
+    expect(personalityFor({ Q9: "5", Q13: "I can't have gluten (allergy or intolerance)", Q11: "Fight it. I am a monk." }).id).toBe("detective");
+  });
+  it("lets a big protein ask beat the dilemma, and the dilemma beat the daily craving", () => {
+    expect(personalityFor({ Q9: "4", Q12: "Like a scoop of whey, 25 g or more", Q11: "Fight it. I am a monk." }).id).toBe("macro");
+    expect(personalityFor({ Q9: "4", Q3: "Daily", Q11: "Order something sweet and feel a bit guilty" }).id).toBe("sheepish");
+    expect(personalityFor({ Q9: "4", Q3: "Daily" }).id).toBe("midnight");
+  });
+});
+
+describe("survey copy matches the questions", () => {
+  const active = seed.filter((q) => q.active);
+  it.each(active.map((q) => [q.id, q] as const))("%s has host copy, and its emoji and reactions name real options", (_, q) => {
+    const copy = questionCopy[q.id];
+    expect(copy, `no copy for ${q.id}`).toBeDefined();
+    const options = q.type === "scale_1_5" ? ["1", "2", "3", "4", "5"] : q.options;
+    for (const map of [copy.emoji, copy.reactions ?? {}, copy.short ?? {}]) {
+      for (const key of Object.keys(map)) expect(options, `${q.id}: "${key}" is not an option`).toContain(key);
+    }
+    if (copy.style) {
+      expect(q.type, `${q.id}: ${copy.style} needs a single choice`).toBe("single");
+      for (const o of options) expect(copy.emoji[o], `${q.id}: no emoji for "${o}"`).toBeTruthy();
+    }
+    if (copy.style === "slider") for (const o of options) expect(copy.short?.[o], `${q.id}: no short label for "${o}"`).toBeTruthy();
+  });
+  it("keeps the required questions the analysis depends on", () => {
+    expect(active.filter((q) => q.required).map((q) => q.id).sort()).toEqual(["Q5", "Q9"]);
   });
 });
