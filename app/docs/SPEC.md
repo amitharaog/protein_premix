@@ -32,6 +32,7 @@ Non-functional: LCP < 2.0 s on 4G Moto G, the page works without JS (forms are s
 
 ### 1.2 `/survey`
 - Questions come from the `survey_questions` table (seeded from `seed/survey_questions.json`; since 8 Nov 2026 survey v2: 11 active questions under the made-up name "Ministry of Cravings", see `seed/README.md`).
+- **Name and contact (since 8 Nov 2026, founder request).** The last step requires a name and a WhatsApp number or email, with an unticked consent box; saved to `survey_contacts` with the answers in one statement; shown only on `/board` and its Excel download; the person can delete them from the result screen.
 - **No login.** Set an httpOnly cookie `rid` = random UUID on first visit. Submitting upserts `survey_responses` on `respondent_id`, so the respondent can edit later.
 - Validation (Zod, server side):
   - Single answers must be one of the options.

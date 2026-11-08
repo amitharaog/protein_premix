@@ -19,11 +19,14 @@ const responses = [
 ];
 const sheets = (file: Uint8Array) => {
   const files = unzipSync(file);
-  return [1, 2, 3].map((n) => strFromU8(files[`xl/worksheets/sheet${n}.xml`]));
+  return [1, 2, 3, 4].map((n) => strFromU8(files[`xl/worksheets/sheet${n}.xml`]));
 };
+const contacts = [
+  { respondentId: "a", name: "Asha Rao", email: null, phone: "+919876543210", whatsappOptin: true, updatedAt: at("2026-11-08T10:00:00Z") },
+];
 
 describe("surveyWorkbook", () => {
-  const [resp, summary, notes] = sheets(surveyWorkbook(questions, responses, new Set(["a"]), at("2026-10-29T15:00:00Z")));
+  const [resp, summary, people, notes] = sheets(surveyWorkbook(questions, responses, new Set(["a"]), at("2026-10-29T15:00:00Z"), contacts));
 
   it("puts one row per response, oldest first, with sources, waitlist and contact details removed", () => {
     expect(resp.indexOf(">r3<")).toBeLessThan(resp.indexOf(">r1<"));
@@ -45,6 +48,20 @@ describe("surveyWorkbook", () => {
     expect(summary).toContain("<f>COUNTIF(Responses!$K$2:$K$1000,&quot;&gt;=4&quot;)</f><v>2</v>"); // likely 4 or 5
     expect(summary).toContain("<f>COUNTIF(Responses!$J$2:$J$1000,&quot;₹100-150&quot;)+COUNTIF(Responses!$J$2:$J$1000,&quot;₹150+&quot;)</f><v>1</v>");
     expect(summary).toContain("<v>0.5</v>"); // half of the two who answered Q5 pay ₹100+
+  });
+
+  it("keeps names and contacts on their own tab, next to how likely that person is to buy", () => {
+    expect(people).toContain(">Asha Rao<");
+    expect(people).toContain(">+919876543210<");
+    expect(people).toContain("<v>5</v>"); // Asha's Q9
+    expect(people).toContain(">r1<"); // her response id, to match the Responses tab
+    expect(resp).not.toContain("Asha");
+    expect(summary).not.toContain("Asha");
+  });
+
+  it("says so when nobody has given a name yet", () => {
+    const [, , empty] = sheets(surveyWorkbook(questions, responses, new Set(), at("2026-10-29T15:00:00Z")));
+    expect(empty).toContain("No names yet");
   });
 
   it("explains itself without contact details", () => {

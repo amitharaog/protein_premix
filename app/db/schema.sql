@@ -43,6 +43,19 @@ create table survey_responses (
 create index on survey_responses (created_at);
 create index on survey_responses using gin (answers);
 
+-- name and contact from the end of the survey (since 8 Nov 2026); owner-only pages read it, nothing else
+create table survey_contacts (
+  respondent_id  text primary key references survey_responses (respondent_id) on delete cascade,
+  name           text not null,
+  email          text,
+  phone          text,                       -- +91XXXXXXXXXX
+  whatsapp_optin boolean not null default false,
+  consent_at     timestamptz not null default now(),
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now(),
+  constraint survey_contacts_contact_check check (email is not null or phone is not null)
+);
+
 -- weekly snapshots so the dashboard can show "change since last week"
 create table survey_snapshots (
   id              uuid primary key default gen_random_uuid(),

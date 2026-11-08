@@ -2,14 +2,16 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import {
-  done as doneCopy, fallbackCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui,
+  contactStep, done as doneCopy, fallbackCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui,
   type Personality, type QuestionCopy,
 } from "@/content/survey";
+import type { SavedContact } from "@/lib/queries/survey";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
-import { joinWaitlist, submitSurvey } from "./actions";
+import { forgetContact, joinWaitlist, submitSurvey } from "./actions";
 import { CheckerStrip, Crown, Minister, Ornaments, Seal, TileTray, Wordmark } from "./art";
 
-type Props = { questions: SurveyQuestion[]; initial: Answers | null; startToken: string; siteUrl: string };
+type Props = { questions: SurveyQuestion[]; initial: Answers | null; initialContact: SavedContact | null; startToken: string; siteUrl: string };
+type ContactDraft = { name: string; email: string; phone: string; whatsappOptin: boolean };
 
 const AUTO_ADVANCE_MS = 750;
 const REACTION_EXTRA_MS = 900; // time to read the Minister's reaction before the next question
@@ -18,9 +20,15 @@ const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"
 const ARROWS: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 };
 const isEmpty = (v: unknown) => v == null || v === "" || (Array.isArray(v) && v.length === 0);
 
-export function SurveyClient({ questions, initial, startToken, siteUrl }: Props) {
-  const [step, setStep] = useState(-1); // -1 intro, 0..n-1 questions, n done
+export function SurveyClient({ questions, initial, initialContact, startToken, siteUrl }: Props) {
+  const [step, setStep] = useState(-1); // -1 intro, 0..n-1 questions, n name and contact, n+1 done
   const [answers, setAnswers] = useState<Answers>(initial ?? {});
+  const [contact, setContact] = useState<ContactDraft>({
+    name: initialContact?.name ?? "", email: initialContact?.email ?? "",
+    phone: initialContact?.phone?.replace(/^\+91/, "") ?? "", whatsappOptin: initialContact?.whatsappOptin ?? false,
+  });
+  const [consent, setConsent] = useState(false); // ticked afresh on every submit, never pre-ticked
+  const [contactErrors, setContactErrors] = useState<Record<string, string>>({});
   const [hostLine, setHostLine] = useState<string | null>(null);
   const [bump, setBump] = useState(0); // re-triggers the mascot wobble
   const [notice, setNotice] = useState<string | null>(null);
@@ -35,6 +43,19 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
   const q = step >= 0 && step < n ? questions[step] : null;
   const copy = q ? (questionCopy[q.id] ?? fallbackCopy) : undefined;
   const answeredCount = questions.filter((x) => !isEmpty(answers[x.id])).length;
+  const contactDone = Boolean(contact.name.trim() && (contact.phone.trim() || contact.email.trim()) && consent);
+  // Editing a field clears its error message, so fixed fields stop looking wrong.
+  const clearErrors = (...keys: string[]) =>
+    setContactErrors((e) => (keys.some((k) => k in e) ? Object.fromEntries(Object.entries(e).filter(([k]) => !keys.includes(k))) : e));
+  const editContact = (v: ContactDraft) => {
+    if (v.name !== contact.name) clearErrors("name");
+    if (v.phone !== contact.phone || v.email !== contact.email) clearErrors("phone", "email");
+    setContact(v);
+  };
+  const editConsent = (v: boolean) => {
+    if (v) clearErrors("consent");
+    setConsent(v);
+  };
 
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
@@ -53,12 +74,22 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
     setBump((b) => b + 1);
   }, []);
 
-  const submit = useCallback((final: Answers) => {
+  const submit = useCallback(() => {
+    // Quick check on this side; the server checks everything again (src/lib/survey/contact.ts).
+    const quick: Record<string, string> = {};
+    if (!contact.name.trim()) quick.name = contactStep.errors.name;
+    if (!contact.phone.trim() && !contact.email.trim()) quick.phone = contactStep.errors.contact;
+    if (!consent) quick.consent = contactStep.errors.consent;
+    setContactErrors(quick);
+    if (Object.keys(quick).length) {
+      setBump((b) => b + 1);
+      return;
+    }
     startTransition(async () => {
-      const res = await submitSurvey({ answers: final, startToken, website: honeypot.current?.value ?? "", utm });
+      const res = await submitSurvey({ answers, contact: { ...contact, consent }, startToken, website: honeypot.current?.value ?? "", utm });
       if (res.ok) {
         setResult({ personality: res.personality, shareRef: res.shareRef });
-        setStep(n);
+        setStep(n + 1);
         return;
       }
       if (res.reason === "invalid" && res.errors) {
@@ -68,10 +99,13 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
           setTimeout(() => setNotice(ui.required), 0);
           return;
         }
+        setContactErrors(res.errors);
+        setBump((b) => b + 1);
+        return;
       }
       setNotice(res.reason === "too_fast" ? ui.tooFast : res.reason === "rate_limited" ? ui.rateLimited : ui.error);
     });
-  }, [n, questions, startToken, utm]);
+  }, [answers, consent, contact, n, questions, startToken, utm]);
 
   const goNext = useCallback((current: Answers = answers) => {
     if (!q) return;
@@ -80,9 +114,8 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
       setBump((b) => b + 1);
       return;
     }
-    if (step === n - 1) submit(current);
-    else setStep(step + 1);
-  }, [answers, n, q, step, submit]);
+    setStep(step + 1); // after the last question comes the name and contact step
+  }, [answers, q, step]);
 
   const choose = useCallback((option: string) => {
     if (!q || !copy) return;
@@ -142,9 +175,9 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
         <header className="flex items-center gap-3">
           <Wordmark height={26} compact className="shrink-0" />
           <div className="min-w-0 flex-1" role="progressbar" aria-valuemin={0} aria-valuemax={n} aria-valuenow={answeredCount} aria-label="Answered">
-            <TileTray total={n} answered={questions.map((x) => !isEmpty(answers[x.id]))} current={step < n ? step : -1} />
+            <TileTray total={n + 1} answered={[...questions.map((x) => !isEmpty(answers[x.id])), contactDone]} current={step <= n ? step : -1} />
           </div>
-          <p className="tabular shrink-0 font-caps text-xs font-bold text-muted">{step < n ? `${step + 1}/${n}` : `${n}/${n}`}</p>
+          <p className="tabular shrink-0 font-caps text-xs font-bold text-muted">{`${Math.min(step + 1, n + 1)}/${n + 1}`}</p>
         </header>
       )}
 
@@ -183,7 +216,7 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
               ← {ui.back}
             </button>
             <div className="flex-1" />
-            {!q.required && isEmpty(answers[q.id]) && step < n - 1 && (
+            {!q.required && isEmpty(answers[q.id]) && (
               <button type="button" onClick={() => setStep(step + 1)} className="h-12 rounded-full px-3 text-sm font-semibold text-muted hover:text-fg">
                 {ui.skip}
               </button>
@@ -194,17 +227,49 @@ export function SurveyClient({ questions, initial, startToken, siteUrl }: Props)
               disabled={pending}
               className="royal-btn h-12 min-w-32 px-6 text-sm uppercase disabled:opacity-60"
             >
-              {step === n - 1 ? (pending ? ui.submitting : ui.submit) : `${ui.next} →`}
+              {`${ui.next} →`}
             </button>
           </nav>
         </section>
       )}
 
-      {step >= n && result && (
+      {step === n && (
+        <section key="contact" className="anim-pop mt-5 flex flex-1 flex-col" aria-labelledby="h-contact">
+          <Host text={hostLine ?? contactStep.host} bump={bump} />
+          <p className="mt-5 font-caps text-[11px] font-bold tracking-[0.3em] text-muted" aria-hidden>{contactStep.label}</p>
+          <h1 id="h-contact" ref={headingRef} tabIndex={-1} className="mt-1 font-royal text-[26px] leading-tight font-bold text-fg outline-none">
+            {contactStep.title}
+          </h1>
+          <p className="mt-1 text-sm text-muted">{contactStep.hint}</p>
+          <form
+            className="mt-4 flex flex-1 flex-col"
+            noValidate
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit();
+            }}
+          >
+            <ContactFields value={contact} onChange={editContact} consent={consent} onConsent={editConsent} errors={contactErrors} />
+            <p aria-live="polite" className="min-h-6 pt-2 text-center text-sm font-medium text-bad">{notice}</p>
+            <nav className="mt-2 flex items-center gap-3">
+              <button type="button" onClick={() => setStep(n - 1)} className="h-12 rounded-full px-3 text-sm font-semibold text-muted hover:text-fg">
+                ← {ui.back}
+              </button>
+              <div className="flex-1" />
+              <button type="submit" disabled={pending} className="royal-btn h-12 min-w-32 px-6 text-sm uppercase disabled:opacity-60">
+                {pending ? ui.submitting : ui.submit}
+              </button>
+            </nav>
+          </form>
+        </section>
+      )}
+
+      {step > n && result && (
         <Done
           personality={result.personality}
           shareUrl={`${siteUrl}/survey?utm_source=share&utm_medium=whatsapp&ref=${result.shareRef}`}
           utm={utm}
+          prefill={{ email: contact.email, phone: contact.phone }}
           onEdit={() => setStep(0)}
         />
       )}
@@ -240,6 +305,7 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
       <h1 className="mt-5 text-center font-royal text-[36px] leading-none font-black italic text-fg">{intro.headline}</h1>
       <p className="mt-2 text-center font-medium text-muted">{intro.sub}</p>
       <Agenda />
+      <p className="mt-4 text-center text-sm font-medium text-fg">📇 {intro.contactNote}</p>
       {welcomeBack && <p className="royal-frame mt-3 rounded-[10px] bg-gold-soft p-3.5 text-sm">{ui.welcomeBack}</p>}
       <div className="flex-1" />
       <button type="button" onClick={onStart} className="royal-btn mt-6 h-14 w-full text-base uppercase">
@@ -471,7 +537,9 @@ function FreeText({ q, value, onChange }: { q: SurveyQuestion; value: string; on
   );
 }
 
-function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality; shareUrl: string; utm: Record<string, string>; onEdit: () => void }) {
+function Done({ personality, shareUrl, utm, prefill, onEdit }: {
+  personality: Personality; shareUrl: string; utm: Record<string, string>; prefill: { email: string; phone: string }; onEdit: () => void;
+}) {
   const [copied, setCopied] = useState(false);
   const shareText = doneCopy.shareText(personality.title, shareUrl);
   return (
@@ -512,18 +580,90 @@ function Done({ personality, shareUrl, utm, onEdit }: { personality: Personality
         </button>
       </div>
 
-      <WaitlistMini utm={utm} />
+      <WaitlistMini utm={utm} prefill={prefill} />
 
       <button type="button" onClick={onEdit} className="mx-auto mt-6 h-11 px-4 text-sm font-medium text-muted underline underline-offset-4">
         {doneCopy.edit}
       </button>
+      <Forget />
     </section>
   );
 }
 
-function WaitlistMini({ utm }: { utm: Record<string, string> }) {
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+/** Name and contact for the last step. Labels, autocomplete and inline errors, like the waitlist form. */
+function ContactFields({ value, onChange, consent, onConsent, errors }: {
+  value: ContactDraft; onChange: (v: ContactDraft) => void; consent: boolean; onConsent: (v: boolean) => void; errors: Record<string, string>;
+}) {
+  const field = "mt-1 h-12 w-full rounded-[10px] border-2 border-line bg-[#fffaf0] px-3 focus:outline-none focus-visible:outline-3 focus-visible:outline-kesar";
+  const err = (k: string) => errors[k] && <p id={`e-${k}`} className="mt-1 text-sm text-bad">{errors[k]}</p>;
+  return (
+    <div>
+      <div className="royal-frame rounded-[14px] bg-panel p-4 shadow-[3px_3px_0_var(--gold)]">
+        <label className="block text-sm font-medium" htmlFor="c-name">{contactStep.name}</label>
+        <input id="c-name" autoComplete="name" maxLength={80} value={value.name} onChange={(e) => onChange({ ...value, name: e.target.value })}
+          aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "e-name" : undefined} className={field} />
+        {err("name")}
+        <label className="mt-3 block text-sm font-medium" htmlFor="c-phone">{contactStep.phone}</label>
+        <input id="c-phone" type="tel" inputMode="tel" autoComplete="tel" placeholder={contactStep.phonePlaceholder} value={value.phone}
+          onChange={(e) => onChange({ ...value, phone: e.target.value })}
+          aria-invalid={Boolean(errors.phone)} aria-describedby={errors.phone ? "e-phone" : undefined} className={field} />
+        {err("phone")}
+        <label className="mt-3 block text-sm font-medium" htmlFor="c-email">{contactStep.email}</label>
+        <input id="c-email" type="email" inputMode="email" autoComplete="email" value={value.email} onChange={(e) => onChange({ ...value, email: e.target.value })}
+          aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "e-email" : undefined} className={field} />
+        {err("email")}
+        <label className="mt-4 flex items-start gap-3 text-sm">
+          <input type="checkbox" checked={consent} onChange={(e) => onConsent(e.target.checked)} className="mt-0.5 size-5 shrink-0 accent-[var(--accent)]"
+            aria-describedby={errors.consent ? "e-consent" : undefined} />
+          <span>{contactStep.consent}</span>
+        </label>
+        {err("consent")}
+        {value.phone.trim() && (
+          <label className="mt-2 flex items-start gap-3 text-sm">
+            <input type="checkbox" checked={value.whatsappOptin} onChange={(e) => onChange({ ...value, whatsappOptin: e.target.checked })}
+              className="mt-0.5 size-5 shrink-0 accent-[var(--accent)]" />
+            <span>{contactStep.whatsapp}</span>
+          </label>
+        )}
+      </div>
+      <p className="mt-3 text-[11px] leading-relaxed text-muted">{contactStep.honest}</p>
+    </div>
+  );
+}
+
+/** Lets the person delete their name and contact again (consent can be withdrawn any time); the answers stay. */
+function Forget() {
+  const [state, setState] = useState<"idle" | "confirm" | "done" | "error">("idle");
+  const [pending, startTransition] = useTransition();
+  if (state === "done") return <p className="mt-2 text-center text-sm text-muted" role="status">{doneCopy.forgotten}</p>;
+  if (state === "idle") {
+    return (
+      <button type="button" onClick={() => setState("confirm")} className="mx-auto h-11 px-4 text-sm font-medium text-muted underline underline-offset-4">
+        {doneCopy.forget}
+      </button>
+    );
+  }
+  return (
+    <div className="royal-frame mt-2 rounded-[12px] bg-panel p-3 text-center text-sm" role="alertdialog" aria-label={doneCopy.forget}>
+      <p>{state === "error" ? doneCopy.forgetError : doneCopy.forgetConfirm}</p>
+      <div className="mt-2 flex justify-center gap-2">
+        <button type="button" onClick={() => setState("idle")} className="h-10 px-4 font-medium text-muted underline underline-offset-4">{doneCopy.forgetNo}</button>
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => startTransition(async () => setState((await forgetContact()).ok ? "done" : "error"))}
+          className="royal-btn h-10 px-4 text-xs uppercase disabled:opacity-60"
+        >
+          {doneCopy.forgetYes}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: { email: string; phone: string } }) {
+  const [email, setEmail] = useState(prefill.email);
+  const [phone, setPhone] = useState(prefill.phone);
   const [consent, setConsent] = useState(false);
   const [wa, setWa] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});

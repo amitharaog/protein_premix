@@ -92,6 +92,11 @@ docs/                    # SPEC, REFRESH_JOBS, COMPLIANCE, DESIGN
    reason it has 0 responses.) Use a cookie `respondent_id` + rate limit + honeypot, not accounts.
 7. **Personal data:** store waitlist emails/phones only with explicit consent checkbox; never send them to the AI
    APIs; admin export only. Respect India DPDP Act basics: purpose statement, delete-on-request endpoint.
+   Since 8 Nov 2026 the survey's last step requires a name and a WhatsApp number or email, with an unticked consent box
+   (founder request). They live only in `survey_contacts`, apart from the answers, and show only on owner-only pages
+   (`/board` behind `BOARD_KEY` and its Excel download): never in the sheet feed (`/api/sheet/responses`), never to the
+   research agents or any AI API, never in git. The intro says up front that the survey asks for them, and the last
+   screen lets the person delete them again. Giving contact there is required, so it is not a behaviour signal (E1).
 8. Scrapers: honour robots.txt, 1 request / 3 s per host, real UA string with contact email, timeouts 15 s.
    Amazon.in and Flipkart are **manual-only** (they block bots) — show a "check manually" link, never scrape them.
 9. Money is stored as `numeric(10,2)` INR; weights in grams `numeric(10,3)`. Never floats for money.

@@ -4,8 +4,9 @@ test("completes the survey on a phone, logged out, and joins the waitlist", asyn
   await page.goto("/survey?utm_source=e2e");
   await expect(page.getByRole("img", { name: "Ministry of Cravings" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Declare your cravings" })).toBeVisible();
-  // The survey never names or describes the product.
-  await expect(page.locator("body")).not.toContainText(/muggoozz|premix|sachet/i);
+  // The survey never names or describes the product, and says up front that it asks for a name and contact.
+  await expect(page.locator("body")).not.toContainText(/muggoozz|premix|sachet|anonymous/i);
+  await expect(page.getByText(/the Minister asks your name/)).toBeVisible();
   await page.getByRole("button", { name: /^Let.s go/ }).click();
 
   // Q11, the 10 pm dilemma: big cards, the Minister reacts, then it moves on by itself.
@@ -40,18 +41,36 @@ test("completes the survey on a phone, logged out, and joins the waitlist", asyn
   await page.getByText("₹100-150").click(); // Q5 → Q10
 
   await page.getByRole("textbox").fill("Make it fudgy.");
+  await page.getByRole("button", { name: "Next →" }).click();
+
+  // Last step: name and contact are required, with consent.
+  await expect(page.getByRole("heading", { name: "Who's declaring these cravings?" })).toBeVisible();
+  await page.getByRole("button", { name: "Stamp my answers" }).click();
+  await expect(page.getByText("Tell the Minister your name")).toBeVisible();
+  await expect(page.getByText("Add a WhatsApp number or an email")).toBeVisible();
+  await expect(page.getByText("Tick the box so we can keep your details")).toBeVisible();
+  const email = `e2e-${Date.now()}@example.com`;
+  await page.getByLabel("Your name").fill("E2E Tester");
+  await expect(page.getByText("Tell the Minister your name")).toHaveCount(0); // fixing a field clears its message
+  await page.getByLabel("or email").fill(email);
+  await page.getByText(/Keep my name, contact and answers/).click();
   await page.getByRole("button", { name: "Stamp my answers" }).click();
 
   await expect(page.getByText("Your dessert personality is")).toBeVisible({ timeout: 15_000 });
   await expect(page.getByRole("heading", { name: "The 2-Minute Chef" })).toBeVisible();
   await expect(page.getByRole("link", { name: "WhatsApp" })).toHaveAttribute("href", /wa\.me\/\?text=The%20Ministry%20of%20Cravings/);
 
-  await page.getByLabel("Email").fill(`e2e-${Date.now()}@example.com`);
+  await expect(page.getByLabel("Email")).toHaveValue(email); // the waitlist reuses the contact from the last step
   await page.getByRole("button", { name: "Save my spot" }).click();
   await expect(page.getByText(/Tick the box/)).toBeVisible(); // consent is unticked by default
   await page.getByText(/Yes, contact me/).click();
   await page.getByRole("button", { name: "Save my spot" }).click();
   await expect(page.getByText(/on the list/)).toBeVisible();
+
+  // Consent can be withdrawn on the spot: the name and contact go, the answers stay.
+  await page.getByRole("button", { name: "Remove my name and contact" }).click();
+  await page.getByRole("button", { name: "Yes, delete them" }).click();
+  await expect(page.getByText("Done. Your name and contact are deleted.")).toBeVisible();
 });
 
 test("admin and the CSV export are closed to people who are not signed in", async ({ page, request }) => {

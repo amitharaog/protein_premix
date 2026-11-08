@@ -11,7 +11,7 @@ Filled when survey answers are pulled and run through `scripts/survey_analyze.py
 | `history.csv` | headline numbers per run date, so each run can say what moved |
 | `exclude.txt` | response ids to leave out (your own tests, friends and family), one per line, `#` for notes. Tracked in git: ids are random and say nothing about a person. Links tagged `utm_source=test` are left out too |
 
-Waitlist emails and phone numbers never come here. They stay in the database and the admin export.
+Waitlist emails and phone numbers never come here, and neither do the names and contacts from the survey's last step (required since 8 Nov 2026). They stay in the database and show only on the owner's board and its Excel download. Giving contact on the survey is required, so it is not a behaviour signal (E1); joining the waitlist still is.
 
 ## Live Google Sheet
 The founder's online sheet pulls every answer from the site's feed (`/api/sheet/responses`) with `IMPORTDATA`, so it updates by itself about once an hour, and right away when the number in `Summary!B4` changes. Its Summary tab is formulas over the Responses tab. `scripts/live_sheet.py` prints every cell to write, and its header lists the build steps. The feed key (`SHEET_EXPORT_TOKEN`) lives only on Vercel and in the sheet's `Responses!A1`, never in this repo.

@@ -8,7 +8,7 @@ import { AGENTS_REF, AGENTS_REPO, checkRepo } from "@/lib/agents/github";
 import { boardState } from "@/lib/agents/state";
 import { canStoreToken, savedGithubToken } from "@/lib/agents/token";
 import { activeRun, anyRunSucceeded, expireStaleRuns, recentRuns } from "@/lib/queries/runs";
-import { surveyResults } from "@/lib/queries/survey";
+import { surveyContactList, surveyResults } from "@/lib/queries/survey";
 import { keyMatches } from "@/lib/secret";
 import { aggregate, tally } from "@/lib/survey/aggregate";
 import { dailyCounts, gateProgress, headline, segments, type AgentRow, type GateRow } from "@/lib/survey/board";
@@ -52,9 +52,10 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
   if (!k || !keyMatches(k, process.env.BOARD_KEY)) notFound();
 
   await expireStaleRuns();
-  const [{ questions, responses, waitlistCount }, { agents, gate_files: gateFiles }, active, runs, saved, setupDone] = await Promise.all([
-    surveyResults(), boardState(), activeRun(), recentRuns(6), savedGithubToken(), anyRunSucceeded(),
+  const [{ questions, responses, waitlistCount }, { agents, gate_files: gateFiles }, active, runs, saved, setupDone, contacts] = await Promise.all([
+    surveyResults(), boardState(), activeRun(), recentRuns(6), savedGithubToken(), anyRunSucceeded(), surveyContactList(),
   ]);
+  const answersOf = new Map(responses.map((r) => [r.respondentId, r.answers]));
   const repo = setupDone ? null : await checkRepo(saved?.token ?? null).catch(() => null);
   const canRun = Boolean(saved?.token);
   const noKeyLastRun = runs[0]?.status === "failed" && (runs[0].error ?? "").includes("ANTHROPIC_API_KEY");
@@ -263,6 +264,47 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
             </table>
           </div>
         </figure>
+
+        <details className="rounded-[14px] border border-line bg-panel p-4">
+          <summary className="cursor-pointer">
+            <span className="font-head text-base font-semibold text-frost">Names and contacts ({contacts.length})</span>
+            <span className="block text-xs text-muted">
+              Asked at the end of the survey since 8 Nov 2026, with consent. Only this page and its Excel download show them: never the Google Sheet feed, the agents or the repo. Giving contact was required, so it is not a behaviour signal (E1); the waitlist still is.
+            </span>
+          </summary>
+          {contacts.length === 0 ? (
+            <p className="mt-3 text-sm text-muted">No names yet.</p>
+          ) : (
+            <div className="mt-3 overflow-x-auto">
+              <table className="w-full min-w-[640px] text-left text-sm">
+                <thead className="text-xs uppercase text-muted">
+                  <tr>
+                    <th className="py-2 pr-3">Name</th><th className="py-2 pr-3">WhatsApp</th><th className="py-2 pr-3">Email</th>
+                    <th className="py-2 pr-3 text-right">Likely, 1 to 5</th><th className="py-2 pr-3">Would pay</th><th className="py-2">Saved</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {contacts.map((c) => {
+                    const a = answersOf.get(c.respondentId);
+                    return (
+                      <tr key={c.respondentId} className="border-t border-line">
+                        <td className="py-2 pr-3">{c.name}</td>
+                        <td className="tabular py-2 pr-3">
+                          {c.phone ? (c.whatsappOptin ? <a className="underline" href={`https://wa.me/${c.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">{c.phone}</a> : c.phone) : "—"}
+                          {c.phone && !c.whatsappOptin && <span className="block text-xs text-muted">no WhatsApp opt-in</span>}
+                        </td>
+                        <td className="py-2 pr-3">{c.email ? <a className="underline" href={`mailto:${c.email}`}>{c.email}</a> : "—"}</td>
+                        <td className="tabular py-2 pr-3 text-right">{typeof a?.Q9 === "string" ? a.Q9 : "—"}</td>
+                        <td className="py-2 pr-3">{typeof a?.Q5 === "string" ? a.Q5 : "—"}</td>
+                        <td className="tabular py-2">{fmtWhen.format(c.updatedAt)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </details>
       </section>
 
       <section aria-labelledby="gate-h" className="space-y-3">

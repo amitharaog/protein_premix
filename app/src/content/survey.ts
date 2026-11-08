@@ -1,7 +1,8 @@
 // Playful copy around the survey. Question wording itself comes from the survey_questions table
 // (seed/survey_questions.json). Rules: no product name, no product description, no health claims and no
 // banned words (see docs/COMPLIANCE.md; enforced by src/content/content.test.ts). The host is a made-up
-// "Minister of Cravings", so the survey asks about people's habits and never pitches a product.
+// "Minister of Cravings", so the survey asks about people's habits and never pitches a product. Since
+// 8 Nov 2026 it is not anonymous: the last step asks for a name and contact, and the copy says so up front.
 
 export const intro = {
   kicker: (n: number) => `${n} questions · 2 min · no login`,
@@ -13,9 +14,33 @@ export const intro = {
   sub: "No right answers. A few funny ones.",
   agendaTitle: "Today's agenda",
   agenda: ["The 10 pm dilemma", "The protein question", "Your official dessert personality"],
+  contactNote: "At the end, the Minister asks your name and a WhatsApp number or email.",
   cta: "Let's go",
   purpose:
-    "Anonymous. We store your answers, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: research for a new dessert idea. Nothing is sold or shared.",
+    "We store your answers, your name and contact, the link you came from, and a scrambled version of your IP that only stops bots. Purpose: research for a new dessert idea, and following up with you about it. The Ministry is a joke; the research is real. Your details are never sold or shared, and you can delete them any time: on the last screen, or by replying to any message from us.",
+};
+
+// The last step: name and contact are required since 8 Nov 2026 (founder request). Stored apart from the answers.
+export const contactStep = {
+  label: "Last step",
+  host: "Before I stamp this: who's declaring? The Ministry likes to know its citizens.",
+  title: "Who's declaring these cravings?",
+  hint: "Your name, and a WhatsApp number or an email. One of the two is enough.",
+  name: "Your name",
+  phone: "WhatsApp number",
+  phonePlaceholder: "98xxxxxxxx",
+  email: "or email",
+  consent: "Keep my name, contact and answers, and contact me about this research. I can ask for them to be deleted any time.",
+  whatsapp: "WhatsApp messages are fine",
+  honest: "The Ministry is a joke; the person behind it is real: someone in Bengaluru researching a new dessert idea. Your details go only to them. Never sold, never shared.",
+  errors: {
+    name: "Tell the Minister your name",
+    nameLong: "Keep it under 80 characters",
+    contact: "Add a WhatsApp number or an email",
+    phone: "Enter a 10-digit Indian mobile number",
+    email: "That email looks off",
+    consent: "Tick the box so we can keep your details",
+  },
 };
 
 export type QuestionCopy = {
@@ -248,6 +273,12 @@ export const done = {
   join: "Save my spot",
   joined: "You're on the list. We'll message once, when there's something to taste.",
   edit: "Change my answers",
+  forget: "Remove my name and contact",
+  forgetConfirm: "Delete your name and contact? Your answers stay, without them.",
+  forgetYes: "Yes, delete them",
+  forgotten: "Done. Your name and contact are deleted.",
+  forgetNo: "Keep them",
+  forgetError: "Couldn't delete them just now. Try again?",
 };
 
 export type Personality = { id: string; title: string; line: string };

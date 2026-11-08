@@ -50,6 +50,22 @@ export const surveyResponses = pgTable("survey_responses", {
   index().using("gin", t.answers),
 ]);
 
+// Name and contact asked at the end of the survey since 8 Nov 2026 (founder request). Kept apart from the answers, so
+// the sheet feed, the agents and the analysis never touch them: only owner-only pages (the board and its Excel) read it.
+export const surveyContacts = pgTable("survey_contacts", {
+  respondentId: text("respondent_id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email"),
+  phone: text("phone"),
+  whatsappOptin: boolean("whatsapp_optin").notNull().default(false),
+  consentAt: tstz("consent_at").notNull().defaultNow(),
+  createdAt: tstz("created_at").notNull().defaultNow(),
+  updatedAt: tstz("updated_at").notNull().defaultNow(),
+}, (t) => [
+  foreignKey({ columns: [t.respondentId], foreignColumns: [surveyResponses.respondentId] }).onDelete("cascade"),
+  check("survey_contacts_contact_check", sql`${t.email} is not null or ${t.phone} is not null`),
+]);
+
 export const surveySnapshots = pgTable("survey_snapshots", {
   id: uuid("id").primaryKey().defaultRandom(),
   takenAt: tstz("taken_at").notNull().defaultNow(),

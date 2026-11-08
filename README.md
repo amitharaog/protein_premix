@@ -4,7 +4,7 @@ The research question: **do people actually want this?** Only if the answer is y
 
 ## Where things stand (4 Nov 2026)
 Every research agent, its commands and everything the agents produced were removed so the process can restart. Git history keeps them if anything is needed again. What stays:
-- The website survey at mugcake.vercel.app/survey, its answers in the database, and the live Google Sheet that pulls them (`scripts/live_sheet.py` has the recipe).
+- The website survey at mugcake.vercel.app/survey, its answers in the database, and the live Google Sheet that pulls them (`scripts/live_sheet.py` has the recipe). Since 8 Nov 2026 it runs as the "Ministry of Cravings" and its last step asks for a name and contact; those stay in the database and show only on the board, never in the sheet or the repo.
 - The agent board (`/board?key=…`): live survey numbers, the road to the demand gate (`data/gate/criteria.json`), the Excel download, the run history, and Run buttons for agents once new ones exist.
 - `.github/workflows/research-agents.yml`, which runs an agent's command with Claude Code when you press Run on the board. It has nothing to run until new agents are added, and no daily schedule.
 - The founder's formulation files in `data/formulation/`, untouched.

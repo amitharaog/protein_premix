@@ -6,9 +6,10 @@ import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db } from "@/db";
-import { surveyResponses, waitlist } from "@/db/schema";
+import { surveyContacts, surveyResponses, waitlist } from "@/db/schema";
 import { getSurveyQuestions, recentSubmitsFromIp } from "@/lib/queries/survey";
 import { hashIp, MAX_SUBMITS_PER_HOUR, MIN_SECONDS, RID_COOKIE, secondsSinceStart } from "@/lib/survey/guard";
+import { checkContact, emailIn, phoneIn } from "@/lib/survey/contact";
 import { personalityFor } from "@/lib/survey/personality";
 import { cleanUtm, validateAnswers } from "@/lib/survey/validate";
 import type { Personality } from "@/content/survey";
@@ -19,6 +20,7 @@ export type SubmitResult =
 
 const submitInput = z.object({
   answers: z.unknown(),
+  contact: z.unknown(), // name, email or phone, consent: checked by checkContact
   startToken: z.string().max(200),
   website: z.string().max(200).optional(), // honeypot: real people never see or fill it
   utm: z.unknown().optional(),
@@ -46,7 +48,7 @@ const shareRefFor = (rid: string) => rid.replace(/-/g, "").slice(0, 8);
 export async function submitSurvey(raw: unknown): Promise<SubmitResult> {
   const input = submitInput.safeParse(raw);
   if (!input.success) return { ok: false, reason: "invalid" };
-  const { answers, startToken, website, utm } = input.data;
+  const { answers, contact, startToken, website, utm } = input.data;
 
   const personalityFallback = personalityFor({});
   // Bots that fill the honeypot get a cheerful fake success and nothing is stored.
@@ -57,7 +59,10 @@ export async function submitSurvey(raw: unknown): Promise<SubmitResult> {
 
   const questions = await getSurveyQuestions();
   const checked = validateAnswers(questions, answers);
-  if (!checked.ok) return { ok: false, reason: "invalid", errors: checked.errors };
+  const person = checkContact(contact);
+  if (!checked.ok || !person.ok) {
+    return { ok: false, reason: "invalid", errors: { ...(checked.ok ? {} : checked.errors), ...(person.ok ? {} : person.errors) } };
+  }
 
   try {
     const rid = await respondentId();
@@ -66,12 +71,22 @@ export async function submitSurvey(raw: unknown): Promise<SubmitResult> {
     if (!existing.length && ipHash && (await recentSubmitsFromIp(ipHash)) >= MAX_SUBMITS_PER_HOUR) {
       return { ok: false, reason: "rate_limited" };
     }
-    await db.insert(surveyResponses).values({
-      respondentId: rid, answers: checked.answers, source: "web", utm: cleanUtm(utm), ipHash,
-    }).onConflictDoUpdate({
-      target: surveyResponses.respondentId,
-      set: { answers: checked.answers, updatedAt: sql`now()`, ...(cleanUtm(utm) ? { utm: cleanUtm(utm) } : {}) },
-    });
+    const u = cleanUtm(utm);
+    const c = person.contact;
+    // One statement, so answers never land without their name and contact, or the other way round.
+    await db.execute(sql`
+      with saved as (
+        insert into survey_responses (respondent_id, answers, source, utm, ip_hash)
+        values (${rid}, ${JSON.stringify(checked.answers)}::jsonb, 'web', ${u ? JSON.stringify(u) : null}::jsonb, ${ipHash})
+        on conflict (respondent_id) do update
+          set answers = excluded.answers, updated_at = now(), utm = coalesce(excluded.utm, survey_responses.utm)
+        returning respondent_id
+      )
+      insert into survey_contacts (respondent_id, name, email, phone, whatsapp_optin)
+      select respondent_id, ${c.name}, ${c.email}, ${c.phone}, ${c.whatsappOptin} from saved
+      on conflict (respondent_id) do update
+        set name = excluded.name, email = excluded.email, phone = excluded.phone,
+            whatsapp_optin = excluded.whatsapp_optin, consent_at = now(), updated_at = now()`);
     revalidatePath("/admin");
     return { ok: true, personality: personalityFor(checked.answers), shareRef: shareRefFor(rid) };
   } catch (e) {
@@ -82,12 +97,8 @@ export async function submitSurvey(raw: unknown): Promise<SubmitResult> {
 
 // ── inline waitlist on the thank-you screen (full /waitlist with double opt-in is SPEC §1.3) ──
 
-const phoneIn = z.string().trim().transform((v) => v.replace(/[\s()-]/g, "")).pipe(
-  z.string().regex(/^(\+91)?[6-9]\d{9}$/, "Enter a 10-digit Indian mobile number"),
-).transform((v) => (v.startsWith("+91") ? v : `+91${v}`));
-
 const waitlistInput = z.object({
-  email: z.union([z.literal(""), z.string().trim().toLowerCase().email("That email looks off")]).optional(),
+  email: z.union([z.literal(""), emailIn]).optional(),
   phone: z.union([z.literal(""), phoneIn]).optional(),
   consent: z.literal(true, { message: "Tick the box so we're allowed to contact you" }),
   whatsappOptin: z.boolean().default(false),
@@ -123,5 +134,20 @@ export async function joinWaitlist(raw: unknown): Promise<WaitlistResult> {
   } catch (e) {
     console.error("joinWaitlist failed", e instanceof Error ? e.message : e);
     return { ok: false, errors: { _: "Something went wrong. Try again?" } };
+  }
+}
+
+/** The person behind a response deletes their name and contact (and any waitlist entry made from it); answers stay. */
+export async function forgetContact(): Promise<{ ok: boolean }> {
+  try {
+    const rid = (await cookies()).get(RID_COOKIE)?.value;
+    if (rid && /^[0-9a-f-]{36}$/.test(rid)) {
+      await db.delete(surveyContacts).where(eq(surveyContacts.respondentId, rid));
+      await db.delete(waitlist).where(sql`${waitlist.utm}->>'respondent_id' = ${rid}`);
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error("forgetContact failed", e instanceof Error ? e.message : e);
+    return { ok: false };
   }
 }

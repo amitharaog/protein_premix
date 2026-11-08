@@ -2,14 +2,16 @@ import { colName, type Cell, type Sheet, type Style, xlsx } from "@/lib/xlsx";
 import { scrubContact } from "./sheet";
 import type { SurveyQuestion } from "./validate";
 
-// The survey as an Excel file for the founder (board → Download Excel): every answer, one row per person, plus a
-// Summary of formulas over those rows and a Notes tab. No emails or phones: contact details typed into answers are
-// removed, and waitlist contacts never come here. Each formula carries its value too, for previews that never calculate.
+// The survey as an Excel file for the founder (board → Download Excel): every answer, one row per person, a Summary of
+// formulas over those rows, the names and contacts people gave at the end of the survey (Contacts tab, owner only) and
+// a Notes tab. Contact details typed into answers are removed, and waitlist contacts never come here. Each formula
+// carries its value too, for previews that never calculate.
 
 export type WorkbookResponse = {
   id: string; respondentId: string; updatedAt: Date; utm: Record<string, string> | null;
   answers: Record<string, string | string[] | undefined>;
 };
+export type WorkbookContact = { respondentId: string; name: string; email: string | null; phone: string | null; whatsappOptin: boolean; updatedAt: Date };
 
 const ANCHOR = ["Whey / protein powder", "Protein bars or snacks"]; // as in board.ts and scripts/survey_analyze.py
 const SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"];
@@ -25,7 +27,9 @@ const num = (v: number, s: Style = "cell"): Cell => ({ v, s });
 const formula = (f: string, v: number | string, s: Style = "cell"): Cell => ({ f, v, s });
 const q = (s: string) => `"${s.replace(/"/g, '""')}"`;
 
-export function surveyWorkbook(questions: SurveyQuestion[], responses: WorkbookResponse[], joined: Set<string>, now: Date): Uint8Array {
+export function surveyWorkbook(
+  questions: SurveyQuestion[], responses: WorkbookResponse[], joined: Set<string>, now: Date, contacts: WorkbookContact[] = [],
+): Uint8Array {
   const rows = [...responses].sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime());
   const cell = (r: WorkbookResponse, qn: SurveyQuestion): string | number | null => {
     const v = r.answers[qn.id];
@@ -141,6 +145,28 @@ export function surveyWorkbook(questions: SurveyQuestion[], responses: WorkbookR
   }
   const summarySheet: Sheet = { name: "Summary", rows: sum, cols: [52, 16, 16, 16, 16], merges: ["A2:E2"] };
 
+  // ── Contacts ── (owner only: the board's Excel download; never the sheet feed, the agents or the repo)
+  const byRespondent = new Map(responses.map((r) => [r.respondentId, r]));
+  const answerOf = (rid: string, id: string): Cell => {
+    const r = byRespondent.get(rid);
+    const qn = byId.get(id);
+    const v = r && qn ? cell(r, qn) : null;
+    return typeof v === "number" ? num(v) : str(v ?? "");
+  };
+  const contactsSheet: Sheet = {
+    name: "Contacts",
+    cols: [26, 18, 30, 12, 18, 14, 16, 38],
+    freeze: "B2",
+    rows: [
+      { cells: ["Name", "WhatsApp number", "Email", "WhatsApp OK", "Saved (India time)", "Likely to buy (Q9)", "Would pay (Q5)", "Response id"].map((h) => str(h, "head")), height: 30 },
+      ...contacts.map((c): Cell[] => [
+        str(c.name), str(c.phone ?? ""), str(c.email ?? ""), str(c.whatsappOptin ? "Yes" : "No"), { v: c.updatedAt, s: "date" },
+        answerOf(c.respondentId, "Q9"), answerOf(c.respondentId, "Q5"), str(byRespondent.get(c.respondentId)?.id ?? ""),
+      ]),
+      ...(contacts.length ? [] : [[{ v: "No names yet: the survey asks for them since 8 Nov 2026.", s: "note" as const }]]),
+    ],
+  };
+
   // ── Notes ──
   const notes: Sheet = {
     name: "Notes",
@@ -148,7 +174,9 @@ export function surveyWorkbook(questions: SurveyQuestion[], responses: WorkbookR
     rows: [
       [{ v: "About this file", s: "title" }],
       [{ v: `Downloaded from the agent board on ${fmtIst(now)} India time: ${n} responses.` }],
-      [{ v: "Survey answers only. Waitlist emails and phone numbers are not in this file; they stay in the admin export." }],
+      [{ v: "Since 8 Nov 2026 the survey ends by asking for a name and a WhatsApp number or email, with consent: they are on the Contacts tab." }],
+      [{ v: "Giving contact was required, so it is not a behaviour signal (E1); joining the waitlist still is." }],
+      [{ v: "Waitlist emails and phone numbers are not in this file; they stay in the admin export." }],
       [{ v: "Any email or phone number typed into a free-text answer is replaced with [email removed] or [phone removed]." }],
       [{ v: "Submitted is the last time that person saved their answers (India time). One person who resubmits stays one row." }],
       [{ v: "Grades: a survey answer is prompted interest (E3); joining the waitlist is behaviour (E1)." }],
@@ -160,10 +188,10 @@ export function surveyWorkbook(questions: SurveyQuestion[], responses: WorkbookR
       [{ v: "Responses that came through an untagged link show as 'direct (no tag)' in the Source column." }],
       [],
       [{ v: "Keep this file private", s: "bold" }],
-      [{ v: "Respondents were told nothing is shared. Do not upload it anywhere public or commit it to the repo." }],
+      [{ v: "It holds names and phone numbers, and respondents were told nothing is shared. Do not upload it anywhere public or commit it to the repo." }],
     ],
   };
-  return xlsx([responsesSheet, summarySheet, notes]);
+  return xlsx([responsesSheet, summarySheet, contactsSheet, notes]);
 }
 
 export const fmtIst = (d: Date) =>

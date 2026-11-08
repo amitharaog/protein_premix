@@ -39,3 +39,5 @@ The repo's research rules say a public page must be approved line by line before
 - the `survey_questions` table (seeded from `seed/survey_questions.json`): question wording and answer options
 
 Since 8 Nov 2026 (survey v2) the survey runs as the "Ministry of Cravings" dessert census and never names or describes the product; Q5 asks for "one serving". `src/content/content.test.ts` fails if the copy around the questions mentions the product, gluten or a gram figure. A question added in the database before its copy exists still shows, with a plain host line.
+
+Since 8 Nov 2026 the survey is not anonymous: its last step requires a name and a WhatsApp number or email, with consent (`src/lib/survey/contact.ts`). They are saved in `survey_contacts` in the same statement as the answers, and only the board (`/board?key=…`, "Names and contacts") and its Excel download (Contacts tab) show them. The last screen lets the person delete them again.

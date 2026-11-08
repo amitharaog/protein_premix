@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { expect, test } from "@playwright/test";
 import { Client } from "pg";
@@ -26,6 +27,25 @@ test("the removed agents have no pages and no commands", async ({ request }) => 
   const auth = { authorization: `Bearer ${key}` };
   const scheduled = await request.post("/api/board/runs", { headers: auth, data: { event: "scheduled", command: "/trends", run_url: "https://github.com/amitharaog/protein_premix/actions/runs/7" } });
   expect(scheduled.status()).toBe(400); // no daily runs any more
+});
+
+test("names and contacts from the survey show on the board", async ({ page }) => {
+  test.skip(key.length < 24 || !process.env.DATABASE_URL, "BOARD_KEY or DATABASE_URL is not set for this run");
+  const db = new Client({ connectionString: process.env.DATABASE_URL });
+  await db.connect();
+  const rid = randomUUID();
+  try {
+    await db.query("insert into survey_responses (respondent_id, answers) values ($1, $2)", [rid, { Q9: "5", Q5: "₹100-150" }]);
+    await db.query("insert into survey_contacts (respondent_id, name, phone, whatsapp_optin) values ($1, $2, $3, true)", [rid, "Board Test Person", "+919876543210"]);
+    await page.goto(`/board?key=${k}`);
+    await page.getByText(/^Names and contacts \(\d+\)$/).click();
+    const row = page.getByRole("row", { name: /Board Test Person/ });
+    await expect(row).toBeVisible();
+    await expect(row.getByRole("link", { name: "+919876543210" })).toHaveAttribute("href", "https://wa.me/919876543210");
+  } finally {
+    await db.query("delete from survey_responses where respondent_id = $1", [rid]); // the contact goes with it
+    await db.end();
+  }
 });
 
 test("the Excel download needs the key and is a real workbook", async ({ request }) => {

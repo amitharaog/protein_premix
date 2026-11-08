@@ -2,7 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { brand } from "@/config/brand";
-import { done, intro, personalities, ui } from "./survey";
+import { contactStep, done, intro, personalities, ui } from "./survey";
 
 // docs/COMPLIANCE.md banned words and the research wedge rule (no "healthy"/"sugar-free" positioning).
 const BANNED = ["muscle", "recovery", "immunity", "diabetic", "weight loss", "burn", "detox", "cure", "doctor-recommended", "healthy", "sugar-free", "guilt-free"];
@@ -29,13 +29,19 @@ describe("public copy", () => {
 // mentions gluten or a gram figure, so nothing reads as a gluten-free or protein claim (CLAUDE.md rule 5).
 describe("copy around the questions", () => {
   const frame = [
-    JSON.stringify([intro, done, ui, personalities, brand]),
+    JSON.stringify([intro, done, ui, personalities, brand, contactStep]),
     intro.kicker(11),
     done.shareText("The Curious Crumb", "https://example.com/survey"),
   ].join(" ").toLowerCase();
 
   it("says nothing about the product", () => {
     for (const word of ["premix", "sachet", "mug cake", "recipe", "protein-based", "launching"]) expect(frame).not.toContain(word);
+  });
+
+  it("no longer promises anonymity, and says up front that it asks for a name and contact", () => {
+    expect(frame).not.toContain("anonymous");
+    expect(intro.contactNote.toLowerCase()).toContain("name");
+    expect(intro.purpose.toLowerCase()).toContain("your name and contact");
   });
 
   it("makes no gluten or gram claims", () => {
