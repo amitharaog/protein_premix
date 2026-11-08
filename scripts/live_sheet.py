@@ -31,6 +31,9 @@ then (the feed's ?since=). Build the new set with:
   --responses-tab "New responses" --summary-tab "New summary" --segments-tab "New segments" --since 2026-11-08T09:30:00Z
 A New contacts tab holds the names and contacts from the survey's last step: its A1 is the New responses formula with
 /api/sheet/responses swapped for /api/sheet/contacts (that feed takes only the sheet key; the agents cannot read it).
+New responses has a Name column in A (frozen; a lookup from New contacts by response_id), so its feed starts in B:
+build that set with --name-column as well. response_id, source, utm_medium, ref and the switched-off questions are
+hidden columns there.
 
 Usage: python3 scripts/live_sheet.py --key KEY [--site https://ministryofcravings.vercel.app] [tab options] > content.json
 """
@@ -44,7 +47,7 @@ SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"]
 SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder shares links with
 
 
-def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_tab="Segments", since=None):
+def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_tab="Segments", since=None, name_column=False):
     qs = {q["id"]: q for q in json.load(open(os.path.join(ROOT, "app", "seed", "survey_questions.json"), encoding="utf-8"))}
     quote = lambda t: t if t.isalnum() else "'" + t.replace("'", "''") + "'"
     R, S, G = quote(responses_tab), quote(summary_tab), quote(segments_tab)
@@ -53,7 +56,9 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
         ist = datetime.fromisoformat(since.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=5, minutes=30)))
         title = f"Dessert census, new answers since {ist.day} {ist:%b %Y}, {ist:%I:%M %p}".replace(" 0", " ").replace("AM", "am").replace("PM", "pm") + ", live"
     letters = lambda n: (letters((n - 1) // 26) if n > 26 else "") + chr(65 + (n - 1) % 26)  # 1 -> A, 27 -> AA
-    col = {qid: letters(8 + int(qid[1:])) for qid in qs}  # Q1 is column 9 (I)
+    off = 1 if name_column else 0  # a Name column in A pushes the whole feed one column right
+    fx = lambda n: letters(n + off)  # fixed feed columns: 1 response_id, 2 submitted, 4 utm_source, 8 joined_waitlist
+    col = {qid: letters(8 + int(qid[1:]) + off) for qid in qs}  # Q1 is column 9 (I), or J with a Name column
     rng = lambda qid: f"{R}!${col[qid]}$2:${col[qid]}"
     blank = [None] * 5
     rows = [
@@ -74,8 +79,8 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
             fmt[kind].append(f"B{len(rows)}")
         return len(rows)
 
-    n = add("Responses", f"=COUNTA({R}!$A$2:$A)")
-    wl = add("Joined the waitlist (E1, behaviour)", f'=COUNTIF({R}!$H$2:$H,"yes")')
+    n = add("Responses", f"=COUNTA({R}!${fx(1)}$2:${fx(1)})")
+    wl = add("Joined the waitlist (E1, behaviour)", f'=COUNTIF({R}!${fx(8)}$2:${fx(8)},"yes")')
     ans = add("Answered how likely they are to buy (Q9)", f"=COUNT({rng('Q9')})")
     l45 = add("Likely 4 or 5 (E3, prompted)", f'=COUNTIF({rng("Q9")},">=4")')
     add("Share likely 4 or 5", f"=IF(B{ans}=0,0,B{l45}/B{ans})", "pct")
@@ -84,7 +89,7 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
     pans = add("Answered the price question (Q5)", f"=COUNTA({rng('Q5')})")
     hi = add("Would pay ₹100 or more per serving", f'=COUNTIF({rng("Q5")},"₹100-150")+COUNTIF({rng("Q5")},"₹150+")')
     add("Share paying ₹100 or more (hypothesis: ₹99 single)", f"=IF(B{pans}=0,0,B{hi}/B{pans})", "pct")
-    add("Latest response (India time)", f'=IF(B{n}=0,"",INDEX({R}!$B$2:$B,B{n}))')
+    add("Latest response (India time)", f'=IF(B{n}=0,"",INDEX({R}!${fx(2)}$2:${fx(2)},B{n}))')
 
     for qid in ORDER:
         q = qs[qid]
@@ -118,7 +123,7 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
 
     rows += [blank, ["Where responses came from (utm_source on the link)", "Responses", "% of all", None, None]]
     fmt["heads"].append(len(rows))
-    src = f"{R}!$D$2:$D"
+    src = f"{R}!${fx(4)}$2:${fx(4)}"
     for label in SOURCES + ["No tag (link shared without utm_source)", "Other tags"]:
         r = len(rows) + 1
         count = (f"=COUNTIF({src},$A{r})" if label in SOURCES
@@ -132,8 +137,8 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
     q2, q9 = f"{R}!${col['Q2']}$2:${col['Q2']}", rng("Q9")
     segments = [
         ["Segment (from Q2)", "Likely to buy (Q9)"],
-        [f'=ARRAYFORMULA(IF({R}!$A$2:$A="",,IF({q2}="","{SEGMENTS[2]}",IF(REGEXMATCH({q2},"{ANCHOR}"),"{SEGMENTS[0]}","{SEGMENTS[1]}"))))',
-         f'=ARRAYFORMULA(IF({R}!$A$2:$A="",,{q9}))'],
+        [f'=ARRAYFORMULA(IF({R}!${fx(1)}$2:${fx(1)}="",,IF({q2}="","{SEGMENTS[2]}",IF(REGEXMATCH({q2},"{ANCHOR}"),"{SEGMENTS[0]}","{SEGMENTS[1]}"))))',
+         f'=ARRAYFORMULA(IF({R}!${fx(1)}$2:${fx(1)}="",,{q9}))'],
     ]
     notes = [
         ["About this sheet"],
@@ -149,8 +154,12 @@ def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_
         ["Keep this sheet private: respondents were told nothing is shared, and the formula in Responses!A1 holds the feed's key."],
     ]
     feed = f"{site}/api/sheet/responses?" + (f"since={since}&" if since else "") + f"key={key}"
-    return {"responses_a1": f'=IMPORTDATA("{feed}&refresh="&{S}!$B$4)', "summary": rows, "segments": segments,
+    out = {"responses_a1": f'=IMPORTDATA("{feed}&refresh="&{S}!$B$4)', "summary": rows, "segments": segments,
             "notes": notes, "format": fmt}
+    if name_column:  # Name in A, looked up by response_id from the contacts tab (A response_id, C name)
+        out["name_a1"], out["name_a2"] = "Name", f"=ARRAYFORMULA(IF(B2:B=\"\",,IFERROR(VLOOKUP(B2:B,'New contacts'!$A$2:$C,3,FALSE),\"\")))"
+        out["responses_b1"] = out.pop("responses_a1")
+    return out
 
 
 if __name__ == "__main__":
@@ -161,5 +170,6 @@ if __name__ == "__main__":
     ap.add_argument("--summary-tab", default="Summary")
     ap.add_argument("--segments-tab", default="Segments")
     ap.add_argument("--since", default=None, help="ISO time: only answers saved from then on (feed ?since=)")
+    ap.add_argument("--name-column", action="store_true", help="the responses tab has a Name lookup in A; the feed starts in B")
     a = ap.parse_args()
-    print(json.dumps(build(a.key, a.site.rstrip("/"), a.responses_tab, a.summary_tab, a.segments_tab, a.since), ensure_ascii=False, indent=1))
+    print(json.dumps(build(a.key, a.site.rstrip("/"), a.responses_tab, a.summary_tab, a.segments_tab, a.since, a.name_column), ensure_ascii=False, indent=1))
