@@ -40,3 +40,16 @@ export function toSheetCsv(questions: SheetQuestion[], responses: SheetResponse[
     ].map(csvCell).join(","));
   return [head.map(csvCell).join(","), ...rows].join("\n") + "\n";
 }
+
+/**
+ * `?since=2026-11-08T09:30:00Z` on the feed keeps only responses saved at or after that moment, so the sheet's
+ * "New responses" tab gets the new survey's answers while the old tabs stay frozen. Null when absent; "invalid" when unreadable.
+ */
+export function parseSince(raw: string | null): Date | null | "invalid" {
+  if (raw == null || raw === "") return null;
+  const d = new Date(raw);
+  return /^\d{4}-\d{2}-\d{2}/.test(raw) && !Number.isNaN(d.getTime()) ? d : "invalid";
+}
+
+export const savedSince = <T extends { updatedAt: Date }>(rows: T[], since: Date | null): T[] =>
+  since ? rows.filter((r) => r.updatedAt.getTime() >= since.getTime()) : rows;

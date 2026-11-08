@@ -25,9 +25,15 @@ Feed columns: A response_id, B submitted_at_ist, C source, D utm_source, E utm_m
 H joined_waitlist, then every question in number order (Q1 in I to Q18 in Z); switched-off questions stay as empty
 columns, so these letters do not move.
 
-Usage: python3 scripts/live_sheet.py --key KEY [--site https://ministryofcravings.vercel.app] > content.json
+Since 8 Nov 2026 3 pm (the new survey) the sheet has two sets of tabs: Responses, Summary and Segments hold the answers
+from before, frozen as values; New responses, New summary and New segments are live and show only answers saved since
+then (the feed's ?since=). Build the new set with:
+  --responses-tab "New responses" --summary-tab "New summary" --segments-tab "New segments" --since 2026-11-08T09:30:00Z
+
+Usage: python3 scripts/live_sheet.py --key KEY [--site https://ministryofcravings.vercel.app] [tab options] > content.json
 """
 import argparse, json, os
+from datetime import datetime, timedelta, timezone
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ORDER = ["Q11", "Q14", "Q3", "Q15", "Q16", "Q17", "Q2", "Q12", "Q13", "Q18", "Q1", "Q8", "Q9", "Q5"]  # survey order; Q10 is free text
@@ -36,15 +42,21 @@ SEGMENTS = ["Buys whey or protein bars", "Buys neither", "Skipped Q2"]
 SOURCES = ["linkedin", "instagram", "whatsapp"]  # utm_source values the founder shares links with
 
 
-def build(key, site):
+def build(key, site, responses_tab="Responses", summary_tab="Summary", segments_tab="Segments", since=None):
     qs = {q["id"]: q for q in json.load(open(os.path.join(ROOT, "app", "seed", "survey_questions.json"), encoding="utf-8"))}
+    quote = lambda t: t if t.isalnum() else "'" + t.replace("'", "''") + "'"
+    R, S, G = quote(responses_tab), quote(summary_tab), quote(segments_tab)
+    title = "Dessert census (Ministry of Cravings), live"
+    if since:
+        ist = datetime.fromisoformat(since.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=5, minutes=30)))
+        title = f"Dessert census, new answers since {ist.day} {ist:%b %Y}, {ist:%I:%M %p}".replace(" 0", " ").replace("AM", "am").replace("PM", "pm") + ", live"
     letters = lambda n: (letters((n - 1) // 26) if n > 26 else "") + chr(65 + (n - 1) % 26)  # 1 -> A, 27 -> AA
     col = {qid: letters(8 + int(qid[1:])) for qid in qs}  # Q1 is column 9 (I)
-    rng = lambda qid: f"Responses!${col[qid]}$2:${col[qid]}"
+    rng = lambda qid: f"{R}!${col[qid]}$2:${col[qid]}"
     blank = [None] * 5
     rows = [
-        ["Dessert census (Ministry of Cravings), live", None, None, None, None],
-        ["Every answer from the live survey lands in the Responses tab; every number below is a formula over it. "
+        [title, None, None, None, None],
+        [f"Every answer from the live survey lands in the {responses_tab} tab; every number below is a formula over it. "
          "Under 30 responses, percentages are directional only.", None, None, None, None],
         blank,
         ["Refresh now: change this number (type the next one)", 1, None, None, None],
@@ -60,8 +72,8 @@ def build(key, site):
             fmt[kind].append(f"B{len(rows)}")
         return len(rows)
 
-    n = add("Responses", "=COUNTA(Responses!$A$2:$A)")
-    wl = add("Joined the waitlist (E1, behaviour)", '=COUNTIF(Responses!$H$2:$H,"yes")')
+    n = add("Responses", f"=COUNTA({R}!$A$2:$A)")
+    wl = add("Joined the waitlist (E1, behaviour)", f'=COUNTIF({R}!$H$2:$H,"yes")')
     ans = add("Answered how likely they are to buy (Q9)", f"=COUNT({rng('Q9')})")
     l45 = add("Likely 4 or 5 (E3, prompted)", f'=COUNTIF({rng("Q9")},">=4")')
     add("Share likely 4 or 5", f"=IF(B{ans}=0,0,B{l45}/B{ans})", "pct")
@@ -70,7 +82,7 @@ def build(key, site):
     pans = add("Answered the price question (Q5)", f"=COUNTA({rng('Q5')})")
     hi = add("Would pay ₹100 or more per serving", f'=COUNTIF({rng("Q5")},"₹100-150")+COUNTIF({rng("Q5")},"₹150+")')
     add("Share paying ₹100 or more (hypothesis: ₹99 single)", f"=IF(B{pans}=0,0,B{hi}/B{pans})", "pct")
-    add("Latest response (India time)", f'=IF(B{n}=0,"",INDEX(Responses!$B$2:$B,B{n}))')
+    add("Latest response (India time)", f'=IF(B{n}=0,"",INDEX({R}!$B$2:$B,B{n}))')
 
     for qid in ORDER:
         q = qs[qid]
@@ -91,7 +103,7 @@ def build(key, site):
 
     rows += [blank, ["Anchor buyers against others (Q2)", "Responses", "Answered Q9", "Likely 4 or 5", "Average likely"]]
     fmt["heads"].append(len(rows))
-    seg, lik = "Segments!$A$2:$A", "Segments!$B$2:$B"
+    seg, lik = f"{G}!$A$2:$A", f"{G}!$B$2:$B"
     for g in SEGMENTS:
         r = len(rows) + 1
         rows.append([g, f"=COUNTIF({seg},$A{r})", f'=COUNTIFS({seg},$A{r},{lik},">=1")',
@@ -104,7 +116,7 @@ def build(key, site):
 
     rows += [blank, ["Where responses came from (utm_source on the link)", "Responses", "% of all", None, None]]
     fmt["heads"].append(len(rows))
-    src = "Responses!$D$2:$D"
+    src = f"{R}!$D$2:$D"
     for label in SOURCES + ["No tag (link shared without utm_source)", "Other tags"]:
         r = len(rows) + 1
         count = (f"=COUNTIF({src},$A{r})" if label in SOURCES
@@ -115,11 +127,11 @@ def build(key, site):
                  None, None, None, None])
     fmt["notes"].append(len(rows))
 
-    q2, q9 = f"Responses!${col['Q2']}$2:${col['Q2']}", rng("Q9")
+    q2, q9 = f"{R}!${col['Q2']}$2:${col['Q2']}", rng("Q9")
     segments = [
         ["Segment (from Q2)", "Likely to buy (Q9)"],
-        [f'=ARRAYFORMULA(IF(Responses!$A$2:$A="",,IF({q2}="","{SEGMENTS[2]}",IF(REGEXMATCH({q2},"{ANCHOR}"),"{SEGMENTS[0]}","{SEGMENTS[1]}"))))',
-         f'=ARRAYFORMULA(IF(Responses!$A$2:$A="",,{q9}))'],
+        [f'=ARRAYFORMULA(IF({R}!$A$2:$A="",,IF({q2}="","{SEGMENTS[2]}",IF(REGEXMATCH({q2},"{ANCHOR}"),"{SEGMENTS[0]}","{SEGMENTS[1]}"))))',
+         f'=ARRAYFORMULA(IF({R}!$A$2:$A="",,{q9}))'],
     ]
     notes = [
         ["About this sheet"],
@@ -134,8 +146,8 @@ def build(key, site):
          "(utm_source=instagram for Instagram). Untagged links leave utm_source blank."],
         ["Keep this sheet private: respondents were told nothing is shared, and the formula in Responses!A1 holds the feed's key."],
     ]
-    feed = f"{site}/api/sheet/responses?key={key}"
-    return {"responses_a1": f'=IMPORTDATA("{feed}&refresh="&Summary!$B$4)', "summary": rows, "segments": segments,
+    feed = f"{site}/api/sheet/responses?" + (f"since={since}&" if since else "") + f"key={key}"
+    return {"responses_a1": f'=IMPORTDATA("{feed}&refresh="&{S}!$B$4)', "summary": rows, "segments": segments,
             "notes": notes, "format": fmt}
 
 
@@ -143,5 +155,9 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--key", required=True, help="SHEET_EXPORT_TOKEN, as set on Vercel")
     ap.add_argument("--site", default="https://ministryofcravings.vercel.app")
+    ap.add_argument("--responses-tab", default="Responses")
+    ap.add_argument("--summary-tab", default="Summary")
+    ap.add_argument("--segments-tab", default="Segments")
+    ap.add_argument("--since", default=None, help="ISO time: only answers saved from then on (feed ?since=)")
     a = ap.parse_args()
-    print(json.dumps(build(a.key, a.site.rstrip("/")), ensure_ascii=False, indent=1))
+    print(json.dumps(build(a.key, a.site.rstrip("/"), a.responses_tab, a.summary_tab, a.segments_tab, a.since), ensure_ascii=False, indent=1))

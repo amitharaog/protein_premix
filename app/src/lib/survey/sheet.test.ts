@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SHEET_FIXED_COLUMNS, scrubContact, toSheetCsv } from "./sheet";
+import { SHEET_FIXED_COLUMNS, parseSince, savedSince, scrubContact, toSheetCsv } from "./sheet";
 
 const questions = [
   { id: "Q10", question: "Why?" },
@@ -37,5 +37,20 @@ describe("scrubContact", () => {
     );
     expect(scrubContact("₹100-150")).toBe("₹100-150");
     expect(scrubContact(["Microwave", "Air fryer"])).toEqual(["Microwave", "Air fryer"]);
+  });
+});
+
+describe("since filter for the New responses tab", () => {
+  const rows = [{ id: "old", updatedAt: new Date("2026-10-30T07:25:00Z") }, { id: "new", updatedAt: new Date("2026-11-08T09:30:00Z") }];
+  it("keeps responses saved at or after the moment, and everything without one", () => {
+    expect(savedSince(rows, new Date("2026-11-08T09:30:00Z")).map((r) => r.id)).toEqual(["new"]);
+    expect(savedSince(rows, null).map((r) => r.id)).toEqual(["old", "new"]);
+  });
+  it("reads ISO times and refuses anything else", () => {
+    expect(parseSince("2026-11-08T09:30:00Z")).toEqual(new Date("2026-11-08T09:30:00Z"));
+    expect(parseSince(null)).toBeNull();
+    expect(parseSince("")).toBeNull();
+    expect(parseSince("yesterday")).toBe("invalid");
+    expect(parseSince("1")).toBe("invalid");
   });
 });
