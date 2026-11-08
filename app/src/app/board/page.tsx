@@ -273,7 +273,7 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
           <summary className="cursor-pointer">
             <span className="font-head text-base font-semibold text-frost">Names and contacts ({contacts.length})</span>
             <span className="block text-xs text-muted">
-              Asked at the end of the survey since 8 Nov 2026, with consent. Only this page and its Excel download show them: never the Google Sheet feed, the agents or the repo. Giving contact was required, so it is not a behaviour signal (E1); the waitlist still is.
+              Asked at the end of the survey since 8 Nov 2026, with consent. Only you see them: here, in the Excel download and in the New contacts tab of your Google Sheet. Never the answers feed, the agents or the repo. Giving contact was required, so it is not a behaviour signal (E1); the waitlist still is.
             </span>
           </summary>
           {contacts.length === 0 ? (

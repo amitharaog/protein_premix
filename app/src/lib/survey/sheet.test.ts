@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SHEET_FIXED_COLUMNS, parseSince, savedSince, scrubContact, toSheetCsv } from "./sheet";
+import { SHEET_FIXED_COLUMNS, contactsCsv, localPhone, parseSince, savedSince, scrubContact, toSheetCsv } from "./sheet";
 
 const questions = [
   { id: "Q10", question: "Why?" },
@@ -52,5 +52,24 @@ describe("since filter for the New responses tab", () => {
     expect(parseSince("")).toBeNull();
     expect(parseSince("yesterday")).toBe("invalid");
     expect(parseSince("1")).toBe("invalid");
+  });
+});
+
+describe("contactsCsv for the New contacts tab", () => {
+  const csv = contactsCsv([
+    { id: "r2", updatedAt: new Date("2026-11-08T10:00:00Z"), name: "=Asha", phone: "+919876543210", email: null, whatsappOptin: true, answers: { Q9: "5", Q5: "₹100-150" } },
+    { id: "r1", updatedAt: new Date("2026-11-08T09:40:00Z"), name: "Ravi", phone: null, email: "ravi@example.com", whatsappOptin: false, answers: {} },
+  ]);
+  const [head, first, second] = csv.trim().split("\n");
+
+  it("lists name, contact and the two key answers, oldest first, matched by response id", () => {
+    expect(head).toBe("response_id,submitted_at_ist,name,phone,email,whatsapp_ok,whatsapp_link,likely_to_buy_q9,would_pay_q5");
+    expect(first).toBe("r1,2026-11-08 15:10,Ravi,,ravi@example.com,no,,,");
+    expect(second).toBe("r2,2026-11-08 15:30,'=Asha,98765 43210,,yes,https://wa.me/919876543210,5,₹100-150");
+  });
+
+  it("writes Indian mobiles so the sheet keeps them as text", () => {
+    expect(localPhone("+919876543210")).toBe("98765 43210");
+    expect(localPhone(null)).toBe("");
   });
 });

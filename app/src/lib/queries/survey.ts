@@ -37,6 +37,14 @@ export async function surveyContactList(): Promise<ContactRow[]> {
   }).from(surveyContacts).orderBy(desc(surveyContacts.updatedAt));
 }
 
+/** Names and contacts with their response, for the founder's private sheet (/api/sheet/contacts). Nothing else calls it. */
+export async function sheetContacts() {
+  return db.select({
+    id: surveyResponses.id, updatedAt: surveyResponses.updatedAt, answers: surveyResponses.answers,
+    name: surveyContacts.name, phone: surveyContacts.phone, email: surveyContacts.email, whatsappOptin: surveyContacts.whatsappOptin,
+  }).from(surveyContacts).innerJoin(surveyResponses, eq(surveyContacts.respondentId, surveyResponses.respondentId));
+}
+
 /** Distinct respondents from one hashed IP in the last hour (resubmits by the same cookie update one row). */
 export async function recentSubmitsFromIp(ipHash: string): Promise<number> {
   const [row] = await db.select({ n: count() }).from(surveyResponses)

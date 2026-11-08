@@ -53,3 +53,34 @@ export function parseSince(raw: string | null): Date | null | "invalid" {
 
 export const savedSince = <T extends { updatedAt: Date }>(rows: T[], since: Date | null): T[] =>
   since ? rows.filter((r) => r.updatedAt.getTime() >= since.getTime()) : rows;
+
+// ── Names and contacts for the founder's private sheet ("New contacts" tab), from /api/sheet/contacts ──
+// A separate feed from the answers: it takes only the sheet key, never the research agents' token, so contacts
+// never reach an AI. Each row carries its response_id to match the New responses tab.
+
+export const SHEET_CONTACT_COLUMNS = [
+  "response_id", "submitted_at_ist", "name", "phone", "email", "whatsapp_ok", "whatsapp_link", "likely_to_buy_q9", "would_pay_q5",
+];
+
+export type SheetContact = {
+  id: string; updatedAt: Date; name: string; phone: string | null; email: string | null; whatsappOptin: boolean;
+  answers: Record<string, string | string[] | undefined>;
+};
+
+/** +919876543210 -> "98765 43210": the space keeps the sheet from turning it into a number or a formula. */
+export const localPhone = (p: string | null) => {
+  if (!p) return "";
+  const m = p.match(/^\+91(\d{5})(\d{5})$/);
+  return m ? `${m[1]} ${m[2]}` : p.replace(/^\+/, "");
+};
+
+export function contactsCsv(rows: SheetContact[]): string {
+  const body = [...rows]
+    .sort((a, b) => a.updatedAt.getTime() - b.updatedAt.getTime())
+    .map((r) => [
+      r.id, istStamp(r.updatedAt), r.name, localPhone(r.phone), r.email ?? "", r.whatsappOptin ? "yes" : "no",
+      r.whatsappOptin && r.phone ? `https://wa.me/${r.phone.replace(/\D/g, "")}` : "",
+      typeof r.answers.Q9 === "string" ? r.answers.Q9 : "", typeof r.answers.Q5 === "string" ? r.answers.Q5 : "",
+    ].map(csvCell).join(","));
+  return [SHEET_CONTACT_COLUMNS.join(","), ...body].join("\n") + "\n";
+}

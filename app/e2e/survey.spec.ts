@@ -89,4 +89,12 @@ test("admin and the CSV export are closed to people who are not signed in", asyn
   expect((await request.get("/admin/export")).status()).toBe(404);
   expect((await request.get("/api/sheet/responses")).status()).toBe(404);
   expect((await request.get("/api/sheet/responses?key=wrong-key-wrong-key-wrong-key")).status()).toBe(404);
+  // Names and contacts: only the sheet key opens that feed, never the owner's or the agents' Bearer token.
+  expect((await request.get("/api/sheet/contacts")).status()).toBe(404);
+  expect((await request.get("/api/sheet/contacts?key=wrong-key-wrong-key-wrong-key")).status()).toBe(404);
+  const bearer = process.env.BOARD_KEY ?? "";
+  if (bearer.length >= 24) {
+    expect((await request.get("/api/sheet/responses", { headers: { authorization: `Bearer ${bearer}` } })).status()).toBe(200);
+    expect((await request.get("/api/sheet/contacts", { headers: { authorization: `Bearer ${bearer}` } })).status()).toBe(404);
+  }
 });

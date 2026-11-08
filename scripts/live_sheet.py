@@ -29,6 +29,8 @@ Since 8 Nov 2026 3 pm (the new survey) the sheet has two sets of tabs: Responses
 from before, frozen as values; New responses, New summary and New segments are live and show only answers saved since
 then (the feed's ?since=). Build the new set with:
   --responses-tab "New responses" --summary-tab "New summary" --segments-tab "New segments" --since 2026-11-08T09:30:00Z
+A New contacts tab holds the names and contacts from the survey's last step: its A1 is the New responses formula with
+/api/sheet/responses swapped for /api/sheet/contacts (that feed takes only the sheet key; the agents cannot read it).
 
 Usage: python3 scripts/live_sheet.py --key KEY [--site https://ministryofcravings.vercel.app] [tab options] > content.json
 """
