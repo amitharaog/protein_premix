@@ -4,23 +4,23 @@ import { stepAt, STILLS, storyAt, storyVars } from "./timeline";
 describe("launch page story", () => {
   it("starts with a whole QIXO sachet and nothing else on stage", () => {
     const s = storyAt(0);
-    expect(s).toMatchObject({ idle: true, tear: 0, tilt: 0, pour: 0, milkIn: 0, ovenIn: 0, finalIn: 0, hint: 1, step: 0 });
+    expect(s).toMatchObject({ idle: true, tear: 0, tilt: 0, pour: 0, mugZoom: 0, milkIn: 0, ovenIn: 0, finalIn: 0, hint: 1, step: 0 });
   });
 
-  it("tears the sachet, tips it and pours while the mug rises in to catch it", () => {
+  it("tears the sachet, tips it and pours into the mug", () => {
     const s = storyAt(0.8);
     expect(s.tear).toBe(1);
     expect(s.tilt).toBe(1);
     expect(s.pour).toBe(1);
-    expect(s.milkIn).toBeGreaterThan(0);
-    expect(s.milkIn).toBeLessThan(1);
-    expect(storyAt(1.2).milkIn).toBe(1);
+    expect(s.milkIn).toBe(0);
+    expect(storyAt(1.3).milkIn).toBe(1);
   });
 
   it("shows the milk going in once the sachet has gone", () => {
     const s = storyAt(1.6);
     expect(s.sachetOut).toBe(1);
     expect(s.pour).toBe(0);
+    expect(s.mugZoom).toBe(1);
     expect(s.milkIn).toBe(1);
     expect(s.milkOut).toBe(0);
     expect(s.ovenIn).toBe(0);
@@ -30,6 +30,7 @@ describe("launch page story", () => {
   it("cooks with the light on and the dessert rising behind the glass", () => {
     const s = storyAt(2.7);
     expect(s.milkOut).toBe(1);
+    expect(s.mugOut).toBe(1);
     expect(s.ovenIn).toBe(1);
     expect(s.glow).toBe(1);
     expect(s.rise).toBeGreaterThan(0.5);
@@ -44,7 +45,7 @@ describe("launch page story", () => {
   });
 
   it("only moves forward: nothing that arrives ever goes back", () => {
-    const keys = ["tear", "tilt", "sachetOut", "milkIn", "milkZoom", "milkOut", "ovenIn", "glow", "rise", "zoom", "ovenOut", "finalIn"] as const;
+    const keys = ["tear", "tilt", "sachetOut", "mugZoom", "milkIn", "milkOut", "mugOut", "ovenIn", "glow", "rise", "zoom", "ovenOut", "finalIn"] as const;
     let prev = storyAt(0);
     for (let t = 0.01; t <= 4; t += 0.01) {
       const s = storyAt(t);

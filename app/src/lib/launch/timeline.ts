@@ -1,7 +1,7 @@
 // The launch page's scroll story as numbers from 0 to 1, all from one input T: 0 at the top of the page, 4 at the end.
-// Step 1 (0-1): the QIXO sachet tears open and pours, and the mug rises in to catch it. Step 2 (1-2): milk goes in.
-// Step 3 (2-3): into the microwave; the light comes on and it rises behind the glass. Step 4 (3-4): ding, the camera
-// goes through the door, and there is the finished dessert. The page turns these into CSS variables; tests read them.
+// Step 1 (0-1): the QIXO sachet tears open and pours into the mug. Step 2 (1-2): the jug slides in and milk goes in.
+// Step 3 (2-3): the mug goes into the microwave; the light comes on and it bakes behind the glass. Step 4 (3-4): ding,
+// the camera goes through the door, and there is the finished dessert. The page turns these into CSS variables.
 
 export type Story = {
   idle: boolean;     // the sachet bobs gently before anything happens
@@ -9,12 +9,13 @@ export type Story = {
   tilt: number;      // the sachet tips over the mug
   pour: number;      // the powder stream
   sachetOut: number; // the sachet lifts away
-  milkIn: number;    // the photo of the mug rises into place
-  milkZoom: number;  // a slow push-in on that photo
-  milkOut: number;   // it falls back as the microwave arrives
+  mugZoom: number;   // the mug moves up and closer for the milk
+  milkIn: number;    // the jug slides in and pours
+  milkOut: number;   // the jug leaves
+  mugOut: number;    // the mug goes into the microwave
   ovenIn: number;    // the microwave arrives
   glow: number;      // the light inside comes on
-  rise: number;      // the dessert rises behind the glass
+  rise: number;      // it bakes behind the glass: batter turns into a golden top
   ding: number;      // "Ding!"
   zoom: number;      // the camera pushes through the door
   ovenOut: number;   // the microwave fades as the camera goes through
@@ -37,7 +38,7 @@ const ease = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 
 export const stepAt = (t: number): Story["step"] => (t < 0.95 ? 0 : t < 1.95 ? 1 : t < 2.95 ? 2 : 3);
 
 /** With reduced motion, each step jumps straight to a still that tells it. */
-export const STILLS = [0.9, 1.6, 2.8, 4] as const;
+export const STILLS = [0.85, 1.5, 2.8, 4] as const;
 
 export function storyAt(t: number): Story {
   t = Math.min(T_END, Math.max(0, t));
@@ -47,16 +48,17 @@ export function storyAt(t: number): Story {
     tilt: ease(seg(t, 0.4, 0.62)),
     pour: seg(t, 0.56, 0.62) * (1 - seg(t, 1.16, 1.24)),
     sachetOut: ease(seg(t, 1.1, 1.34)),
-    milkIn: ease(seg(t, 0.66, 1.12)),
-    milkZoom: seg(t, 1.12, 2.0),
-    milkOut: ease(seg(t, 1.86, 2.08)),
+    mugZoom: ease(seg(t, 1.0, 1.36)),
+    milkIn: ease(seg(t, 1.06, 1.3)),
+    milkOut: ease(seg(t, 1.7, 1.88)),
+    mugOut: ease(seg(t, 1.94, 2.18)),
     ovenIn: ease(seg(t, 1.92, 2.2)),
     glow: seg(t, 2.28, 2.38),
-    rise: ease(seg(t, 2.34, 2.9)),
+    rise: ease(seg(t, 2.42, 2.86)),
     ding: seg(t, 2.9, 2.96) * (1 - seg(t, 3.18, 3.3)),
-    zoom: ease(seg(t, 3.0, 3.4)),
-    ovenOut: seg(t, 3.18, 3.36),
-    finalIn: ease(seg(t, 3.12, 3.46)),
+    zoom: ease(seg(t, 3.0, 3.36)),
+    ovenOut: seg(t, 3.1, 3.3),
+    finalIn: ease(seg(t, 3.14, 3.46)),
     steam: seg(t, 3.44, 3.68),
     sparkle: seg(t, 3.54, 3.78),
     swirl: ease(seg(t, 3.24, 3.62)),
