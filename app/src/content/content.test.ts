@@ -2,6 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { brand } from "@/config/brand";
+import { launch } from "./launch";
 import { contactStep, done, intro, personalities, ui } from "./survey";
 
 // docs/COMPLIANCE.md banned words and the research wedge rule (no "healthy"/"sugar-free" positioning).
@@ -15,7 +16,11 @@ const files = (dir: string): string[] =>
     return statSync(p).isDirectory() ? files(p) : /\.(ts|tsx|md)$/.test(f) && !f.endsWith(".test.ts") ? [p] : [];
   });
 
-const publicFiles = [...files(join(__dirname)), ...files(join(__dirname, "..", "app", "(public)"))];
+const publicFiles = [
+  ...files(join(__dirname)),
+  ...files(join(__dirname, "..", "app", "(public)")),
+  ...files(join(__dirname, "..", "app", "(launch)")),
+];
 
 describe("public copy", () => {
   it.each(publicFiles)("%s has no banned words", (file) => {
@@ -47,5 +52,23 @@ describe("copy around the questions", () => {
   it("makes no gluten or gram claims", () => {
     expect(frame).not.toContain("gluten");
     expect(frame).not.toMatch(/\b\d+(\.\d+)?\s?(g|gm|grams?)\b/);
+  });
+});
+
+// The launch page shows the product (the waitlist-page exception), but CLAUDE.md rule 5 still holds there:
+// "protein-based" only, no gram figure, no gluten-free, no prices, no cooking times while they are being tested.
+describe("launch page copy", () => {
+  const text = JSON.stringify(launch).toLowerCase();
+
+  it("calls it protein-based and nothing stronger", () => {
+    expect(text).toContain("protein-based");
+    for (const phrase of ["high protein", "high-protein", "source of protein", "protein-rich", "packed with protein"]) expect(text).not.toContain(phrase);
+  });
+
+  it("has no gram figure, gluten, price or cooking time", () => {
+    expect(text).not.toMatch(/\b\d+(\.\d+)?\s?(g|gm|grams?)\b/);
+    expect(text).not.toContain("gluten");
+    expect(text).not.toMatch(/₹|\brs\.?\s?\d|\binr\b|\bprice/);
+    expect(text).not.toMatch(/\b\d+\s?(sec|secs|seconds?|min|mins|minutes?)\b/);
   });
 });

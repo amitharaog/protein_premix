@@ -222,3 +222,82 @@ body {
   .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob, .anim-stamp { animation: none !important; }
   * { transition-duration: 0ms !important; }
 }
+
+/* ── Launch page (/launch): cream paper, espresso ink, big serif headlines, a scroll story ── */
+.theme-launch {
+  color-scheme: light;
+  --l-bg: #f3ebdf;
+  --l-paper: #f8f2e9;
+  --l-ink: #2a1a11;
+  --l-muted: #6b5546;      /* 6.4:1 on --l-bg */
+  --l-line: #dccdb9;
+  --l-caramel: #c68a52;
+  --l-caramel-dark: #8a5526;
+  background: var(--l-bg);
+  color: var(--l-ink);
+  font-family: var(--font-figtree), system-ui, sans-serif;
+}
+:root:has(.theme-launch) { background: #f3ebdf; color-scheme: light; }
+.lp-serif { font-family: var(--font-launch-serif), Georgia, serif; }
+.lp-headline {
+  font-family: var(--font-launch-serif), Georgia, serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: -0.015em;
+  font-size: clamp(40px, 12.5vw, 60px);
+}
+@media (min-width: 1024px) { .lp-headline { font-size: clamp(64px, 7.2vw, 124px); } }
+.lp-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem; height: 44px; padding: 0 1.25rem;
+  border-radius: 999px; background: var(--l-ink); color: var(--l-bg); font-size: 14px; font-weight: 600;
+}
+.lp-pill:hover { background: #4a2e1d; }
+.lp-pill:disabled { opacity: 0.45; cursor: not-allowed; }
+.theme-launch :focus-visible { outline: 3px solid var(--l-caramel-dark); outline-offset: 3px; }
+.lp-input {
+  width: 100%; height: 48px; border-radius: 12px; border: 1.5px solid var(--l-line);
+  background: #fffaf3; padding: 0 14px; font-size: 16px; color: var(--l-ink);
+}
+.lp-slide { grid-area: 1 / 1; transition: opacity 0.28s ease, transform 0.28s ease; }
+.lp-slide[data-state="active"] { transition-duration: 0.4s; transition-delay: 0.2s; } /* the old words leave before the new ones arrive */
+.lp-slide[data-state="before"] { opacity: 0; transform: translateY(16px); }
+.lp-slide[data-state="after"] { opacity: 0; transform: translateY(-16px); }
+@media (max-height: 680px) { .lp-body { display: none; } }
+.lp-swirl-bg {
+  background:
+    radial-gradient(60% 55% at 0% 100%, #e8cba5 0, transparent 70%),
+    radial-gradient(45% 45% at 100% 0%, #ecd5b5 0, transparent 70%);
+}
+
+/* The scene's little loops. Each runs only while its part of the story is on screen. */
+@keyframes lp-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes lp-fall { from { transform: translateY(0); } to { transform: translateY(104px); } }
+@keyframes lp-flow { to { stroke-dashoffset: -48; } }
+@keyframes lp-stir { 0%, 100% { transform: translateX(0) rotate(0deg); } 25% { transform: translateX(12px) rotate(5deg); } 75% { transform: translateX(-12px) rotate(-5deg); } }
+@keyframes lp-sway { 0%, 100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+@keyframes lp-steam { 0% { transform: translateY(8px); opacity: 0; } 35% { opacity: 0.85; } 100% { transform: translateY(-28px); opacity: 0; } }
+@keyframes lp-twinkle { 0%, 100% { transform: scale(0.45); opacity: 0.25; } 50% { transform: scale(1); opacity: 1; } }
+@keyframes lp-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+@keyframes lp-nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+.lp-scene .lp-bob { animation: lp-bob 3.2s ease-in-out infinite; }
+.lp-scene[data-idle="0"] .lp-bob { animation-play-state: paused; }
+.lp-scene .lp-fall { animation: lp-fall var(--d, 0.9s) linear var(--delay, 0s) infinite; }
+.lp-scene[data-pour="0"] .lp-fall { animation-play-state: paused; }
+.lp-scene .lp-flow { stroke-dasharray: 16 8; animation: lp-flow 0.55s linear infinite; }
+.lp-scene[data-milk="0"] .lp-flow { animation-play-state: paused; }
+.lp-scene .lp-stir { transform-box: fill-box; transform-origin: 50% 0%; animation: lp-stir 1.1s ease-in-out infinite; }
+.lp-scene[data-stir="0"] .lp-stir { animation-play-state: paused; }
+.lp-scene[data-cook="1"] .lp-sway { animation: lp-sway 1.8s ease-in-out infinite; }
+.lp-scene .lp-steam path { animation: lp-steam 2.6s ease-out infinite; }
+.lp-scene .lp-steam path:nth-child(2) { animation-delay: 0.8s; }
+.lp-scene .lp-steam path:nth-child(3) { animation-delay: 1.6s; }
+.lp-scene[data-steam="0"] .lp-steam path { animation-play-state: paused; }
+.lp-scene .lp-twinkle { transform-box: fill-box; transform-origin: center; animation: lp-twinkle 1.8s ease-in-out infinite; }
+.lp-scene[data-sparkle="0"] .lp-twinkle { animation-play-state: paused; }
+.lp-scene .lp-dot { animation: lp-blink 1s ease-in-out infinite; }
+.lp-hint { animation: lp-nudge 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .lp-scene *, .lp-hint { animation: none !important; }
+  .lp-slide { transition: none; }
+}
