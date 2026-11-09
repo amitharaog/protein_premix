@@ -2,6 +2,7 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { brand } from "@/config/brand";
+import { product } from "@/config/product";
 import { launch } from "./launch";
 import { contactStep, done, intro, personalities, ui } from "./survey";
 
@@ -41,6 +42,14 @@ describe("copy around the questions", () => {
 
   it("says nothing about the product", () => {
     for (const word of ["premix", "sachet", "mug cake", "recipe", "protein-based", "launching"]) expect(frame).not.toContain(word);
+  });
+
+  it("never names the product, anywhere in the survey", () => {
+    const name = product.name.toLowerCase();
+    expect(frame).not.toContain(name);
+    for (const file of [...files(join(__dirname, "..", "app", "(public)")), join(__dirname, "survey.ts")]) {
+      expect(readFileSync(file, "utf8").toLowerCase(), file).not.toContain(name);
+    }
   });
 
   it("no longer promises anonymity, and says up front that it asks for a name and contact", () => {

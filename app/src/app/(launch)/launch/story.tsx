@@ -2,29 +2,27 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { launch as LaunchCopy } from "@/content/launch";
-import { sceneAt, STILLS, T_END } from "@/lib/launch/timeline";
-import { applyScene, SceneArt } from "./scene";
+import { STILLS, storyAt, storyVars, T_END } from "@/lib/launch/timeline";
+import { Stage } from "./stage";
 import { WaitlistForm } from "./waitlist-form";
 
 // The launch page: a tall section whose sticky stage plays the story as you scroll (sachet, mug, microwave, voilà),
 // then the waitlist. Native scrolling throughout; the scroll position only picks the moment of the story.
 
 type Copy = typeof LaunchCopy;
-const INITIAL = sceneAt(0);
 const SCROLL_SPEED = 1.08; // the story finishes a little before the section ends, so the last scene holds
 
 // One word per line, like a poster; the spaces between them keep "Tear it open" readable for screen readers.
 const words = (s: string) => s.split(" ").flatMap((w, i) => [i ? " " : null, <span key={i} className="block">{w}</span>]);
 const slideState = (i: number, step: number) => (i === step ? "active" : i < step ? "after" : "before");
 
-export function LaunchStory({ copy, brandName, brandShort, live, year }: {
-  copy: Copy; brandName: string; brandShort: string; live: boolean; year: number;
+export function LaunchStory({ copy, brand, live, year }: {
+  copy: Copy; brand: string; live: boolean; year: number;
 }) {
   const storyRef = useRef<HTMLElement>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLParagraphElement>(null);
   const [step, setStep] = useState(0);
-  const brandTop = brandName.replace(brandShort, "").trim();
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -33,16 +31,20 @@ export function LaunchStory({ copy, brandName, brandShort, live, year }: {
     const update = () => {
       raf = 0;
       const story = storyRef.current;
-      const svg = svgRef.current;
-      if (!story || !svg) return;
+      const stage = stageRef.current;
+      if (!story || !stage) return;
       const range = story.offsetHeight - window.innerHeight;
       const p = range > 0 ? Math.min(1, Math.max(0, -story.getBoundingClientRect().top / range)) : 0;
       let t = Math.min(T_END, p * T_END * SCROLL_SPEED);
       if (reduce.matches) t = STILLS[Math.min(3, Math.round((t * 3) / T_END))];
       if (Math.abs(t - last) < 0.0005) return;
       last = t;
-      const s = sceneAt(t);
-      applyScene(svg, s);
+      const s = storyAt(t);
+      for (const [k, v] of Object.entries(storyVars(s))) stage.style.setProperty(k, v);
+      stage.dataset.idle = s.idle ? "1" : "0";
+      stage.dataset.pour = s.pour > 0 ? "1" : "0";
+      stage.dataset.steam = s.steam > 0 ? "1" : "0";
+      stage.dataset.sparkle = s.sparkle > 0 ? "1" : "0";
       if (hintRef.current) hintRef.current.style.opacity = String(s.hint);
       story.dataset.t = t.toFixed(2);
       setStep(s.step);
@@ -64,10 +66,7 @@ export function LaunchStory({ copy, brandName, brandShort, live, year }: {
     <div className="relative">
       <header className="fixed inset-x-0 top-0 z-30 bg-[#f3ebdfe6] backdrop-blur-sm">
         <nav aria-label="Main" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
-          <a href="#top" className="lp-serif text-[19px] font-extrabold leading-[0.9]" aria-label={brandName}>
-            <span className="block font-sans text-[9.5px] font-semibold uppercase tracking-[0.24em]">{brandTop}</span>
-            {brandShort}
-          </a>
+          <a href="#top" className="lp-wordmark" aria-label={brand}>{brand}</a>
           {!live && (
             <span title="Only you can open this page until you approve it" className="rounded-full border border-[var(--l-ink)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]">
               Preview<span className="hidden md:inline"> · not public yet</span>
@@ -102,8 +101,7 @@ export function LaunchStory({ copy, brandName, brandShort, live, year }: {
               </div>
 
               <div className="relative min-h-0 flex-1 py-2 lg:h-[80svh] lg:py-0">
-                <SceneArt svgRef={svgRef} initial={INITIAL} brandTop={brandTop} brandMain={brandShort}
-                  flavour="Chocolate" kind="dessert premix" />
+                <Stage stageRef={stageRef} brand={brand} />
                 <p ref={hintRef} aria-hidden="true"
                   className="lp-hint pointer-events-none absolute inset-x-0 bottom-0 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--l-muted)]">
                   {copy.scrollHint} ↓
@@ -148,7 +146,7 @@ export function LaunchStory({ copy, brandName, brandShort, live, year }: {
 
       <footer className="border-t border-[var(--l-line)] px-4 py-8 text-sm text-[var(--l-muted)] md:px-8">
         <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-2">
-          <span>© {year} {brandName}</span>
+          <span>© {year} {brand}</span>
           <span>{copy.footer}</span>
         </div>
       </footer>

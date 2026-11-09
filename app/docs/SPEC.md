@@ -67,14 +67,15 @@ Shows one flavour with an ingredient list. Nutrition is shown **only** once the 
 ---
 
 ### 1.6 `/launch` Launch page (founder request, 9 Nov 2026; preview until approved)
-Modelled on a scroll-story coffee site the founder picked: cream paper, espresso ink, huge serif headlines, numbered steps, one illustrated scene that plays as you scroll.
-- Story, one step per screen: 1 Tear it open (the sachet tears and pours into the mug), 2 Pour it in (milk or water, a stir), 3 Let it rise (into the microwave, light on, it rises behind the glass), 4 Voilà, dessert (ding, out it comes, steam). Then the waitlist form, then the footer.
-- The scene is inline SVG driven by one number from the scroll position (`src/lib/launch/timeline.ts`, pure and unit-tested). Native scrolling, no scroll-jacking. With reduced motion each step shows a still.
-- Copy lives in `src/content/launch.ts`: "protein-based" only, no gram figure, no gluten-free, no prices, no cooking times (§1.1: times are still being tested), no health claims. `content.test.ts` checks.
-- It shows the format and the appliance, so it is the waitlist-page exception in the root CLAUDE.md disclosure rules: it opens only at `/launch?key=<BOARD_KEY>`, not indexed, with the waitlist form switched off, until the founder approves every line. Then `FEATURE_LAUNCH_PAGE=true` makes it public and switches the form on (same `joinWaitlist` action and consent rules as the survey, `utm_source=launch`).
-- Before it goes public: once people can see this page the survey is no longer blind to the product, so launch it after the survey phase or under a different name; and give waitlist sign-ups a way to delete their entry (rule 7).
+Modelled on a scroll-story coffee site the founder picked: cream paper, espresso ink, huge serif headlines, numbered steps, real product photography that moves as you scroll. Brand: **QIXO** (`src/config/product.ts`), used on this page only.
+- Story, one step per screen: 1 Tear it open (the QIXO sachet tears and pours; a real photo of a mug rises in to catch it), 2 Pour it in (milk goes in), 3 Let it rise (a real microwave, cut out of its background, lights up with the mug behind the glass), 4 Voilà, dessert (ding, the camera goes through the door to a real photo of a finished mug cake, with steam). Then the waitlist form, then the footer.
+- Photos are CC0 (public domain, free for commercial use), found through Openverse and listed in `src/app/(launch)/launch/img/CREDITS.md`. Never use photos from Pinterest or image search: they belong to someone. The sachet is drawn in code until a photo of the real pack exists.
+- Movement: one number from the scroll position (`src/lib/launch/timeline.ts`, pure and unit-tested) becomes CSS variables on the stage; CSS does the rest. Native scrolling, no scroll-jacking. With reduced motion each step shows a still.
+- Copy lives in `src/content/launch.ts`: "protein-based" only, no gram figure, no gluten-free, no prices, no cooking times (§1.1: times are still being tested), no health claims. `content.test.ts` checks, and also that the survey never names QIXO.
+- It shows the format, the appliance and the brand, so it is the waitlist-page exception in the root CLAUDE.md disclosure rules: it opens only at `/launch?key=<BOARD_KEY>`, not indexed, with the waitlist form switched off, until the founder approves every line. Without the key it is a plain 404 whose title and description say nothing about the product. Then `FEATURE_LAUNCH_PAGE=true` makes it public and switches the form on (same `joinWaitlist` action and consent rules as the survey, `utm_source=launch`).
+- Before it goes public: once people can see this page the survey is no longer blind to the product, so launch it after the survey phase; give waitlist sign-ups a way to delete their entry (rule 7); and trademark-search QIXO.
 
-Acceptance: `/launch` is 404 without the key; with it, scrolling plays all four steps on a 390 px phone and on desktop with no sideways scroll; the waitlist button is disabled in the preview; reduced motion shows stills.
+Acceptance: `/launch` is 404 without the key, with nothing about the product in it; with the key, scrolling plays all four steps on a 390 px phone and on desktop with no sideways scroll; the waitlist button is disabled in the preview; reduced motion shows stills.
 
 ## 2. Research app (`/admin`, admin only)
 
