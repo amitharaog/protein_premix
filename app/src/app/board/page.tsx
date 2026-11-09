@@ -23,7 +23,7 @@ import { ActiveRun, Notice, RunButton, RunsTable } from "./run-ui";
 // Statuses come from scripts/agent_board.py, deployed with the site or reported back by the latest run.
 // Guarded by BOARD_KEY in the link (/board?key=…); anything else is a plain 404.
 
-export const metadata: Metadata = { title: "Agent board", robots: { index: false, follow: false }, referrer: "no-referrer" };
+export const metadata: Metadata = { title: "Research dashboard", robots: { index: false, follow: false }, referrer: "no-referrer" };
 export const dynamic = "force-dynamic";
 
 const PHASES = ["Demand", "Gate", "Economics", "Founder kitchen", "Outside this repo"];

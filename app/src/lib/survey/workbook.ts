@@ -174,7 +174,7 @@ export function surveyWorkbook(
     cols: [110],
     rows: [
       [{ v: "About this file", s: "title" }],
-      [{ v: `Downloaded from the agent board on ${fmtIst(now)} India time: ${n} responses.` }],
+      [{ v: `Downloaded from the research dashboard on ${fmtIst(now)} India time: ${n} responses.` }],
       [{ v: "Since 8 Nov 2026 the survey ends by asking for a name and a WhatsApp number or email, with consent: they are on the Contacts tab." }],
       [{ v: "Giving contact was required, so it is not a behaviour signal (E1); joining the waitlist still is." }],
       [{ v: "Waitlist emails and phone numbers are not in this file; they stay in the admin export." }],
