@@ -172,6 +172,13 @@ The layout has a left nav on desktop and a bottom tab bar on mobile. Every page 
 ### 2.9 `/admin/waitlist`
 Count, confirmed %, chart of signups per day, top cities, flavour picks, referrers, and CSV export (admin only).
 
+### 2.10 `/board` Research dashboard (owner only, `BOARD_KEY`), "Is it good to go?" (founder request, 9 Nov 2026)
+- Opens with plain-language verdicts from the new survey only (answers saved since 8 Nov 2026, 3 pm IST); the old survey shows only as a comparison note.
+- One card per build question, each with a verdict badge, the headline number ("x% … (k of n)"), what it means for building, the answer bars, notes, and its rule in words: would people buy it (Q9), will they pay around ₹99 (Q5, with Q16 real spend), is there a clear craving moment (Q14, Q3), will they make it at home (Q18, Q11), can they make it (Q1), does protein matter (Q12, Q2), is guilt a real pain (Q17), does gluten-free matter (Q13), what would stop them (Q8, flagged "Must solve" when 40% or more share one worry), what they are up against (Q15, insight only).
+- Each verdict comes from two bars: at or above `go` it is good, under `no` it is not, in between borderline. Under 5 answers there is no verdict; under 30 every verdict says "so far". The bars live in `src/lib/survey/verdicts.ts` (pure, unit-tested); the founder can change them.
+- An overall banner reads the four basics (buy, price, make at home, kitchen) and shows real actions next to them: likely buyers (4 or 5 on Q9) who joined the waitlist, against the gate's 0.3.
+- The page says that survey answers are E3 and that the demand gate is the final go or no-go.
+
 ---
 
 ## 3. Shared calculation modules (all pure, all unit-tested)

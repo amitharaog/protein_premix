@@ -12,7 +12,13 @@ test("the agent board opens only with its key", async ({ page, request }) => {
   test.skip(key.length < 24, "BOARD_KEY is not set for this run");
 
   await page.goto(`/board?key=${k}`);
-  await expect(page.getByRole("heading", { name: "Agent board" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Research dashboard" })).toBeVisible();
+  // The verdicts come first: one overall line, then a card per question about the idea.
+  await expect(page.getByRole("heading", { name: "Is it good to go?" })).toBeVisible();
+  await expect(page.getByRole("status").filter({ hasText: "Overall, from the four basics" })).toBeVisible();
+  for (const title of ["Would people buy it?", "Will they pay around ₹99?", "Will they make it at home?", "Does protein matter to them?"]) {
+    await expect(page.getByRole("heading", { name: title })).toBeVisible();
+  }
   await expect(page.getByRole("heading", { name: "Road to the demand gate" })).toBeVisible();
   // Every agent was removed to restart the research process: the board says so and offers nothing to run.
   await expect(page.getByText(/No agents yet: they were removed/)).toBeVisible();
