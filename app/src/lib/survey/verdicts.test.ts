@@ -54,9 +54,38 @@ describe("surveyVerdicts", () => {
   it("finds the top craving moment and the top worry", () => {
     const rs = [...many(4, { Q14: ["Late at night", "Stress or a rough day"], Q8: ["Dry or rubbery texture"] }), person(8, { Q14: ["Chai or coffee time"], Q8: ["Price"] })];
     const v = byId(rs);
-    expect(v.moment.headline).toBe("Top trigger: Late at night (80% of 5)");
+    expect(v.moment.headline).toBe("Top triggers: Late at night and Stress or a rough day (each 80% of 5)");
+    expect(v.moment.meaning).toBe("Clear moments to build and market for: late at night and stress or a rough day.");
     expect(v.worry.level).toBe("must-solve");
     expect(v.worry.meaning).toContain("dry or rubbery texture");
+  });
+
+  it("names ties in full instead of hiding them", () => {
+    const rs = [
+      ...many(3, { Q8: ["Taste / protein aftertaste", "Price"], Q15: ["Chocolate"] }),
+      person(3, { Q8: ["Sugar / ingredients"], Q15: ["Ice cream"] }),
+      person(4, { Q8: ["Sugar / ingredients"], Q15: ["Mithai"] }),
+    ];
+    const v = byId(rs);
+    expect(v.worry.headline).toBe("Top worries, tied: Taste / protein aftertaste and Price (each 60% of 5)");
+    expect(v.worry.level).toBe("must-solve");
+    expect(v.worry.meaning).toBe("Must solve before launch: taste / protein aftertaste and price.");
+    expect(v.competition.headline).toBe("They reach for chocolate (60%), then ice cream and mithai (20% each)");
+  });
+
+  it("warns when a verdict sits right at its bar, and when making it would be a new habit", () => {
+    const rs = [
+      ...many(7, { Q18: "2 minutes, one bowl, no mess", Q11: "Order in (Swiggy, Zomato, Blinkit)" }),
+      ...many(3, { Q18: "None. Ready to eat or nothing", Q11: "Make something quick at home" }, 7),
+    ];
+    const make = byId(rs).make;
+    expect(make.level).toBe("good-so-far");
+    expect(make.notes[0]).toBe("Right at the line (70%): one or two answers could change this verdict.");
+    expect(make.notes.join(" ")).not.toContain("new habit");
+    const fewMakers = [...many(9, { Q18: "2 minutes, one bowl, no mess", Q11: "Order in (Swiggy, Zomato, Blinkit)" }), person(9, { Q18: "2 minutes, one bowl, no mess", Q11: "Make something quick at home" })];
+    const m2 = byId(fewMakers).make;
+    expect(m2.notes.join(" ")).not.toContain("Right at the line");
+    expect(m2.notes).toContain("Only 10% make something at home today, so for most people this would be a new habit.");
   });
 
   it("names every option it counts exactly as the survey does", () => {

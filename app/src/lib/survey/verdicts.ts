@@ -44,6 +44,10 @@ const answered = (rs: VerdictResponse[], q: string) => rs.filter((r) => list(r.a
 const countOf = (rs: VerdictResponse[], q: string, options: string[]) =>
   options.map((label) => ({ label, count: rs.filter((r) => list(r.answers[q]).includes(label)).length }));
 const sortDesc = (b: { label: string; count: number }[]) => [...b].sort((x, y) => y.count - x.count);
+/** Options sharing the highest count above zero, so a tie is named in full ("Taste and Price"), never hidden. */
+const leaders = (sorted: { label: string; count: number }[]) => sorted.filter((b) => b.count > 0 && b.count === sorted[0].count);
+const joinAnd = (xs: string[]) => (xs.length <= 1 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`);
+const NEAR = 0.05; // within 5 points of a bar, a verdict could flip with a few answers
 
 export function levelFor(value: number | null, n: number, go: number, no: number): Level {
   if (value == null || n < LEAN_N) return "too-few";
@@ -70,12 +74,13 @@ function shareAspect(
   const n = who.length;
   const value = n ? k / n : null;
   const level = levelFor(value, n, bars.go, bars.no);
+  const line = value == null || n < LEAN_N ? null : [bars.go, bars.no].find((b) => Math.abs(value - b) < NEAR);
   return {
     id: base.id, title: base.title, source: base.source, rule: base.rule, n, value, level,
     headline: n ? base.say(pctText(value ?? 0), k, n) : "No answers yet",
     meaning: pick(level, base.meaning),
     breakdown: countOf(who, q, base.options),
-    notes: [],
+    notes: line == null ? [] : [`Right at the line (${pctText(line)}): one or two answers could change this verdict.`],
   };
 }
 
@@ -136,7 +141,7 @@ export function surveyVerdicts(rs: VerdictResponse[], opts: { joined: Set<string
   }
   const before = opts.before ?? [];
   const oldLikely = shareNote(before, "Q9", ["4", "5"]);
-  if (oldLikely) demand.notes.push(`Old survey, before 8 Nov: ${oldLikely.text} said 4 or 5 (it described the product, so it is not the same question).`);
+  if (oldLikely) demand.notes.push(`Old survey (before 8 Nov, 3 pm): ${oldLikely.text} said 4 or 5. It asked differently, so it is not the same question.`);
   aspects.push(demand);
 
   // 2. Will they pay around ₹99? (Q5, with Q16 as a real-spend check)
@@ -155,24 +160,27 @@ export function surveyVerdicts(rs: VerdictResponse[], opts: { joined: Set<string
   const spent = shareNote(rs, "Q16", ["₹100-200", "₹200 or more"]);
   if (spent) price.notes.push(`Real spend: ${spent.text} spent ₹100 or more on the last dessert they bought for themselves.`);
   const oldPay = shareNote(before, "Q5", ["₹80-100", "₹100-150", "₹150+"]);
-  if (oldPay) price.notes.push(`Old survey, before 8 Nov: ${oldPay.text} picked ₹80-100 or more.`);
+  if (oldPay) price.notes.push(`Old survey (before 8 Nov, 3 pm): ${oldPay.text} picked ₹80-100 or more. It asked about a sachet, so it is not the same question.`);
   price.notes.push("Survey reading (E3). Price decisions wait for the demand gate.");
   aspects.push(price);
 
   // 3. Is there a clear craving moment? (Q14, Q3)
   const trig = answered(rs, "Q14");
   const trigCounts = sortDesc(countOf(trig, "Q14", Q14));
-  const top = trigCounts[0];
+  const topT = leaders(trigCounts);
+  const topTNames = joinAnd(topT.map((b) => b.label));
   const moment: Aspect = {
     id: "moment", title: "Is there a clear craving moment?", source: "Q14, Q3",
-    n: trig.length, value: trig.length ? (top?.count ?? 0) / trig.length : null, level: "too-few",
+    n: trig.length, value: trig.length ? (topT[0]?.count ?? 0) / trig.length : null, level: "too-few",
     rule: "Clear when 40% or more pick the same trigger. Unclear under 25%.",
-    headline: trig.length ? `Top trigger: ${top.label} (${pctText(top.count / trig.length)} of ${trig.length})` : "No answers yet",
+    headline: !trig.length ? "No answers yet" : topT.length > 1
+      ? `Top triggers: ${topTNames} (each ${pctText(topT[0].count / trig.length)} of ${trig.length})`
+      : `Top trigger: ${topTNames} (${pctText(topT[0].count / trig.length)} of ${trig.length})`,
     meaning: "", breakdown: trigCounts.filter((b) => b.count > 0), notes: [],
   };
   moment.level = levelFor(moment.value, moment.n, 0.4, 0.25);
   moment.meaning = pick(moment.level, {
-    good: `There is a clear moment to build and market for: ${top?.label.toLowerCase()}.`,
+    good: `${topT.length > 1 ? "Clear moments" : "There is a clear moment"} to build and market for: ${topTNames.toLowerCase()}.`,
     mid: "Two or three moments compete. Lead your first message with the top one.",
     bad: "No single moment stands out yet. Keep the message about cravings in general.",
   });
@@ -193,8 +201,12 @@ export function surveyVerdicts(rs: VerdictResponse[], opts: { joined: Set<string
   });
   const q11 = answered(rs, "Q11");
   if (q11.length) {
-    const c = countOf(q11, "Q11", Q11).map((b) => pctText(b.count / q11.length));
+    const counts = countOf(q11, "Q11", Q11);
+    const c = counts.map((b) => pctText(b.count / q11.length));
     make.notes.push(`At 10 pm today: ${c[0]} make something at home, ${c[1]} order in, ${c[2]} eat what is at home, ${c[3]} wait it out (${q11.length} answers).`);
+    if (q11.length >= LEAN_N && counts[0].count / q11.length < 0.25) {
+      make.notes.push(`Only ${c[0]} make something at home today, so for most people this would be a new habit.`);
+    }
   }
   aspects.push(make);
 
@@ -261,15 +273,18 @@ export function surveyVerdicts(rs: VerdictResponse[], opts: { joined: Set<string
   // 9. Biggest worry to solve (Q8)
   const w = answered(rs, "Q8");
   const worries = sortDesc(countOf(w, "Q8", Q8));
-  const topW = worries[0];
-  const wShare = w.length ? (topW?.count ?? 0) / w.length : null;
+  const topW = leaders(worries);
+  const topWNames = joinAnd(topW.map((b) => b.label));
+  const wShare = w.length ? (topW[0]?.count ?? 0) / w.length : null;
   aspects.push({
     id: "worry", title: "What would stop them?", source: "Q8", n: w.length, value: wShare,
     level: w.length < LEAN_N ? "too-few" : (wShare ?? 0) >= 0.4 ? "must-solve" : "info",
     rule: "Flagged as a must-solve when 40% or more share the same worry.",
-    headline: w.length ? `Top worry: ${topW.label} (${pctText(wShare ?? 0)} of ${w.length})` : "No answers yet",
+    headline: !w.length ? "No answers yet" : topW.length > 1
+      ? `Top worries, tied: ${topWNames} (each ${pctText(wShare ?? 0)} of ${w.length})`
+      : `Top worry: ${topWNames} (${pctText(wShare ?? 0)} of ${w.length})`,
     meaning: w.length < LEAN_N ? "Too few answers to say yet." : (wShare ?? 0) >= 0.4
-      ? `Must solve before anyone tastes it: ${topW.label.toLowerCase()}.`
+      ? `Must solve before launch: ${topWNames.toLowerCase()}.`
       : "No single worry dominates. Keep an eye on the top two.",
     breakdown: worries.filter((b) => b.count > 0), notes: [],
   });
@@ -277,11 +292,15 @@ export function surveyVerdicts(rs: VerdictResponse[], opts: { joined: Set<string
   // 10. What are we up against? (Q15)
   const r15 = answered(rs, "Q15");
   const reach = sortDesc(countOf(r15, "Q15", Q15));
+  const tier = (bs: { label: string; count: number }[]) =>
+    `${joinAnd(bs.map((b) => b.label.toLowerCase()))} (${pctText(bs[0].count / r15.length)}${bs.length > 1 ? " each" : ""})`;
+  const firstTier = leaders(reach);
+  const secondTier = leaders(reach.filter((b) => b.count < (firstTier[0]?.count ?? 0)));
   aspects.push({
     id: "competition", title: "What are you up against?", source: "Q15", n: r15.length,
     value: null, level: r15.length < LEAN_N ? "too-few" : "info",
     rule: "An insight, not a pass or fail.",
-    headline: r15.length ? `They reach for ${reach[0].label.toLowerCase()}${reach[1]?.count ? ` and ${reach[1].label.toLowerCase()}` : ""}` : "No answers yet",
+    headline: r15.length && firstTier.length ? `They reach for ${tier(firstTier)}${secondTier.length ? `, then ${tier(secondTier)}` : ""}` : "No answers yet",
     meaning: r15.length < LEAN_N ? "Too few answers to say yet." : "This is your real competition at the moment of craving: the taste has to beat it.",
     breakdown: reach.filter((b) => b.count > 0), notes: [],
   });
