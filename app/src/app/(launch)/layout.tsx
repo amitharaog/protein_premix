@@ -1,8 +1,8 @@
 import type { Viewport } from "next";
-import { Playfair_Display } from "next/font/google";
+import localFont from "next/font/local";
 
 // The launch page wears its own look: cream paper, espresso ink, big serif headlines (globals.css .theme-launch).
-const serif = Playfair_Display({ subsets: ["latin"], weight: ["700", "800"], variable: "--font-launch-serif" });
+const serif = localFont({ src: "../../fonts/playfair-display.woff2", weight: "400 900", variable: "--font-launch-serif", display: "swap", adjustFontFallback: "Times New Roman" });
 
 export const viewport: Viewport = { themeColor: "#f3ebdf", colorScheme: "light" };
 
