@@ -44,7 +44,11 @@ export type WaitlistEntry = { position: number; createdAt: Date; source: string;
 export async function waitlistList(): Promise<WaitlistEntry[]> {
   const rows = await db.select({
     createdAt: waitlist.createdAt, email: waitlist.email, phone: waitlist.phone, whatsappOptin: waitlist.whatsappOptin,
-    source: sql<string>`coalesce(${waitlist.utm}->>'utm_source', case when ${waitlist.utm} ? 'respondent_id' then 'survey' else 'other' end)`,
+    // "launch" for the public page; "survey (via whatsapp)" for the survey's last screen, with the link it came through.
+    source: sql<string>`case
+      when ${waitlist.utm}->>'utm_source' = 'launch' then 'launch'
+      when ${waitlist.utm} ? 'respondent_id' then 'survey' || coalesce(' (via ' || (${waitlist.utm}->>'utm_source') || ')', '')
+      else coalesce(${waitlist.utm}->>'utm_source', 'other') end`,
   }).from(waitlist).where(isNull(waitlist.deletedAt)).orderBy(asc(waitlist.createdAt));
   return rows.map((r, i) => ({ position: i + 1, ...r }));
 }
