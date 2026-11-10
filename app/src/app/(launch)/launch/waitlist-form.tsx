@@ -16,6 +16,7 @@ export function WaitlistForm({ copy, live }: { copy: Copy; live: boolean }) {
   const [website, setWebsite] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [state, setState] = useState<"idle" | "sending" | "done">("idle");
+  const [position, setPosition] = useState<number>();
   const clear = (...keys: string[]) => setErrors((e) => Object.fromEntries(Object.entries(e).filter(([k]) => !keys.includes(k))));
 
   async function submit(e: React.FormEvent) {
@@ -25,13 +26,13 @@ export function WaitlistForm({ copy, live }: { copy: Copy; live: boolean }) {
     const r = await joinWaitlist({
       email, phone, consent, whatsappOptin: Boolean(phone.trim()), website, utm: { utm_source: "launch" },
     }).catch(() => ({ ok: false as const, errors: { _: "Something went wrong. Try again?" } }));
-    if (r.ok) return setState("done");
+    if (r.ok) { setPosition(r.position); return setState("done"); }
     setErrors(r.errors);
     setState("idle");
   }
 
   if (state === "done") {
-    return <p role="status" className="rounded-[22px] bg-[var(--l-bg)] p-7 text-lg font-semibold shadow-[0_18px_50px_-24px_rgba(42,26,17,.45)]">{copy.done}</p>;
+    return <p role="status" className="rounded-[22px] bg-[var(--l-bg)] p-7 text-lg font-semibold shadow-[0_18px_50px_-24px_rgba(42,26,17,.45)]">{position ? copy.doneNumber.replace("{n}", String(position)) : copy.done}</p>;
   }
 
   return (

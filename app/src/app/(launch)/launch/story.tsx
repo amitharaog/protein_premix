@@ -133,7 +133,7 @@ export function LaunchStory({ copy, brand, live, year }: {
           </div>
         </section>
 
-        <Inside copy={copy.inside} brand={brand} />
+        <Inside copy={copy.inside} brand={brand} live={live} />
 
         <section id="waitlist" aria-labelledby="waitlist-h" className="relative overflow-hidden bg-[var(--l-paper)] px-4 py-20 md:px-8 md:py-28">
           <div aria-hidden="true" className="lp-swirl-bg absolute inset-0" />

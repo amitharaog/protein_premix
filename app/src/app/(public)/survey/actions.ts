@@ -1,7 +1,7 @@
 "use server";
 
 import { randomBytes, randomUUID } from "node:crypto";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -106,7 +106,8 @@ const waitlistInput = z.object({
   utm: z.unknown().optional(),
 }).refine((v) => v.email || v.phone, { message: "Add an email or a WhatsApp number", path: ["email"] });
 
-export type WaitlistResult = { ok: true } | { ok: false; errors: Record<string, string> };
+// position: the person's place on the whole waitlist (1 = first ever sign-up), shown on the launch page after joining.
+export type WaitlistResult = { ok: true; position?: number } | { ok: false; errors: Record<string, string> };
 
 const REF_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
 const referralCode = () => Array.from(randomBytes(6), (b) => REF_ALPHABET[b % REF_ALPHABET.length]).join("");
@@ -122,19 +123,30 @@ export async function joinWaitlist(raw: unknown): Promise<WaitlistResult> {
     const jar = await cookies();
     const rid = jar.get(RID_COOKIE)?.value;
     const utm = { ...(cleanUtm(v.utm) ?? {}), ...(rid ? { respondent_id: rid } : {}) };
+    let id: string | undefined;
     for (let attempt = 0; attempt < 3; attempt++) {
       const rows = await db.insert(waitlist).values({
         email: v.email || null, phone: v.phone || null, consent: true,
         whatsappOptin: Boolean(v.phone) && v.whatsappOptin, referralCode: referralCode(), utm,
       }).onConflictDoNothing().returning({ id: waitlist.id });
       // No row back means the email is already on the list (fine, don't reveal it) or the code collided (retry).
-      if (rows.length || v.email) break;
+      id = rows[0]?.id;
+      if (id || v.email) break;
     }
-    return { ok: true };
+    if (!id && v.email) id = (await db.select({ id: waitlist.id }).from(waitlist).where(eq(waitlist.email, v.email)).limit(1))[0]?.id;
+    return { ok: true, position: id ? await waitlistPosition(id) : undefined };
   } catch (e) {
     console.error("joinWaitlist failed", e instanceof Error ? e.message : e);
     return { ok: false, errors: { _: "Something went wrong. Try again?" } };
   }
+}
+
+/** Place on the waitlist: live sign-ups made at or before this one. Only ever returns a number, never anyone's details. */
+async function waitlistPosition(id: string): Promise<number | undefined> {
+  const [row] = await db.select({ n: sql<number>`count(*)::int` }).from(waitlist).where(
+    and(isNull(waitlist.deletedAt), sql`${waitlist.createdAt} <= (select created_at from waitlist where id = ${id})`),
+  );
+  return row?.n || undefined;
 }
 
 /** The person behind a response deletes their name and contact (and any waitlist entry made from it); answers stay. */

@@ -48,6 +48,8 @@ export const launch = {
     tags: ["Protein-based", "Single serve", "Made in your mug"],
     table: "Nutrition",
     pending: "Numbers go up when the lab report on the final recipe is in.",
+    // On the public page the nutrition table is hidden (founder, 10 Nov 2026), so the words do not promise numbers.
+    bodyLive: "A real dessert first: warm, soft and rich. Protein-based, and made in your own mug in moments.",
   },
   waitlist: {
     kicker: "Coming soon",
@@ -60,6 +62,7 @@ export const launch = {
     purpose: "We use this only to tell you about the launch. Ask us any time and we'll delete it.",
     submit: "Join the waitlist",
     done: "You're on the list. We'll message you first.",
+    doneNumber: "You're number {n} on the waitlist. We'll message you first.",
     preview: "Preview: this form switches on when you approve the page.",
   },
   footer: "Starting in Bengaluru.",
