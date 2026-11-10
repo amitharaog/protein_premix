@@ -10,12 +10,12 @@ Read this first in a new session, together with `CLAUDE.md` and `app/CLAUDE.md`.
 - Waitlist: the survey's last screen is the only public waitlist today.
 - Research dashboard: `/board?key=...` (the founder has the link). It shows the "Is it good to go?" verdicts (`app/src/lib/survey/verdicts.ts`).
 - Google Sheet "muggoozz survey (live)" in the founder's Drive: tabs New summary, New responses, New contacts pull from `/api/sheet/*` with IMPORTDATA about once an hour. To refresh now, type the next number in New summary B4.
-- Customer launch page: `/launch`, brand QIXO, scroll story (sachet, mug, milk, microwave, dessert). Private: a 404 without the board key, and `FEATURE_LAUNCH_PAGE` is off. Code in `app/src/app/(launch)/`, timeline in `app/src/lib/launch/timeline.ts`, copy in `app/src/content/launch.ts`, photo credits in `app/src/app/(launch)/launch/img/CREDITS.md`.
+- Customer launch page: https://ministryofcravings.vercel.app/launch, brand BRUKN (was QIXO), rustic kraft look, scroll story (windmill kraft sachet, drawn speckled mug, milk, microwave, golden top). PUBLIC since 10 Nov 2026 (`FEATURE_LAUNCH_PAGE=true` on Vercel production); the waitlist form is on and tells each person their place on the list (the 30 survey sign-ups come first, so the first launch sign-up is #31). The nutrition table shows only in the owner preview, with dashes until a lab report exists. Code in `app/src/app/(launch)/`, timeline in `app/src/lib/launch/timeline.ts`, copy in `app/src/content/launch.ts`, photo credits in `app/src/app/(launch)/launch/img/CREDITS.md`.
 
 ## Decisions so far
-- Brand name is QIXO, used on `/launch` only; the survey never names it.
+- Brand name is BRUKN (since 10 Nov; QIXO before), used on `/launch` only; the survey never names it. Trademark: no exact BRUKN found in a web search; brukn.com is taken; the founder still has to run the IP India phonetic search in Class 30.
 - The product is flavour-neutral on every page: the founder never said chocolate.
-- `/launch` goes public only after the survey phase, so the survey stays blind, and only after the founder approves its copy line by line.
+- The founder chose to make `/launch` public on 10 Nov to grow the waitlist, accepting that the survey is no longer blind for people who see it. Tag links so survey answers from people who saw the page can be told apart.
 - Payments: a payment gateway was asked for on 9 Nov and paused. It needs the founder's choice on the demand gate (CLAUDE.md: economics only after the gate passes or "override gate"), FSSAI registration before taking money for food, and a Razorpay account. `app/CLAUDE.md` keeps payments behind `FEATURE_SHOP=false`.
 
 ## Findings so far (E3, mostly the founder's own network)
