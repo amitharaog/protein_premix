@@ -428,3 +428,6 @@ body {
 .lp-nutri tr:last-child th, .lp-nutri tr:last-child td { border-bottom: 0; }
 .lp-tag { display: inline-flex; align-items: center; height: 32px; padding: 0 0.9rem; border-radius: 999px; border: 1.5px solid var(--l-walnut); font-size: 13px; font-weight: 600; color: var(--l-walnut); }
 @media (min-width: 1024px) { .lp-headline-sm { font-size: clamp(56px, 5.4vw, 88px); } }
+.lp-sails { animation: lp-spin 14s linear infinite; }
+@keyframes lp-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .lp-sails { animation: none; } }
