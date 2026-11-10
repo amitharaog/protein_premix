@@ -333,7 +333,8 @@ body {
   background-position: center 0; background-size: 150px auto; background-repeat: repeat-y;
   animation: lp-dust 0.6s linear infinite;
 }
-.lp-pour::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(214, 190, 158, 0.85), rgba(214, 190, 158, 0.35)); }
+.lp-pour { filter: brightness(0.55) sepia(0.5) saturate(1.4); } /* the powder reads as cocoa (founder, 10 Nov 2026) */
+.lp-pour::before { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(150, 100, 64, 0.85), rgba(150, 100, 64, 0.35)); }
 .lp-pour i { position: absolute; left: calc(50% + var(--x)); top: 0; height: 100%; width: var(--s); animation: lp-drop var(--d) linear var(--delay) infinite; }
 .lp-pour i::after { content: ""; position: absolute; bottom: 0; left: 0; width: var(--s); height: var(--s); border-radius: 50%; background: var(--c); }
 

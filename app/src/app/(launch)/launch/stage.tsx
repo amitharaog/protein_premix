@@ -19,7 +19,7 @@ const GRAINS = (() => {
   const r = () => ((x = (x * 9301 + 49297) % 233280) / 233280);
   return Array.from({ length: 30 }, (_, i) => ({
     x: Math.round((r() - 0.5) * 18), s: 1.6 + Math.round(r() * 22) / 10, d: 0.55 + Math.round(r() * 45) / 100,
-    delay: -Math.round(r() * 110) / 100, c: ["#c9a77d", "#e0c9a6", "#ad8a5f"][i % 3],
+    delay: -Math.round(r() * 110) / 100, c: ["#8e5e3b", "#a87750", "#6f4529"][i % 3],
   }));
 })();
 
@@ -163,7 +163,7 @@ const CRUMBS = (() => {
 
 /** The drawn mug from the first version: cream glaze with brown specks, a darker unglazed foot, a looped handle.
  *  Drawn on the same 1024 x 683 canvas as the photo layers, with its mouth at (530, 263) so the milk stream lands in it.
- *  `top`: "batter" (light batter inside), "rise" (the golden top fades in with --rise) or "baked". */
+ *  `top`: "batter" (chocolate batter inside), "rise" (the chocolate top fades in with --rise) or "baked". */
 function Mug({ id, top }: { id: string; top: "batter" | "rise" | "baked" }) {
   const u = (n: string) => `url(#${id}-${n})`;
   const dome = "M403 263 C 398 214, 446 166, 530 163 C 614 166, 662 214, 657 263 A127 40 0 0 1 403 263 Z";
@@ -177,13 +177,13 @@ function Mug({ id, top }: { id: string; top: "batter" | "rise" | "baked" }) {
           <stop offset="1" stopColor="#cdbda9" />
         </linearGradient>
         <radialGradient id={`${id}-batter`} cx="45%" cy="35%" r="75%">
-          <stop offset="0" stopColor="#ecd8b6" />
-          <stop offset="1" stopColor="#c9a676" />
+          <stop offset="0" stopColor="#7a4a2c" />
+          <stop offset="1" stopColor="#3e2416" />
         </radialGradient>
         <radialGradient id={`${id}-cake`} cx="40%" cy="24%" r="85%">
-          <stop offset="0" stopColor="#f2d394" />
-          <stop offset=".5" stopColor="#d9a35c" />
-          <stop offset="1" stopColor="#a8703a" />
+          <stop offset="0" stopColor="#8a5131" />
+          <stop offset=".5" stopColor="#5a321e" />
+          <stop offset="1" stopColor="#2e190d" />
         </radialGradient>
         <radialGradient id={`${id}-shadow`} cx="50%" cy="50%" r="50%">
           <stop offset="0" stopColor="#2b1b12" stopOpacity=".3" />
@@ -201,10 +201,11 @@ function Mug({ id, top }: { id: string; top: "batter" | "rise" | "baked" }) {
       {top !== "batter" && (
         <g className={top === "rise" ? "lp-baked" : undefined}>
           <path d={dome} fill={u("cake")} />
-          {CRUMBS.map((p, i) => <circle key={i} cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r={p.r.toFixed(2)} fill={i % 3 ? "#8a5a2c" : "#f7e2b4"} opacity={i % 3 ? 0.4 : 0.7} />)}
+          {CRUMBS.map((p, i) => <circle key={i} cx={p.x.toFixed(1)} cy={p.y.toFixed(1)} r={p.r.toFixed(2)} fill={i % 3 ? "#1f0f07" : "#a0653b"} opacity={i % 3 ? 0.5 : 0.6} />)}
           <path d="M470 212 C 490 220, 508 205, 530 214 M548 199 C 566 208, 584 196, 604 210 M498 238 C 518 245, 536 234, 556 243"
-            fill="none" stroke="#8a5a2c" strokeWidth="3.5" strokeLinecap="round" opacity=".8" />
-          <ellipse cx="482" cy="200" rx="36" ry="10" fill="#fff" opacity=".18" transform="rotate(-12 482 200)" />
+            fill="none" stroke="#1f0f07" strokeWidth="3.5" strokeLinecap="round" opacity=".85" />
+          <ellipse cx="482" cy="200" rx="36" ry="10" fill="#fff" opacity=".13" transform="rotate(-12 482 200)" />
+          <path d="M574 262 C 574 280, 583 293, 580 310 C 578 322, 566 322, 566 310 C 566 293, 560 280, 560 262 Z" fill="#3e2214" />
         </g>
       )}
       <path d="M403 263 A127 40 0 0 0 657 263" fill="none" stroke="#f7f0e7" strokeWidth="6" />
