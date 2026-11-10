@@ -26,8 +26,8 @@ test("the launch page plays the story as you scroll and ends at the waitlist", a
   await expect(page.getByRole("heading", { level: 1, name: "Tear it open" })).toBeVisible();
   await expect(story).toHaveAttribute("data-step", "0");
   await expect(page.getByText("Preview", { exact: false }).first()).toBeVisible();
-  await expect(page.getByRole("link", { name: "QIXO" })).toBeVisible();
-  await expect(page).toHaveTitle(/QIXO/);
+  await expect(page.getByRole("link", { name: "BRUKN" })).toBeVisible();
+  await expect(page).toHaveTitle(/BRUKN/);
 
   await scrollStory(page, 0.66);
   await expect(story).toHaveAttribute("data-step", "2");

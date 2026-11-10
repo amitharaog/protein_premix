@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { stepAt, STILLS, storyAt, storyVars } from "./timeline";
 
 describe("launch page story", () => {
-  it("starts with a whole QIXO sachet and nothing else on stage", () => {
+  it("starts with a whole BRUKN sachet and nothing else on stage", () => {
     const s = storyAt(0);
     expect(s).toMatchObject({ idle: true, tear: 0, tilt: 0, pour: 0, mugZoom: 0, milkIn: 0, ovenIn: 0, finalIn: 0, hint: 1, step: 0 });
   });

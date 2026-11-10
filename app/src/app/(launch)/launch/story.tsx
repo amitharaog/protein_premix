@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { launch as LaunchCopy } from "@/content/launch";
 import { STILLS, storyAt, storyVars, T_END } from "@/lib/launch/timeline";
+import { Inside } from "./inside";
 import { Stage } from "./stage";
 import { WaitlistForm } from "./waitlist-form";
 
@@ -64,7 +65,7 @@ export function LaunchStory({ copy, brand, live, year }: {
 
   return (
     <div className="relative">
-      <header className="fixed inset-x-0 top-0 z-30 bg-[#f3ebdfe6] backdrop-blur-sm">
+      <header className="fixed inset-x-0 top-0 z-30 bg-[#eee3d1e6] backdrop-blur-sm">
         <nav aria-label="Main" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
           <a href="#top" className="lp-wordmark" aria-label={brand}>{brand}</a>
           {!live && (
@@ -74,6 +75,7 @@ export function LaunchStory({ copy, brand, live, year }: {
           )}
           <div className="flex items-center gap-6">
             <a href="#how" className="hidden text-sm font-medium underline-offset-4 hover:underline md:inline">{copy.nav.how}</a>
+            <a href="#inside" className="hidden text-sm font-medium underline-offset-4 hover:underline md:inline">{copy.nav.inside}</a>
             <a href="#waitlist" className="hidden text-sm font-medium underline-offset-4 hover:underline md:inline">{copy.nav.waitlist}</a>
             <a href="#waitlist" className="lp-pill">{copy.nav.cta}</a>
           </div>
@@ -130,6 +132,8 @@ export function LaunchStory({ copy, brand, live, year }: {
             </ol>
           </div>
         </section>
+
+        <Inside copy={copy.inside} brand={brand} />
 
         <section id="waitlist" aria-labelledby="waitlist-h" className="relative overflow-hidden bg-[var(--l-paper)] px-4 py-20 md:px-8 md:py-28">
           <div aria-hidden="true" className="lp-swirl-bg absolute inset-0" />

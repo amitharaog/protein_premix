@@ -226,18 +226,21 @@ body {
 /* ── Launch page (/launch): cream paper, espresso ink, big serif headlines, a scroll story ── */
 .theme-launch {
   color-scheme: light;
-  --l-bg: #f3ebdf;
-  --l-paper: #f8f2e9;
-  --l-ink: #2a1a11;
-  --l-muted: #6b5546;      /* 6.4:1 on --l-bg */
-  --l-line: #dccdb9;
-  --l-caramel: #c68a52;
-  --l-caramel-dark: #8a5526;
+  /* Rustic: linen walls, kraft paper, walnut wood, terracotta clay (founder's moodboard, 10 Nov 2026) */
+  --l-bg: #eee3d1;
+  --l-paper: #e6d7bf;
+  --l-ink: #2e2017;
+  --l-muted: #6a5140;      /* about 6:1 on --l-bg */
+  --l-line: #d3bf9f;
+  --l-caramel: #b06a3b;
+  --l-caramel-dark: #7c4423;
+  --l-kraft: #c39b6a;
+  --l-walnut: #5a3a24;
   background: var(--l-bg);
   color: var(--l-ink);
   font-family: var(--font-figtree), system-ui, sans-serif;
 }
-:root:has(.theme-launch) { background: #f3ebdf; color-scheme: light; }
+:root:has(.theme-launch) { background: #eee3d1; color-scheme: light; }
 .lp-serif { font-family: var(--font-launch-serif), Georgia, serif; }
 .lp-headline {
   font-family: var(--font-launch-serif), Georgia, serif;
@@ -252,7 +255,7 @@ body {
   display: inline-flex; align-items: center; gap: 0.5rem; height: 44px; padding: 0 1.25rem;
   border-radius: 999px; background: var(--l-ink); color: var(--l-bg); font-size: 14px; font-weight: 600;
 }
-.lp-pill:hover { background: #4a2e1d; }
+.lp-pill:hover { background: var(--l-walnut); }
 .lp-pill:disabled { opacity: 0.45; cursor: not-allowed; }
 .theme-launch :focus-visible { outline: 3px solid var(--l-caramel-dark); outline-offset: 3px; }
 .lp-input {
@@ -266,8 +269,8 @@ body {
 @media (max-height: 680px) { .lp-body { display: none; } }
 .lp-swirl-bg {
   background:
-    radial-gradient(60% 55% at 0% 100%, #e8cba5 0, transparent 70%),
-    radial-gradient(45% 45% at 100% 0%, #ecd5b5 0, transparent 70%);
+    radial-gradient(60% 55% at 0% 100%, #d9b88e 0, transparent 70%),
+    radial-gradient(45% 45% at 100% 0%, #e2c9a4 0, transparent 70%);
 }
 
 /* ── The launch stage: real objects cut out and floating on cream, like the pinned design (stage.tsx) ── */
@@ -413,3 +416,15 @@ body {
   .lp-stage *, .lp-hint { animation: none !important; }
   .lp-slide { transition: none; }
 }
+
+/* "What's inside": a kraft label with a nutrition table */
+.lp-kraft {
+  background:
+    radial-gradient(120% 80% at 20% 0%, rgba(255, 244, 222, 0.35), transparent 60%),
+    linear-gradient(160deg, #cba676, #b88d5b 55%, #a87e4f);
+  color: #2b1c12;
+}
+.lp-nutri th, .lp-nutri td { padding: 0.55rem 0; border-bottom: 1px solid rgba(43, 28, 18, 0.22); }
+.lp-nutri tr:last-child th, .lp-nutri tr:last-child td { border-bottom: 0; }
+.lp-tag { display: inline-flex; align-items: center; height: 32px; padding: 0 0.9rem; border-radius: 999px; border: 1.5px solid var(--l-walnut); font-size: 13px; font-weight: 600; color: var(--l-walnut); }
+@media (min-width: 1024px) { .lp-headline-sm { font-size: clamp(56px, 5.4vw, 88px); } }

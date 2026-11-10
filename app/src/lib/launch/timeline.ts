@@ -1,5 +1,5 @@
 // The launch page's scroll story as numbers from 0 to 1, all from one input T: 0 at the top of the page, 4 at the end.
-// Step 1 (0-1): the QIXO sachet tears open and pours into the mug. Step 2 (1-2): the jug slides in and milk goes in.
+// Step 1 (0-1): the BRUKN sachet tears open and pours into the mug. Step 2 (1-2): the jug slides in and milk goes in.
 // Step 3 (2-3): the mug goes into the microwave; the light comes on and it bakes behind the glass. Step 4 (3-4): ding,
 // the camera goes through the door, and there is the finished dessert. The page turns these into CSS variables.
 

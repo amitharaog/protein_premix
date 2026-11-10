@@ -6,7 +6,7 @@
 export type LaunchStep = { n: string; kicker: string; headline: string; title: string; body: string; cta?: boolean };
 
 export const launch = {
-  nav: { how: "How it works", waitlist: "Waitlist", cta: "Join the waitlist" },
+  nav: { how: "How it works", inside: "What's inside", waitlist: "Waitlist", cta: "Join the waitlist" },
   scrollHint: "Scroll to tear it open",
   steps: [
     {
@@ -36,11 +36,19 @@ export const launch = {
       kicker: "Ding",
       headline: "Voilà, dessert",
       title: "Warm. Soft. Yours.",
-      body: "Straight from the mug, made by you, while the craving is still fresh.",
+      body: "All the indulgence, none of the second thoughts. Straight from the mug, while the craving is still fresh.",
       cta: true,
     },
   ] satisfies LaunchStep[],
   howLink: "See how it works",
+  inside: {
+    kicker: "What's inside",
+    headline: "Indulgence, minus the second thoughts",
+    body: "A real dessert first: warm, soft and rich. Then the label: protein, fibre and the minerals that matter, printed per serve on the pack.",
+    tags: ["Protein-based", "Single serve", "Made in your mug"],
+    table: "Nutrition",
+    pending: "Numbers go up when the lab report on the final recipe is in.",
+  },
   waitlist: {
     kicker: "Coming soon",
     headline: "Be first to taste it",
