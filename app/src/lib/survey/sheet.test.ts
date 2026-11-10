@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SHEET_FIXED_COLUMNS, contactsCsv, localPhone, parseSince, savedSince, scrubContact, toSheetCsv } from "./sheet";
+import { SHEET_FIXED_COLUMNS, contactsCsv, localPhone, parseSince, savedSince, scrubContact, toSheetCsv, waitlistCsv } from "./sheet";
 
 const questions = [
   { id: "Q10", question: "Why?" },
@@ -71,5 +71,18 @@ describe("contactsCsv for the New contacts tab", () => {
   it("writes Indian mobiles so the sheet keeps them as text", () => {
     expect(localPhone("+919876543210")).toBe("98765 43210");
     expect(localPhone(null)).toBe("");
+  });
+});
+
+describe("waitlist feed for the founder's sheet", () => {
+  it("numbers people oldest first, keeps phones as text and links WhatsApp only with opt-in", () => {
+    const csv = waitlistCsv([
+      { position: 31, createdAt: new Date("2026-11-10T06:00:00Z"), source: "launch", email: "a@example.com", phone: "+919876543210", whatsappOptin: true },
+      { position: 32, createdAt: new Date("2026-11-10T07:00:00Z"), source: "survey", email: null, phone: "+919812345678", whatsappOptin: false },
+    ]).trim().split("\n");
+    expect(csv[0]).toBe("number,joined_at_ist,came_from,email,phone,whatsapp_ok,whatsapp_link");
+    expect(csv[1]).toContain("31,");
+    expect(csv[1]).toContain("98765 43210,yes,https://wa.me/919876543210");
+    expect(csv[2]).toContain("survey,,98123 45678,no,");
   });
 });

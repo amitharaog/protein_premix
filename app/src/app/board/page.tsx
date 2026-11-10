@@ -8,7 +8,7 @@ import { AGENTS_REF, AGENTS_REPO, checkRepo } from "@/lib/agents/github";
 import { boardState } from "@/lib/agents/state";
 import { canStoreToken, savedGithubToken } from "@/lib/agents/token";
 import { activeRun, anyRunSucceeded, expireStaleRuns, recentRuns } from "@/lib/queries/runs";
-import { surveyContactList, surveyResults, waitlistRespondentIds } from "@/lib/queries/survey";
+import { surveyContactList, surveyResults, waitlistList, waitlistRespondentIds } from "@/lib/queries/survey";
 import { keyMatches } from "@/lib/secret";
 import { tally } from "@/lib/survey/aggregate";
 import { dailyCounts, gateProgress, headline, segments, type AgentRow, type GateRow } from "@/lib/survey/board";
@@ -47,8 +47,8 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
   if (!k || !keyMatches(k, process.env.BOARD_KEY)) notFound();
 
   await expireStaleRuns();
-  const [{ responses, waitlistCount }, { agents, gate_files: gateFiles }, active, runs, saved, setupDone, contacts, joined] = await Promise.all([
-    surveyResults(), boardState(), activeRun(), recentRuns(6), savedGithubToken(), anyRunSucceeded(), surveyContactList(), waitlistRespondentIds(),
+  const [{ responses, waitlistCount }, { agents, gate_files: gateFiles }, active, runs, saved, setupDone, contacts, joined, wl] = await Promise.all([
+    surveyResults(), boardState(), activeRun(), recentRuns(6), savedGithubToken(), anyRunSucceeded(), surveyContactList(), waitlistRespondentIds(), waitlistList(),
   ]);
   const answersOf = new Map(responses.map((r) => [r.respondentId, r.answers]));
   const newRs = savedSince(responses, NEW_SURVEY_SINCE);
@@ -222,6 +222,42 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
                       </tr>
                     );
                   })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </details>
+
+        <details className="rounded-[14px] border border-line bg-panel p-4">
+          <summary className="cursor-pointer">
+            <span className="font-head text-base font-semibold text-frost">Waitlist ({wl.length})</span>
+            <span className="block text-xs text-muted">
+              Everyone who joined, oldest first, numbered the way the launch page tells them (&quot;You&apos;re number 31&quot;). &quot;launch&quot; is the public BRUKN page, &quot;survey&quot; the survey&apos;s last screen. Only you see this: here and in the Waitlist tab of your Google Sheet. E1, behaviour.
+            </span>
+          </summary>
+          {wl.length === 0 ? (
+            <p className="mt-3 text-sm text-muted">Nobody yet.</p>
+          ) : (
+            <div className="mt-3 overflow-x-auto">
+              <table className="w-full min-w-[640px] text-left text-sm">
+                <thead className="text-xs uppercase text-muted">
+                  <tr>
+                    <th className="py-2 pr-3 text-right">#</th><th className="py-2 pr-3">Joined</th><th className="py-2 pr-3">From</th>
+                    <th className="py-2 pr-3">WhatsApp</th><th className="py-2">Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...wl].reverse().map((w) => (
+                    <tr key={w.position} className="border-t border-line">
+                      <td className="tabular py-2 pr-3 text-right">{w.position}</td>
+                      <td className="tabular py-2 pr-3">{fmtWhen.format(w.createdAt)}</td>
+                      <td className="py-2 pr-3">{w.source}</td>
+                      <td className="tabular py-2 pr-3">
+                        {w.phone ? (w.whatsappOptin ? <a className="underline" href={`https://wa.me/${w.phone.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer">{w.phone}</a> : w.phone) : "—"}
+                      </td>
+                      <td className="py-2">{w.email ? <a className="underline" href={`mailto:${w.email}`}>{w.email}</a> : "—"}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

@@ -37,6 +37,18 @@ export async function surveyContactList(): Promise<ContactRow[]> {
   }).from(surveyContacts).orderBy(desc(surveyContacts.updatedAt));
 }
 
+export type WaitlistEntry = { position: number; createdAt: Date; source: string; email: string | null; phone: string | null; whatsappOptin: boolean };
+
+/** Everyone on the waitlist, oldest first, numbered like the launch page's thank-you ("You're number 31").
+ *  Emails and phones: only the founder's /board and the sheet's Waitlist tab use this, never an agent or the answers feed. */
+export async function waitlistList(): Promise<WaitlistEntry[]> {
+  const rows = await db.select({
+    createdAt: waitlist.createdAt, email: waitlist.email, phone: waitlist.phone, whatsappOptin: waitlist.whatsappOptin,
+    source: sql<string>`coalesce(${waitlist.utm}->>'utm_source', case when ${waitlist.utm} ? 'respondent_id' then 'survey' else 'other' end)`,
+  }).from(waitlist).where(isNull(waitlist.deletedAt)).orderBy(asc(waitlist.createdAt));
+  return rows.map((r, i) => ({ position: i + 1, ...r }));
+}
+
 /** Names and contacts with their response, for the founder's private sheet (/api/sheet/contacts). Nothing else calls it. */
 export async function sheetContacts() {
   return db.select({

@@ -84,3 +84,14 @@ export function contactsCsv(rows: SheetContact[]): string {
     ].map(csvCell).join(","));
   return [SHEET_CONTACT_COLUMNS.join(","), ...body].join("\n") + "\n";
 }
+
+// ── The whole waitlist for the founder's private sheet ("Waitlist" tab), from /api/sheet/waitlist ──
+export const SHEET_WAITLIST_COLUMNS = ["number", "joined_at_ist", "came_from", "email", "phone", "whatsapp_ok", "whatsapp_link"];
+
+export function waitlistCsv(rows: { position: number; createdAt: Date; source: string; email: string | null; phone: string | null; whatsappOptin: boolean }[]): string {
+  const body = rows.map((r) => [
+    String(r.position), istStamp(r.createdAt), r.source, r.email ?? "", localPhone(r.phone), r.whatsappOptin && r.phone ? "yes" : "no",
+    r.whatsappOptin && r.phone ? `https://wa.me/${r.phone.replace(/\D/g, "")}` : "",
+  ].map(csvCell).join(","));
+  return [SHEET_WAITLIST_COLUMNS.join(","), ...body].join("\n") + "\n";
+}
