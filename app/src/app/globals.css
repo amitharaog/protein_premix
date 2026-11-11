@@ -207,6 +207,11 @@ body {
   100% { transform: translateY(-18px) scaleX(1.4); opacity: 0; }
 }
 .anim-pop { animation: pop-in 220ms ease-out both; }
+/* Survey last screen: peer bars grow in; the wax seal on the secret dossier pulses until it is broken. */
+@keyframes bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.peer-bar { transform-origin: left; animation: bar-grow 900ms cubic-bezier(.2,.8,.2,1) both; }
+@keyframes seal-pulse { 0%, 100% { transform: scale(1) rotate(-6deg); } 50% { transform: scale(1.06) rotate(-6deg); } }
+.reveal-seal { animation: seal-pulse 1.8s ease-in-out infinite; }
 .anim-wobble { animation: wobble 400ms ease-out; }
 .anim-steam { animation: steam 2.4s ease-out infinite; }
 .anim-drip { animation: drip-fall 2.6s ease-in infinite; transform-box: fill-box; }
@@ -219,7 +224,7 @@ body {
 .anim-stamp { animation: stamp-in 260ms ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob, .anim-stamp { animation: none !important; }
+  .anim-pop, .anim-wobble, .anim-steam, .anim-drip, .anim-bob, .anim-stamp, .peer-bar, .reveal-seal { animation: none !important; }
   * { transition-duration: 0ms !important; }
 }
 

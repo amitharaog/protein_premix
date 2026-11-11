@@ -5,12 +5,16 @@ import {
   contactStep, done as doneCopy, fallbackCopy, freeTextPlaceholders, intro, questionCopy, scaleLabels, ui,
   type Personality, type QuestionCopy,
 } from "@/content/survey";
-import type { SavedContact } from "@/lib/queries/survey";
+import type { PeerStat, SavedContact } from "@/lib/queries/survey";
+import { Reveal } from "@/app/(launch)/launch/reveal";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { forgetContact, joinWaitlist, submitSurvey } from "./actions";
 import { CheckerStrip, Crown, Minister, Ornaments, Seal, TileTray, Wordmark } from "./art";
 
-type Props = { questions: SurveyQuestion[]; initial: Answers | null; initialContact: SavedContact | null; startToken: string; siteUrl: string };
+type Props = {
+  questions: SurveyQuestion[]; initial: Answers | null; initialContact: SavedContact | null; startToken: string; siteUrl: string;
+  peers: PeerStat[]; // live tallies at page load; this person's own answer is added on the last screen
+};
 type ContactDraft = { name: string; email: string; phone: string; whatsappOptin: boolean };
 
 const AUTO_ADVANCE_MS = 750;
@@ -20,7 +24,7 @@ const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"
 const ARROWS: Record<string, number> = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 };
 const isEmpty = (v: unknown) => v == null || v === "" || (Array.isArray(v) && v.length === 0);
 
-export function SurveyClient({ questions, initial, initialContact, startToken, siteUrl }: Props) {
+export function SurveyClient({ questions, initial, initialContact, startToken, siteUrl, peers }: Props) {
   const [step, setStep] = useState(-1); // -1 intro, 0..n-1 questions, n name and contact, n+1 done
   const [answers, setAnswers] = useState<Answers>(initial ?? {});
   const [contact, setContact] = useState<ContactDraft>({
@@ -270,7 +274,10 @@ export function SurveyClient({ questions, initial, initialContact, startToken, s
           shareUrl={`${siteUrl}/survey?utm_source=share&utm_medium=whatsapp&ref=${result.shareRef}`}
           utm={utm}
           prefill={{ email: contact.email, phone: contact.phone }}
-          onEdit={() => setStep(0)}
+          peers={peers}
+          answers={answers}
+          countedBefore={Boolean(initial)}
+          seeHref={`/launch?utm_source=survey${utm.utm_source ? `&utm_medium=${encodeURIComponent(utm.utm_source)}` : ""}`}
         />
       )}
       </div>
@@ -306,6 +313,7 @@ function Intro({ count, welcomeBack, onStart }: { count: number; welcomeBack: bo
       <p className="mt-2 text-center font-medium text-muted">{intro.sub}</p>
       <Agenda />
       <p className="mt-4 text-center text-sm font-medium text-fg">📇 {intro.contactNote}</p>
+      <p className="mt-2 text-center text-sm font-semibold text-fg">🔒 {intro.secret}</p>
       {welcomeBack && <p className="royal-frame mt-3 rounded-[10px] bg-gold-soft p-3.5 text-sm">{ui.welcomeBack}</p>}
       <div className="flex-1" />
       <button type="button" onClick={onStart} className="royal-btn mt-6 h-14 w-full text-base uppercase">
@@ -537,8 +545,9 @@ function FreeText({ q, value, onChange }: { q: SurveyQuestion; value: string; on
   );
 }
 
-function Done({ personality, shareUrl, utm, prefill, onEdit }: {
-  personality: Personality; shareUrl: string; utm: Record<string, string>; prefill: { email: string; phone: string }; onEdit: () => void;
+function Done({ personality, shareUrl, utm, prefill, peers, answers, countedBefore, seeHref }: {
+  personality: Personality; shareUrl: string; utm: Record<string, string>; prefill: { email: string; phone: string };
+  peers: PeerStat[]; answers: Answers; countedBefore: boolean; seeHref: string;
 }) {
   const [copied, setCopied] = useState(false);
   const shareText = doneCopy.shareText(personality.title, shareUrl);
@@ -554,7 +563,14 @@ function Done({ personality, shareUrl, utm, prefill, onEdit }: {
         <div className="mt-3 flex justify-center"><Minister size={84} /></div>
       </div>
 
-      <p className="mt-6 text-sm text-muted">{doneCopy.shareLead}</p>
+      <PeerBoard peers={peers} answers={answers} countedBefore={countedBefore} />
+
+      {/* The reveal comes only now, after the answers are stamped, so the questions stay blind. */}
+      <Reveal seeHref={seeHref} />
+
+      <WaitlistMini utm={utm} prefill={prefill} />
+
+      <p className="mt-8 text-sm text-muted">{doneCopy.shareLead}</p>
       <div className="mt-2 grid grid-cols-2 gap-2">
         <a
           href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
@@ -580,11 +596,7 @@ function Done({ personality, shareUrl, utm, prefill, onEdit }: {
         </button>
       </div>
 
-      <WaitlistMini utm={utm} prefill={prefill} />
-
-      <button type="button" onClick={onEdit} className="mx-auto mt-6 h-11 px-4 text-sm font-medium text-muted underline underline-offset-4">
-        {doneCopy.edit}
-      </button>
+      <div className="mt-6" />
       <Forget />
     </section>
   );
@@ -667,20 +679,26 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
   const [consent, setConsent] = useState(false);
   const [wa, setWa] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [joined, setJoined] = useState(false);
+  const [joined, setJoined] = useState<{ position?: number } | null>(null);
   const [pending, startTransition] = useTransition();
   const trap = useRef<HTMLInputElement>(null);
 
-  if (joined) return <p className="royal-frame mt-8 rounded-[14px] bg-accent-soft p-4 text-center font-medium">{doneCopy.joined}</p>;
+  if (joined) {
+    return (
+      <p role="status" className="royal-frame anim-pop mt-6 rounded-[14px] bg-accent-soft p-4 text-center font-medium">
+        {joined.position ? doneCopy.joinedNumber(joined.position) : doneCopy.joined}
+      </p>
+    );
+  }
 
   return (
     <form
-      className="royal-frame relative mt-8 rounded-[14px] bg-panel p-4 shadow-[4px_4px_0_var(--gold)]"
+      className="royal-frame relative mt-6 rounded-[14px] bg-panel p-4 shadow-[4px_4px_0_var(--gold)]"
       onSubmit={(e) => {
         e.preventDefault();
         startTransition(async () => {
           const res = await joinWaitlist({ email, phone, consent, whatsappOptin: wa, website: trap.current?.value ?? "", utm });
-          if (res.ok) setJoined(true);
+          if (res.ok) setJoined({ position: res.position });
           else setErrors(res.errors);
         });
       }}
@@ -713,5 +731,62 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
         {doneCopy.join}
       </button>
     </form>
+  );
+}
+
+/** "The census so far": live tallies for a few fun questions, with this person's answer marked. Counts only, never
+ *  anyone's row. Hidden until enough people answered for a share to mean something. */
+const PEER_MIN_N = 10;
+function PeerBoard({ peers, answers, countedBefore }: { peers: PeerStat[]; answers: Answers; countedBefore: boolean }) {
+  // The tallies were read when the page loaded; add this person's answer unless an earlier save already counted it.
+  const stats = peers.map((p) => {
+    const raw = answers[p.id];
+    const mine = raw == null ? [] : Array.isArray(raw) ? raw : [String(raw)];
+    const add = !countedBefore && mine.length > 0;
+    return {
+      ...p, mine, n: p.n + (add ? 1 : 0),
+      options: p.options.map((o) => ({ ...o, count: o.count + (add && mine.includes(o.label) ? 1 : 0) })),
+    };
+  }).filter((p) => p.n >= PEER_MIN_N && p.mine.length > 0);
+  if (!stats.length) return null;
+  const total = Math.max(...stats.map((s) => s.n));
+  return (
+    <section aria-labelledby="peer-h" className="mt-8">
+      <h2 id="peer-h" className="rule-ornament font-caps text-xs font-bold uppercase tracking-[0.3em] text-fg">{doneCopy.peerTitle}</h2>
+      <p className="mt-1 text-center text-xs text-muted">{doneCopy.peerSub(total)}</p>
+      <div className="mt-3 space-y-3">
+        {stats.map((s) => {
+          const top = [...s.options].sort((a, b) => b.count - a.count).slice(0, 4);
+          const shown = [...top, ...s.options.filter((o) => s.mine.includes(o.label) && !top.includes(o))];
+          const minePct = s.mine.length === 1 ? Math.round(((s.options.find((o) => o.label === s.mine[0])?.count ?? 0) / s.n) * 100) : null;
+          return (
+            <figure key={s.id} className="royal-frame rounded-[14px] bg-panel p-4 shadow-[3px_3px_0_var(--gold)]">
+              <figcaption className="text-sm font-semibold leading-snug text-fg">{s.question}</figcaption>
+              {minePct != null && <p className="mt-0.5 text-xs font-semibold text-fg">{doneCopy.peerSame(minePct)}</p>}
+              <ul className="mt-3 space-y-2">
+                {shown.map((o) => {
+                  const p = Math.round((o.count / s.n) * 100);
+                  const isMine = s.mine.includes(o.label);
+                  return (
+                    <li key={o.label}>
+                      <div className="flex items-baseline justify-between gap-2 text-[13px]">
+                        <span className={isMine ? "font-bold text-fg" : "text-fg"}>
+                          {o.label}
+                          {isMine && <span className="ml-1.5 rounded-full bg-accent px-1.5 py-px text-[10px] font-bold uppercase text-accent-fg">{doneCopy.peerYou}</span>}
+                        </span>
+                        <span className="tabular shrink-0 text-muted">{p}%</span>
+                      </div>
+                      <div className="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-line/50">
+                        <div className="peer-bar h-full rounded-full" style={{ width: `${p}%`, background: isMine ? "var(--accent)" : "var(--gold)", minWidth: o.count ? 4 : 0 }} />
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </figure>
+          );
+        })}
+      </div>
+    </section>
   );
 }

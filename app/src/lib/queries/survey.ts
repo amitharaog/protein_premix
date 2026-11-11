@@ -1,5 +1,5 @@
 import "server-only";
-import { and, asc, count, desc, eq, gt, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gt, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { surveyContacts, surveyQuestions, surveyResponses, waitlist } from "@/db/schema";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
@@ -94,4 +94,33 @@ export async function waitlistRespondentIds(): Promise<Set<string>> {
     .from(waitlist)
     .where(isNull(waitlist.deletedAt));
   return new Set(rows.map((r) => r.rid).filter((r): r is string => Boolean(r)));
+}
+
+/** The questions whose live tallies the survey's last screen shows back ("what others said"). Fun ones only: never
+ *  price or intent, so the screen cannot nudge anyone's later answers or read as a claim. */
+export const PEER_QUESTIONS = ["Q11", "Q14", "Q17"] as const;
+export type PeerStat = { id: string; question: string; n: number; options: { label: string; count: number }[] };
+
+/** Counts per option for PEER_QUESTIONS across every saved response. Counts only: no row, name or free text leaves here.
+ *  Small data today, so it tallies in JS; move to SQL past ~10k responses. */
+export async function peerStats(): Promise<PeerStat[]> {
+  const ids: string[] = [...PEER_QUESTIONS];
+  const [qs, rows] = await Promise.all([
+    db.select({ id: surveyQuestions.id, question: surveyQuestions.question, options: surveyQuestions.options })
+      .from(surveyQuestions).where(inArray(surveyQuestions.id, ids)),
+    db.select({ answers: surveyResponses.answers }).from(surveyResponses),
+  ]);
+  return ids.flatMap((id) => {
+    const q = qs.find((x) => x.id === id);
+    if (!q) return [];
+    const tally = new Map<string, number>();
+    let n = 0;
+    for (const { answers } of rows) {
+      const v = answers[id];
+      if (v == null || v === "" || (Array.isArray(v) && !v.length)) continue;
+      n++;
+      for (const o of Array.isArray(v) ? v : [v]) tally.set(o, (tally.get(o) ?? 0) + 1);
+    }
+    return [{ id, question: q.question, n, options: q.options.map((label) => ({ label, count: tally.get(label) ?? 0 })) }];
+  });
 }

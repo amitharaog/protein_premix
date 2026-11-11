@@ -93,3 +93,22 @@ export function gateProgress(files: GateFileRow[], survey: { responses: number; 
     return { metric: g.metric, label: g.label, now, needed: g.threshold, status: now == null ? "No data yet" : now >= g.threshold ? "Met" : "Not yet" };
   });
 }
+
+/** Running total of sign-ups per India day, from the first one to today (at most maxDays shown; earlier ones count in the total). */
+export function cumulativeByDay(dates: Date[], now: Date, maxDays = 60): { day: string; total: number; added: number }[] {
+  if (!dates.length) return [];
+  const counts = new Map<string, number>();
+  for (const d of dates) counts.set(istDay(d), (counts.get(istDay(d)) ?? 0) + 1);
+  const today = Date.parse(istDay(now) + "T00:00:00Z");
+  const first = Math.max(Date.parse([...counts.keys()].sort()[0] + "T00:00:00Z"), today - (maxDays - 1) * DAY_MS);
+  const firstDay = new Date(first).toISOString().slice(0, 10);
+  let total = [...counts].filter(([d]) => d < firstDay).reduce((s, [, n]) => s + n, 0);
+  const out: { day: string; total: number; added: number }[] = [];
+  for (let t = first; t <= today; t += DAY_MS) {
+    const day = new Date(t).toISOString().slice(0, 10);
+    const added = counts.get(day) ?? 0;
+    total += added;
+    out.push({ day, total, added });
+  }
+  return out;
+}

@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { cookies, headers } from "next/headers";
 import { brand } from "@/config/brand";
-import { getAnswersFor, getContactFor, getSurveyQuestions } from "@/lib/queries/survey";
+import { getAnswersFor, getContactFor, getSurveyQuestions, peerStats } from "@/lib/queries/survey";
 import { RID_COOKIE, signStart } from "@/lib/survey/guard";
 import { SurveyClient } from "./survey-client";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SurveyPage() {
-  const questions = await getSurveyQuestions();
+  const [questions, peers] = await Promise.all([getSurveyQuestions(), peerStats().catch(() => [])]);
   const rid = (await cookies()).get(RID_COOKIE)?.value;
   const [initial, initialContact] = rid ? await Promise.all([getAnswersFor(rid), getContactFor(rid)]) : [null, null];
   // Share links point at the host the visitor actually used (Vercel URL today, a custom domain later).
@@ -29,6 +29,7 @@ export default async function SurveyPage() {
       initialContact={initialContact}
       startToken={signStart()}
       siteUrl={siteUrl}
+      peers={peers}
     />
   );
 }

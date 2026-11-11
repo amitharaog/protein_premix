@@ -65,5 +65,18 @@ export const launch = {
     doneNumber: "You're number {n} on the waitlist. We'll message you first.",
     preview: "Preview: this form switches on when you approve the page.",
   },
+  // Shown on the survey's last screen, only after the answers are stamped (founder decision, 11 Nov 2026): the
+  // questions stay blind, the reveal is the reward for finishing. Same rule 5 limits as the rest of this page.
+  reveal: {
+    sealed: "Top secret",
+    sealedTitle: "The Ministry's secret project",
+    sealedBody: "Your answers are stamped. You've earned a look at what they're for.",
+    open: "Break the seal",
+    kicker: "Declassified",
+    lead: "Meet",
+    body: "Everything you just told the Minister is shaping one thing: a protein-based dessert you make in your own mug.",
+    steps: ["Tear", "Pour into your mug", "Add milk, stir", "Microwave", "Ding: dessert"],
+    see: "Watch it come together",
+  },
   footer: "Starting in Bengaluru.",
 };

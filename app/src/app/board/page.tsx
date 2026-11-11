@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SubmitButton } from "@/components/submit-button";
-import { BAR, BarCard, pct, Tile } from "@/components/stats";
+import { BAR, BarCard, FunnelCard, GrowthCard, pct, Tile } from "@/components/stats";
+import { traction } from "@/config/traction";
 import { blockedReason, RUNNABLE } from "@/lib/agents/commands";
 import { AGENTS_REF, AGENTS_REPO, checkRepo } from "@/lib/agents/github";
 import { boardState } from "@/lib/agents/state";
@@ -11,7 +12,7 @@ import { activeRun, anyRunSucceeded, expireStaleRuns, recentRuns } from "@/lib/q
 import { surveyContactList, surveyResults, waitlistList, waitlistRespondentIds } from "@/lib/queries/survey";
 import { keyMatches } from "@/lib/secret";
 import { tally } from "@/lib/survey/aggregate";
-import { dailyCounts, gateProgress, headline, segments, type AgentRow, type GateRow } from "@/lib/survey/board";
+import { cumulativeByDay, dailyCounts, gateProgress, headline, segments, type AgentRow, type GateRow } from "@/lib/survey/board";
 import { savedSince } from "@/lib/survey/sheet";
 import { LEVEL_LABEL, overallVerdict, SURE_N, surveyVerdicts, waitlistCheck, type Aspect, type Level, type Overall } from "@/lib/survey/verdicts";
 import { saveGithubToken } from "./actions";
@@ -63,6 +64,10 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
   const days = dailyCounts(responses, now);
   const maxDay = Math.max(1, ...days.map((d) => d.n));
   const sources = tally(responses.map((r) => r.utm?.utm_source));
+  const growth = cumulativeByDay(wl.map((w) => w.createdAt), now);
+  const surveyJoins = responses.filter((r) => joined.has(r.respondentId)).length;
+  const contactIds = new Set(contacts.map((c) => c.respondentId));
+  const gaveContact = responses.filter((r) => contactIds.has(r.respondentId)).length;
   const gate = gateProgress(gateFiles, { responses: h.responses, waitlistJoins: h.waitlistJoins, likely45: h.likely45 });
   const ready = agents.filter((a) => a.status === "Ready");
   const readyBy = [...new Set(ready.map((a) => a.command))].map((command) => ({ command, names: ready.filter((a) => a.command === command).map((a) => a.name) }));
@@ -159,6 +164,18 @@ export default async function AgentBoard({ searchParams }: { searchParams: Promi
           </figure>
           <BarCard title="Where responses came from" note="utm_source on the shared link; direct means the link had no tag"
             items={sources.map((s) => ({ label: s.value, count: s.count }))} denom={h.responses} />
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <FunnelCard title="From survey to paid" note="Each step as a share of everyone who answered. Waitlist and paid are behaviour (E1); the rest is what people say."
+            steps={[
+              { label: "Answered the survey", count: h.responses },
+              { label: "Left name and contact", count: gaveContact, sub: "since 8 Nov" },
+              { label: "Joined the waitlist", count: surveyJoins, sub: "from the survey's last screen" },
+              { label: "Paid a pre-order", count: traction.paidPreorders, sub: `UPI, by ${fmtDay.format(new Date(traction.paidPreordersAsOf))}` },
+            ]} />
+          <GrowthCard title="Waitlist growth" note={`Everyone on the list, all sources (launch page, survey, other). ${wl.filter((w) => w.source === "launch").length} from the launch page.`}
+            points={growth} fmt={(d) => fmtDay.format(new Date(d))} />
         </div>
 
         <figure className="rounded-[14px] border border-line bg-panel p-4">

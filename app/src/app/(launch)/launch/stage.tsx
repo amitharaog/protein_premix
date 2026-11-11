@@ -164,7 +164,7 @@ const CRUMBS = (() => {
 /** The drawn mug from the first version: cream glaze with brown specks, a darker unglazed foot, a looped handle.
  *  Drawn on the same 1024 x 683 canvas as the photo layers, with its mouth at (530, 263) so the milk stream lands in it.
  *  `top`: "batter" (chocolate batter inside), "rise" (the chocolate top fades in with --rise) or "baked". */
-function Mug({ id, top }: { id: string; top: "batter" | "rise" | "baked" }) {
+export function Mug({ id, top }: { id: string; top: "batter" | "rise" | "baked" }) {
   const u = (n: string) => `url(#${id}-${n})`;
   const dome = "M403 263 C 398 214, 446 166, 530 163 C 614 166, 662 214, 657 263 A127 40 0 0 1 403 263 Z";
   return (
