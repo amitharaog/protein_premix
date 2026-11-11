@@ -9,7 +9,7 @@ import type { PeerStat, SavedContact } from "@/lib/queries/survey";
 import { Reveal } from "@/app/(launch)/launch/reveal";
 import type { Answers, SurveyQuestion } from "@/lib/survey/validate";
 import { forgetContact, joinWaitlist, submitSurvey } from "./actions";
-import { CheckerStrip, Crown, Minister, Ornaments, Seal, TileTray, Wordmark } from "./art";
+import { CheckerStrip, Minister, Ornaments, Seal, TileTray, Wordmark } from "./art";
 
 type Props = {
   questions: SurveyQuestion[]; initial: Answers | null; initialContact: SavedContact | null; startToken: string; siteUrl: string;
@@ -552,51 +552,45 @@ function Done({ personality, shareUrl, utm, prefill, peers, answers, countedBefo
   const [copied, setCopied] = useState(false);
   const shareText = doneCopy.shareText(personality.title, shareUrl);
   return (
-    <section className="anim-pop mt-6 flex flex-1 flex-col">
-      <div className="royal-frame relative overflow-hidden rounded-[14px] bg-panel px-5 pb-6 pt-7 text-center shadow-[4px_4px_0_var(--gold)]">
-        <CheckerStrip className="h-3" />
-        <span aria-hidden className="stamp anim-stamp absolute right-4 top-8">{doneCopy.stamp}</span>
-        <Crown className="mx-auto h-9 w-auto" />
-        <p className="mt-2 font-caps text-[11px] font-bold uppercase tracking-[0.25em] text-muted">{doneCopy.personalityLead}</p>
-        <h1 className="mt-2 font-royal text-[30px] leading-tight font-black italic text-fg">{personality.title}</h1>
-        <p className="mx-auto mt-2 max-w-xs text-muted">{personality.line}</p>
-        <div className="mt-3 flex justify-center"><Minister size={84} /></div>
-      </div>
-
-      <PeerBoard peers={peers} answers={answers} countedBefore={countedBefore} />
-
-      {/* The reveal comes only now, after the answers are stamped, so the questions stay blind. */}
+    <section className="anim-pop mt-3 flex flex-1 flex-col">
+      {/* The reveal comes first on this screen, but only after the answers are stamped, so the questions stay blind. */}
       <Reveal seeHref={seeHref} />
 
       <WaitlistMini utm={utm} prefill={prefill} />
 
-      <p className="mt-8 text-sm text-muted">{doneCopy.shareLead}</p>
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        <a
-          href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="royal-frame flex h-12 items-center justify-center rounded-full bg-panel text-sm font-semibold"
-        >
-          Share on WhatsApp
-        </a>
-        <button
-          type="button"
-          onClick={async () => {
-            try {
-              await navigator.clipboard.writeText(shareUrl);
-              setCopied(true);
-            } catch {
-              setCopied(false);
-            }
-          }}
-          className="royal-frame h-12 rounded-full bg-panel text-sm font-semibold"
-        >
-          {copied ? doneCopy.copied : doneCopy.copy}
-        </button>
+      <div className="royal-frame relative mt-4 overflow-hidden rounded-[14px] bg-panel px-4 pb-4 pt-4 text-center shadow-[3px_3px_0_var(--gold)]">
+        <p className="font-caps text-[10px] font-bold uppercase tracking-[0.22em] text-muted">{doneCopy.personalityLead}</p>
+        <h1 className="mt-1 font-royal text-[24px] leading-tight font-black italic text-fg">{personality.title}</h1>
+        <p className="mx-auto mt-1 max-w-xs text-sm text-muted">{personality.line}</p>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(shareText)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="royal-frame flex h-11 items-center justify-center rounded-full bg-panel text-sm font-semibold"
+          >
+            Share on WhatsApp
+          </a>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(shareUrl);
+                setCopied(true);
+              } catch {
+                setCopied(false);
+              }
+            }}
+            className="royal-frame h-11 rounded-full bg-panel text-sm font-semibold"
+          >
+            {copied ? doneCopy.copied : doneCopy.copy}
+          </button>
+        </div>
       </div>
 
-      <div className="mt-6" />
+      <PeerBoard peers={peers} answers={answers} countedBefore={countedBefore} />
+
+      <div className="mt-3" />
       <Forget />
     </section>
   );
@@ -680,12 +674,14 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
   const [wa, setWa] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [joined, setJoined] = useState<{ position?: number } | null>(null);
+  // Details from the last step are already filled in, so the fields stay folded until the person wants to change them.
+  const [editing, setEditing] = useState(!(prefill.email || prefill.phone));
   const [pending, startTransition] = useTransition();
   const trap = useRef<HTMLInputElement>(null);
 
   if (joined) {
     return (
-      <p role="status" className="royal-frame anim-pop mt-6 rounded-[14px] bg-accent-soft p-4 text-center font-medium">
+      <p role="status" className="royal-frame anim-pop mt-4 rounded-[14px] bg-accent-soft p-4 text-center font-medium">
         {joined.position ? doneCopy.joinedNumber(joined.position) : doneCopy.joined}
       </p>
     );
@@ -693,7 +689,7 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
 
   return (
     <form
-      className="royal-frame relative mt-6 rounded-[14px] bg-panel p-4 shadow-[4px_4px_0_var(--gold)]"
+      className="royal-frame relative mt-4 rounded-[14px] bg-panel p-4 shadow-[3px_3px_0_var(--gold)]"
       onSubmit={(e) => {
         e.preventDefault();
         startTransition(async () => {
@@ -707,6 +703,13 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
       <h2 className="font-royal text-xl font-bold text-fg">{doneCopy.waitlistTitle}</h2>
       <p className="mt-1 text-sm text-muted">{doneCopy.waitlistBody}</p>
       <input ref={trap} name="company" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 opacity-0" />
+      {!editing && !errors.email && !errors.phone ? (
+        <p className="mt-3 flex items-center justify-between gap-2 rounded-[10px] bg-[#fffaf0] px-3 py-2.5 text-sm">
+          <span className="min-w-0 truncate"><span className="text-muted">{doneCopy.waitlistUsing} </span><b>{phone || email}</b></span>
+          <button type="button" onClick={() => setEditing(true)} className="shrink-0 text-sm font-semibold underline underline-offset-4">{doneCopy.waitlistChange}</button>
+        </p>
+      ) : (
+        <>
       <label className="mt-3 block text-sm font-medium" htmlFor="wl-email">Email</label>
       <input id="wl-email" type="email" inputMode="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
         className="mt-1 h-12 w-full rounded-[10px] border-2 border-line bg-[#fffaf0] px-3 focus:outline-none focus-visible:outline-3 focus-visible:outline-kesar" />
@@ -715,6 +718,8 @@ function WaitlistMini({ utm, prefill }: { utm: Record<string, string>; prefill: 
       <input id="wl-phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="98xxxxxxxx" value={phone} onChange={(e) => setPhone(e.target.value)}
         className="mt-1 h-12 w-full rounded-[10px] border-2 border-line bg-[#fffaf0] px-3 focus:outline-none focus-visible:outline-3 focus-visible:outline-kesar" />
       {errors.phone && <p className="mt-1 text-sm text-bad">{errors.phone}</p>}
+        </>
+      )}
       <label className="mt-4 flex items-start gap-3 text-sm">
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-5 accent-[var(--accent)]" />
         <span>{doneCopy.consent}</span>
@@ -751,16 +756,17 @@ function PeerBoard({ peers, answers, countedBefore }: { peers: PeerStat[]; answe
   if (!stats.length) return null;
   const total = Math.max(...stats.map((s) => s.n));
   return (
-    <section aria-labelledby="peer-h" className="mt-8">
+    <section aria-labelledby="peer-h" className="mt-5">
       <h2 id="peer-h" className="rule-ornament font-caps text-xs font-bold uppercase tracking-[0.3em] text-fg">{doneCopy.peerTitle}</h2>
-      <p className="mt-1 text-center text-xs text-muted">{doneCopy.peerSub(total)}</p>
-      <div className="mt-3 space-y-3">
+      <p className="mt-1 text-center text-xs text-muted">{doneCopy.peerSub(total)}{stats.length > 1 && ` ${doneCopy.peerSwipe}`}</p>
+      {/* One card at a time: swipe sideways for the next, so the screen stays short. */}
+      <div className="-mx-1 mt-2 flex snap-x snap-mandatory gap-3 overflow-x-auto px-1 pb-2">
         {stats.map((s) => {
-          const top = [...s.options].sort((a, b) => b.count - a.count).slice(0, 4);
+          const top = [...s.options].sort((a, b) => b.count - a.count).slice(0, 3);
           const shown = [...top, ...s.options.filter((o) => s.mine.includes(o.label) && !top.includes(o))];
           const minePct = s.mine.length === 1 ? Math.round(((s.options.find((o) => o.label === s.mine[0])?.count ?? 0) / s.n) * 100) : null;
           return (
-            <figure key={s.id} className="royal-frame rounded-[14px] bg-panel p-4 shadow-[3px_3px_0_var(--gold)]">
+            <figure key={s.id} className={`royal-frame shrink-0 snap-center rounded-[14px] bg-panel p-4 shadow-[3px_3px_0_var(--gold)] ${stats.length > 1 ? "w-[86%]" : "w-full"}`}>
               <figcaption className="text-sm font-semibold leading-snug text-fg">{s.question}</figcaption>
               {minePct != null && <p className="mt-0.5 text-xs font-semibold text-fg">{doneCopy.peerSame(minePct)}</p>}
               <ul className="mt-3 space-y-2">
