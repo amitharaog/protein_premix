@@ -1,0 +1,7 @@
+{"name": "Chocolate fudge mug cake, value (WPC80 + MPC70 50:50)",
+ "note": "Founder-requested suggestion, 14 Nov 2026. Kitchen trial only; never public. MPC70 replaces imported casein to cut cost (formulation_notes f2).",
+ "items": [{"id": "wpc80", "grams": 10}, {"id": "mpc70", "grams": 9}, {"id": "almond_flour", "grams": 9}, {"id": "rice_flour", "grams": 10},
+           {"id": "cocoa", "grams": 8}, {"id": "erythritol", "grams": 6}, {"id": "choc_chips", "grams": 3.5}, {"id": "baking_powder", "grams": 2},
+           {"id": "baking_soda", "grams": 0.2}, {"id": "psyllium", "grams": 1}, {"id": "xanthan", "grams": 0.2}, {"id": "salt", "grams": 0.3},
+           {"id": "vanilla", "grams": 0.3}, {"id": "stevia", "grams": 0.05}],
+ "liquid": {"id": "milk_toned", "ml": 55}}

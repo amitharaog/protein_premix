@@ -1,0 +1,7 @@
+{"name": "Chocolate fudge mug cake, standard (WPC80 + casein 60:40)",
+ "note": "Founder-requested suggestion, 14 Nov 2026. Kitchen trial only; never public. Built to formulation_notes f1, f6, Tips 1, 2, 7. Survey: chocolate is the top dessert (51%); 67% want 12 g+ protein.",
+ "items": [{"id": "wpc80", "grams": 11}, {"id": "casein", "grams": 8}, {"id": "almond_flour", "grams": 10}, {"id": "rice_flour", "grams": 9},
+           {"id": "cocoa", "grams": 8}, {"id": "erythritol", "grams": 6}, {"id": "choc_chips", "grams": 3.5}, {"id": "baking_powder", "grams": 2},
+           {"id": "baking_soda", "grams": 0.2}, {"id": "psyllium", "grams": 1}, {"id": "xanthan", "grams": 0.2}, {"id": "salt", "grams": 0.3},
+           {"id": "vanilla", "grams": 0.3}, {"id": "stevia", "grams": 0.05}],
+ "liquid": {"id": "milk_toned", "ml": 55}}
